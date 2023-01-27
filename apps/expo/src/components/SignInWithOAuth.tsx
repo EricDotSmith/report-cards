@@ -9,14 +9,15 @@ const SignInWithOAuth = () => {
   const { signUp } = useSignUp();
   if (!isLoaded) return null;
 
-  const handleSignInWithDiscordPress = async () => {
+  const handleSignInWithGooglePress = async () => {
+    console.log("we");
     try {
       const redirectUrl = AuthSession.makeRedirectUri({
         path: "/oauth-native-callback",
       });
 
       await signIn.create({
-        strategy: "oauth_discord",
+        strategy: "oauth_google",
         redirectUrl,
       });
 
@@ -77,8 +78,8 @@ const SignInWithOAuth = () => {
   return (
     <View className="rounded-lg border-2 border-gray-500 p-4">
       <Button
-        title="Sign in with Discord"
-        onPress={handleSignInWithDiscordPress}
+        title="Sign in with Google"
+        onPress={handleSignInWithGooglePress}
       />
     </View>
   );
