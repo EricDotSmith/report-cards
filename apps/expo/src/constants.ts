@@ -13,7 +13,7 @@
 
 // FOR CLERK APPS AFTER 1/18/2023 pk_test_XXXXXXXXXXXXXXXXXXXXXXXX
 export const CLERK_PUBLISHABLE_KEY =
-  "pk_test_ZW5vdWdoLWZyb2ctNjQuY2xlcmsuYWNjb3VudHMuZGV2JA";
+  "pk_test_YWJzb2x1dGUtcmluZ3RhaWwtOTMuY2xlcmsuYWNjb3VudHMuZGV2JA";
 
 if (CLERK_PUBLISHABLE_KEY === undefined) {
   throw new Error("CLERK_PUBLISHABLE_KEY is not defined");
