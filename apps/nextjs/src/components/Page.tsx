@@ -2,27 +2,50 @@ import { useAuth } from "@clerk/nextjs";
 import { PropsWithChildren } from "react";
 import classNames from "../utils/tailwind";
 
-const enableColouredBackground = true;
+const enableColouredBackground = false;
 
-export const PageContainer: React.FC<PropsWithChildren> = ({ children }) => {
+interface PageContainerProps extends PropsWithChildren {
+  pageLeftBar?: React.ReactNode;
+  pageRightBar?: React.ReactNode;
+  pageTopBar?: React.ReactNode;
+  pageBottomBar?: React.ReactNode;
+}
+
+export const PageContainer: React.FC<PageContainerProps> = ({
+  children,
+  pageBottomBar,
+  pageLeftBar,
+  pageRightBar,
+  pageTopBar,
+}) => {
   const { isSignedIn } = useAuth();
 
   return (
     <main>
       <div className={classNames("mx-auto flex max-w-7xl justify-center")}>
-        {isSignedIn ? <PageLeftBar /> : null}
-        <div className="w-full bg-blue-200">
-          {isSignedIn ? <PageTopBar /> : null}
+        {isSignedIn ? <PageLeftBar component={pageLeftBar} /> : null}
+        <div
+          className={classNames(
+            "w-full",
+            enableColouredBackground ? "bg-blue-200/40" : "",
+          )}
+          style={{ minHeight: "calc(100dvh + 1px)" }}
+        >
+          <PageTopBar component={pageTopBar} />
           {children}
-          {isSignedIn ? <PageBottomBar /> : null}
+          {isSignedIn ? <PageBottomBar component={pageBottomBar} /> : null}
         </div>
-        {isSignedIn ? <PageRightBar /> : null}
+        {isSignedIn ? <PageRightBar component={pageRightBar} /> : null}
       </div>
     </main>
   );
 };
 
-const PageLeftBar: React.FC = () => {
+interface BarProps {
+  component?: React.ReactNode;
+}
+
+const PageLeftBar: React.FC<BarProps> = ({ component }) => {
   return (
     <div
       className={classNames(
@@ -30,15 +53,17 @@ const PageLeftBar: React.FC = () => {
         enableColouredBackground ? "bg-red-200/40" : "",
       )}
     >
-      <div className="flex h-full flex-col justify-between">
-        <div>a</div>
-        <div>b</div>
-      </div>
+      {component ?? (
+        <div className="flex h-full flex-col justify-between">
+          <div>a</div>
+          <div>b</div>
+        </div>
+      )}
     </div>
   );
 };
 
-const PageRightBar: React.FC = () => {
+const PageRightBar: React.FC<BarProps> = ({ component }) => {
   return (
     <div
       className={classNames(
@@ -46,15 +71,17 @@ const PageRightBar: React.FC = () => {
         enableColouredBackground ? "bg-green-200/40" : "",
       )}
     >
-      <div className="flex h-full flex-col justify-between">
-        <div>a</div>
-        <div>b</div>
-      </div>
+      {component ?? (
+        <div className="flex h-full flex-col justify-between">
+          <div>a</div>
+          <div>b</div>
+        </div>
+      )}
     </div>
   );
 };
 
-const PageTopBar: React.FC = () => {
+const PageTopBar: React.FC<BarProps> = ({ component }) => {
   return (
     <div
       className={classNames(
@@ -62,26 +89,30 @@ const PageTopBar: React.FC = () => {
         enableColouredBackground ? "bg-purple-400/40" : "",
       )}
     >
-      <div className="flex w-full justify-between">
-        <div>a</div>
-        <div>b</div>
-      </div>
+      {component ?? (
+        <div className="flex w-full justify-between">
+          <div>a</div>
+          <div>b</div>
+        </div>
+      )}
     </div>
   );
 };
 
-const PageBottomBar: React.FC = () => {
+const PageBottomBar: React.FC<BarProps> = ({ component }) => {
   return (
     <div
       className={classNames(
-        "sticky bottom-0 w-full sm:hidden",
+        "fixed bottom-0 w-full sm:hidden",
         enableColouredBackground ? "bg-red-400/40" : "",
       )}
     >
-      <div className="flex w-full justify-between">
-        <div>a</div>
-        <div>b</div>
-      </div>
+      {component ?? (
+        <div className="flex w-full justify-between">
+          <div>a</div>
+          <div>b</div>
+        </div>
+      )}
     </div>
   );
 };
