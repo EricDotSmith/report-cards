@@ -33,6 +33,7 @@ const Home: NextPage = () => {
       <PageContainer>
         <div className="container flex flex-col items-center justify-center gap-12 px-4 py-8">
           <Link href="/test">Go to test</Link>
+          <Link href="/sign-in">Go to sign-in</Link>
           <h1 className="text-5xl font-extrabold tracking-tight sm:text-[5rem]">
             Create <span className="text-[hsl(280,100%,70%)]">T3</span> Turbo
           </h1>
