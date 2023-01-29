@@ -29,10 +29,10 @@ export const PageContainer: React.FC<PageContainerProps> = ({
             "w-full",
             enableColouredBackground ? "bg-blue-200/40" : "",
           )}
-          style={{ minHeight: "calc(100dvh + 1px)" }}
+          style={{ minHeight: "100dvh" }}
         >
           <PageTopBar component={pageTopBar} />
-          {children}
+          <div className="pb-8">{children}</div>
           {isSignedIn ? <PageBottomBar component={pageBottomBar} /> : null}
         </div>
         {isSignedIn ? <PageRightBar component={pageRightBar} /> : null}
