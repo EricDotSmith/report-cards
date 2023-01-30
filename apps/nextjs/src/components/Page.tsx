@@ -9,6 +9,7 @@ interface PageContainerProps extends PropsWithChildren {
   pageRightBar?: React.ReactNode;
   pageTopBar?: React.ReactNode;
   pageBottomBar?: React.ReactNode;
+  pageRightBarDisabled?: boolean;
 }
 
 export const PageContainer: React.FC<PageContainerProps> = ({
@@ -17,6 +18,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
   pageLeftBar,
   pageRightBar,
   pageTopBar,
+  pageRightBarDisabled = true,
 }) => {
   const { isSignedIn } = useAuth();
 
@@ -26,7 +28,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
         {isSignedIn ? <PageLeftBar component={pageLeftBar} /> : null}
         <div
           className={classNames(
-            "w-full",
+            "w-full sm:border-l sm:border-r sm:border-white",
             enableColouredBackground ? "bg-blue-200/40" : "",
           )}
           style={{ minHeight: "100dvh" }}
@@ -35,7 +37,9 @@ export const PageContainer: React.FC<PageContainerProps> = ({
           <div className="pb-8">{children}</div>
           {isSignedIn ? <PageBottomBar component={pageBottomBar} /> : null}
         </div>
-        {isSignedIn ? <PageRightBar component={pageRightBar} /> : null}
+        {!pageRightBarDisabled && isSignedIn ? (
+          <PageRightBar component={pageRightBar} />
+        ) : null}
       </div>
     </main>
   );
@@ -67,7 +71,7 @@ const PageRightBar: React.FC<BarProps> = ({ component }) => {
   return (
     <div
       className={classNames(
-        "sticky top-0 hidden h-[100dvh] w-64 md:block",
+        "sticky top-0 hidden h-[100dvh] w-96 md:block",
         enableColouredBackground ? "bg-green-200/40" : "",
       )}
     >
