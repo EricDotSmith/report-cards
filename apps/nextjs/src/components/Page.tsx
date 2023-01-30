@@ -24,7 +24,10 @@ export const PageContainer: React.FC<PageContainerProps> = ({
 
   return (
     <main>
-      <div className={classNames("mx-auto flex max-w-7xl justify-center")}>
+      <div
+        style={{ backgroundColor: "#f6f3ec" }}
+        className={classNames("mx-auto flex max-w-7xl justify-center")}
+      >
         {isSignedIn ? <PageLeftBar component={pageLeftBar} /> : null}
         <div
           className={classNames(
@@ -53,7 +56,7 @@ const PageLeftBar: React.FC<BarProps> = ({ component }) => {
   return (
     <div
       className={classNames(
-        "sticky top-0 hidden h-[100dvh] w-16 sm:block lg:w-64",
+        "w-18 sticky top-0 hidden h-[100dvh] sm:block ",
         enableColouredBackground ? "bg-red-200/40" : "",
       )}
     >

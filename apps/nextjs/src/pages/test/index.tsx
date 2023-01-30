@@ -80,25 +80,68 @@ const SideBarIcon: React.FC<BottomBarIconProps> = ({
     </div>
   );
 };
-
+import {
+  Bars3BottomLeftIcon,
+  CogIcon,
+  HomeIcon,
+  PhotoIcon,
+  PlusIcon,
+  RectangleStackIcon,
+  Squares2X2Icon,
+  UserGroupIcon,
+  XMarkIcon,
+} from "@heroicons/react/24/outline";
+const sidebarNavigation = [
+  { name: "Home", href: "#", icon: HomeIcon, current: false },
+  { name: "All Files", href: "#", icon: Squares2X2Icon, current: false },
+  { name: "Photos", href: "#", icon: PhotoIcon, current: true },
+  { name: "Shared", href: "#", icon: UserGroupIcon, current: false },
+  { name: "Albums", href: "#", icon: RectangleStackIcon, current: false },
+  { name: "Settings", href: "#", icon: CogIcon, current: false },
+];
 const PageLeftBar: React.FC = () => {
   const color = useColorStore((state) => state.color);
 
   return (
     <div
-      className="flex h-full flex-col justify-start  space-y-4 p-2 px-4"
+      className="flex h-full flex-col justify-start overflow-y-scroll"
       style={{ backgroundColor: color }}
     >
-      <SideBarIcon
-        CheckedIcon={AiFillHome}
-        UncheckedIcon={AiOutlineHome}
-        title="Home"
-      />
-      <SideBarIcon
-        CheckedIcon={RiSettings5Fill}
-        UncheckedIcon={RiSettings5Line}
-        title="Settings"
-      />
+      <div className="flex w-full flex-col items-center py-6">
+        <div className="flex flex-shrink-0 items-center">
+          <img
+            className="h-8 w-auto"
+            src="https://tailwindui.com/img/logos/mark.svg?color=white"
+            alt="Your Company"
+          />
+        </div>
+        <div className="mt-6 w-full flex-1 space-y-1 px-2">
+          {sidebarNavigation.map((item) => (
+            <a
+              key={item.name}
+              href={item.href}
+              className={classNames(
+                item.current
+                  ? "bg-gray-500/20 text-white"
+                  : "text-indigo-100 hover:bg-gray-500/10 hover:text-white",
+                "group flex w-full flex-col items-center rounded-md p-3 text-xs font-medium",
+              )}
+              aria-current={item.current ? "page" : undefined}
+            >
+              <item.icon
+                className={classNames(
+                  item.current
+                    ? "text-white"
+                    : "text-white group-hover:text-white",
+                  "h-6 w-6",
+                )}
+                aria-hidden="true"
+              />
+              <span className="mt-2">{item.name}</span>
+            </a>
+          ))}
+        </div>
+      </div>
     </div>
   );
 };
@@ -136,7 +179,7 @@ const TestPage: React.FC = () => {
         </div>
       }
       pageTopBar={
-        <div className="w-full   border-b  p-4">some helpful card</div>
+        <div className="w-full border-b bg-white  p-4">some helpful card</div>
       }
     >
       <Link href="/">Go home</Link>
