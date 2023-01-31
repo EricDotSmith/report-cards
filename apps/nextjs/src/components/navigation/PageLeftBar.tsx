@@ -1,16 +1,14 @@
-import useColorStore from "../../store/colorStore";
 import classNames from "../../utils/tailwind";
 import { useRouter } from "next/router";
-import sidebarNavigation from "./Paths";
+import sidebarNavigation, { colorForPath } from "./Paths";
 
 const PageLeftBar: React.FC = () => {
-  const color = useColorStore((state) => state.color);
   const { pathname } = useRouter();
 
   return (
     <div
       className="flex h-full flex-col justify-start overflow-y-scroll"
-      style={{ backgroundColor: color }}
+      style={{ backgroundColor: colorForPath(pathname) }}
     >
       <div className="flex w-full flex-col items-center py-6">
         <div className="flex flex-shrink-0 items-center">

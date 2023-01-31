@@ -1,14 +1,15 @@
 import { useRouter } from "next/router";
-import useColorStore from "../../store/colorStore";
 import classNames from "../../utils/tailwind";
-import sidebarNavigation from "./Paths";
+import sidebarNavigation, { colorForPath } from "./Paths";
 
 const PageBottomBar: React.FC = () => {
-  const color = useColorStore((state) => state.color);
   const { pathname } = useRouter();
 
   return (
-    <div className="flex justify-evenly" style={{ backgroundColor: color }}>
+    <div
+      className="flex justify-evenly"
+      style={{ backgroundColor: colorForPath(pathname) }}
+    >
       <div className="flex w-full flex-row items-center ">
         <div className="flex w-full flex-row">
           {sidebarNavigation.map((item) => (

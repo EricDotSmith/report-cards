@@ -25,6 +25,11 @@ const sidebarNavigation: SidebarNavigation[] = [
   { name: "Test", href: "/test", icon: PhotoIcon, color: "#f2aa4b" },
 ];
 
+export const colorForPath = (path: string) => {
+  const pathItem = sidebarNavigation.find((item) => item.href === path);
+  return pathItem ? pathItem.color : "#f6f3ec";
+};
+
 export const colorMap = {
   "#58c1fa": "#a0ecff",
   "#5cc956": "#9dffae",
