@@ -1,6 +1,8 @@
 import { useAuth } from "@clerk/nextjs";
 import { PropsWithChildren } from "react";
+import useColorStore from "../store/colorStore";
 import classNames from "../utils/tailwind";
+import { colorMap } from "./navigation/Paths";
 
 const enableColouredBackground = false;
 
@@ -21,10 +23,13 @@ export const PageContainer: React.FC<PageContainerProps> = ({
   pageRightBarDisabled = true,
 }) => {
   const { isSignedIn } = useAuth();
+  const color = useColorStore((state) => state.color);
 
   return (
     <main className="flex">
-      <div className="hidden w-[calc((100vw-1500px)/2)] bg-gradient-to-l from-[#58c1fa] to-blue-400 min-[1500px]:block"></div>
+      <div
+        className={`hidden w-[calc((100vw-1500px)/2)] bg-gradient-to-l from-[${color}] to-[${colorMap[color]}] min-[1500px]:block`}
+      ></div>
       <div
         style={{ backgroundColor: "#f6f3ec" }}
         className={classNames(
@@ -47,7 +52,9 @@ export const PageContainer: React.FC<PageContainerProps> = ({
           <PageRightBar component={pageRightBar} />
         ) : null}
       </div>
-      <div className="hidden w-[calc((100vw-1500px)/2)] bg-gradient-to-r from-[#58c1fa] to-blue-500 min-[1500px]:block"></div>
+      <div
+        className={`hidden w-[calc((100vw-1500px)/2)] bg-gradient-to-r from-[${color}] to-[${colorMap[color]}] min-[1500px]:block`}
+      ></div>
     </main>
   );
 };
