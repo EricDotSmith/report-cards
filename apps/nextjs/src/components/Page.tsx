@@ -23,10 +23,13 @@ export const PageContainer: React.FC<PageContainerProps> = ({
   const { isSignedIn } = useAuth();
 
   return (
-    <main>
+    <main className="flex">
+      <div className="hidden w-[calc((100vw-1500px)/2)] bg-gradient-to-l from-[#58c1fa] to-blue-400 min-[1500px]:block"></div>
       <div
         style={{ backgroundColor: "#f6f3ec" }}
-        className={classNames("mx-auto flex max-w-7xl justify-center")}
+        className={classNames(
+          "mx-auto flex max-w-[1500px] flex-grow justify-center",
+        )}
       >
         {isSignedIn ? <PageLeftBar component={pageLeftBar} /> : null}
         <div
@@ -44,6 +47,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
           <PageRightBar component={pageRightBar} />
         ) : null}
       </div>
+      <div className="hidden w-[calc((100vw-1500px)/2)] bg-gradient-to-r from-[#58c1fa] to-blue-500 min-[1500px]:block"></div>
     </main>
   );
 };

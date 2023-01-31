@@ -9,7 +9,7 @@ interface ColorStore {
 const useColorStore = create<ColorStore>((set) => ({
   color: "#58c1fa",
   changeColor: (newColor) => {
-    // document.body.style.backgroundColor = newColor;
+    document.body.style.backgroundColor = newColor;
     set(() => ({ color: newColor }));
   },
 }));
