@@ -14,8 +14,8 @@ const MyApp: AppType = ({ Component, pageProps: { ...pageProps } }) => {
 
   useEffect(() => {
     const item = sidebarNavigation.find((item) => item.href === pathname);
-    document.body.style.backgroundColor = item?.color ?? "#ffffff";
-    changeColor(item?.color ?? "#58c1fa");
+    document.body.style.backgroundColor = item?.color ?? "#f6f3ec";
+    changeColor(item?.color ?? "#f6f3ec");
   }, [changeColor, pathname]);
 
   return (

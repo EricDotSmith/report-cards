@@ -1,28 +1,30 @@
 import { SignIn } from "@clerk/nextjs";
-import { PageContainer } from "../../components/Page";
+import { DefaultPageContainer } from "../../components/Page";
 import Link from "next/link";
+import { NextPage } from "next";
 
-const SignInPage = () => (
-  <PageContainer
-    pageTopBar={
-      <div className="flex w-full justify-between bg-[#f7f3ed] px-4 pt-8">
-        <div className="flex w-full justify-center sm:w-auto sm:justify-start">
-          logo here
-        </div>
-        <div className="hidden space-x-4 sm:block">
-          <span className="text-gray-700">Don't have an account yet?</span>
-          <Link
-            className="rounded-2xl border border-sky-500 p-3 text-sm text-sky-500"
-            href="/sign-up"
-          >
-            Create one
-          </Link>
-        </div>
-      </div>
-    }
-  >
-    <div className="flex w-full flex-col items-center justify-center px-4 pt-12">
-      <span className="text-center text-2xl font-bold text-gray-700 md:text-4xl">
+const SignInPageHeader: React.FC = () => (
+  <div className="sticky top-0 z-10 flex w-full justify-between bg-[#f6f3ec] px-4 pt-8">
+    <div className="flex w-full justify-center sm:w-auto sm:justify-start">
+      logo here
+    </div>
+    <div className="hidden space-x-4 sm:block">
+      <span className="text-gray-700">Don't have an account yet?</span>
+      <Link
+        className="rounded-2xl border border-sky-500 p-3 text-sm text-sky-500"
+        href="/sign-up"
+      >
+        Create one
+      </Link>
+    </div>
+  </div>
+);
+
+const SignInPage: NextPage = () => (
+  <DefaultPageContainer>
+    <div className="flex w-full flex-col items-center justify-center">
+      <SignInPageHeader />
+      <span className="pt-12 text-center text-2xl font-bold text-gray-700 md:text-4xl">
         Sign in to Report Cards
       </span>
       <SignIn
@@ -60,7 +62,7 @@ const SignInPage = () => (
         </Link>
       </div>
     </div>
-  </PageContainer>
+  </DefaultPageContainer>
 );
 
 export default SignInPage;

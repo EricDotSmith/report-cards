@@ -36,7 +36,8 @@ export const PageContainer: React.FC<PageContainerProps> = ({
           "mx-auto flex max-w-[1500px] flex-grow justify-center",
         )}
       >
-        {isSignedIn ? <PageLeftBar component={pageLeftBar} /> : null}
+        {/* //note that conditional rendering causes pop in */}
+        <PageLeftBar component={pageLeftBar} />
         <div
           className={classNames(
             "w-full sm:border-l sm:border-r sm:border-white",
@@ -46,7 +47,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
         >
           <PageTopBar component={pageTopBar} />
           <div className="pb-8">{children}</div>
-          {isSignedIn ? <PageBottomBar component={pageBottomBar} /> : null}
+          <PageBottomBar component={pageBottomBar} />
         </div>
         {!pageRightBarDisabled && isSignedIn ? (
           <PageRightBar component={pageRightBar} />
@@ -132,5 +133,22 @@ const PageBottomBar: React.FC<BarProps> = ({ component }) => {
         </div>
       )}
     </div>
+  );
+};
+
+export const DefaultPageContainer: React.FC<PropsWithChildren> = ({
+  children,
+}) => {
+  return (
+    <main>
+      <div
+        style={{ backgroundColor: "#f6f3ec" }}
+        className={classNames(
+          "mx-auto flex max-w-[1500px] flex-grow justify-center",
+        )}
+      >
+        {children}
+      </div>
+    </main>
   );
 };

@@ -14,7 +14,7 @@ interface SidebarNavigation {
 }
 
 const sidebarNavigation: SidebarNavigation[] = [
-  { name: "Home", href: "/", icon: HomeIcon, color: "#58c1fa" },
+  { name: "Home", href: "/", icon: HomeIcon, color: "#f6f3ec" },
   {
     name: "Dashboard",
     href: "/dashboard",
@@ -30,6 +30,7 @@ export const colorMap = {
   "#5cc956": "#9dffae",
   "#f08fa2": "#ffbeec",
   "#f2aa4b": "#ffe0b6",
+  "#f6f3ec": "#f6f3ec",
 };
 
 //changeColor("#5cc956");
