@@ -1,6 +1,7 @@
 import {
   HomeIcon,
   PhotoIcon,
+  Cog6ToothIcon,
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
 
@@ -21,8 +22,13 @@ const sidebarNavigation: SidebarNavigation[] = [
     icon: Squares2X2Icon,
     color: "#58c1fa",
   },
-  { name: "Settings", href: "/settings", icon: PhotoIcon, color: "#f08fa2" },
   { name: "Test", href: "/test", icon: PhotoIcon, color: "#f2aa4b" },
+  {
+    name: "Settings",
+    href: "/settings",
+    icon: Cog6ToothIcon,
+    color: "#f08fa2",
+  },
 ];
 
 export const colorForPath = (path: string) => {

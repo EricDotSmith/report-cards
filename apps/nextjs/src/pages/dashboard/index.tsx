@@ -3,6 +3,8 @@ import PageLeftBar from "../../components/navigation/PageLeftBar";
 import PageBottomBar from "../../components/navigation/PageBottomBar";
 import { NextPage } from "next";
 import Head from "next/head";
+import PageTopBar from "../../components/navigation/PageTopBar";
+import PageRightBar from "../../components/navigation/PageRightBar";
 
 const PAGE_COLOR = "#58c1fa";
 
@@ -23,14 +25,8 @@ const Dashboard: NextPage = () => {
       <PageContainer
         pageBottomBar={<PageBottomBar />}
         pageLeftBar={<PageLeftBar />}
-        pageRightBar={
-          <div className="flex h-full border-4 border-r-0 border-t-0 border-b-0 border-sky-400">
-            some helpful card
-          </div>
-        }
-        pageTopBar={
-          <div className="w-full border-b bg-white  p-4">some helpful card</div>
-        }
+        pageRightBar={<PageRightBar />}
+        pageTopBar={<PageTopBar />}
       >
         <div>Dashboard Page</div>
       </PageContainer>

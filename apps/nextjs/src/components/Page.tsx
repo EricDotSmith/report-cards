@@ -42,7 +42,7 @@ export const PageContainer: React.FC<PageContainerProps> = ({
         <PageLeftBar component={pageLeftBar} />
         <div
           className={classNames(
-            "w-full sm:border-l sm:border-r sm:border-white",
+            "w-full ",
             enableColouredBackground ? "bg-blue-200/40" : "",
           )}
           style={{ minHeight: "100dvh" }}

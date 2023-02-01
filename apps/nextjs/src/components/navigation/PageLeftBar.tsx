@@ -34,13 +34,22 @@ const PageLeftBar: React.FC = () => {
               <item.icon
                 className={classNames(
                   item.href === pathname
-                    ? "text-white"
+                    ? "text-yellow-300"
                     : "text-white group-hover:text-white",
                   "h-6 w-6",
                 )}
                 aria-hidden="true"
               />
-              <span className="mt-2">{item.name}</span>
+              <span
+                className={classNames(
+                  item.href === pathname
+                    ? "text-yellow-300"
+                    : "text-white group-hover:text-white",
+                  "mt-2",
+                )}
+              >
+                {item.name}
+              </span>
             </a>
           ))}
         </div>

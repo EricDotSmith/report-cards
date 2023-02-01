@@ -20,20 +20,29 @@ const PageBottomBar: React.FC = () => {
                 item.href === pathname
                   ? "bg-gray-500/20 text-white"
                   : "text-indigo-100 hover:bg-gray-500/10 hover:text-white",
-                "group flex w-full flex-col items-center p-3 text-xs font-medium",
+                "group flex w-full flex-col items-center p-2 text-xs font-medium",
               )}
               aria-current={item.href === pathname ? "page" : undefined}
             >
               <item.icon
                 className={classNames(
                   item.href === pathname
-                    ? "text-white"
+                    ? "text-yellow-300"
                     : "text-white group-hover:text-white",
                   "h-6 w-6",
                 )}
                 aria-hidden="true"
               />
-              <span className="mt-2">{item.name}</span>
+              <span
+                className={classNames(
+                  item.href === pathname
+                    ? "text-yellow-300"
+                    : "text-white group-hover:text-white",
+                  "mt-2 ",
+                )}
+              >
+                {item.name}
+              </span>
             </a>
           ))}
         </div>
