@@ -12,7 +12,7 @@ const SignInPageHeader: React.FC = () => (
       logo here
     </div>
     <div className="hidden space-x-4 sm:block">
-      <span className="text-gray-700">Don't have an account yet?</span>
+      <span className="text-gray-700">Don&apos;t have an account yet?</span>
       <Link
         className="rounded-2xl border border-sky-500 p-3 text-sm text-sky-500"
         href="/sign-up"
@@ -68,7 +68,7 @@ const SignInPage: NextPage = () => (
           }}
         />
         <div className="flex flex-col items-center space-y-4 pt-4 sm:hidden">
-          <span className="text-gray-700">Don't have an account yet?</span>
+          <span className="text-gray-700">Don&apos;t have an account yet?</span>
           <Link
             className="w-fit rounded-2xl border border-sky-500 p-3 text-sm text-sky-500"
             href="/sign-up"
