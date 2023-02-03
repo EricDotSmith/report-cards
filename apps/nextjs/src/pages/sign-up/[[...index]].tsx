@@ -47,6 +47,7 @@ const SignUpPage: NextPage = () => (
           path="/sign-up"
           routing="path"
           signInUrl="/sign-in"
+          redirectUrl="/dashboard"
           appearance={{
             elements: {
               formButtonPrimary:
