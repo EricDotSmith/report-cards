@@ -162,6 +162,7 @@ const Home: NextPage = () => {
                   Get started generating reports for your students in minutes.
                   Saving you hours of time.
                 </p>
+                <AuthShowcase />
                 <div className="mt-10 flex items-center justify-center gap-x-6">
                   <Link
                     href="/sign-up"
