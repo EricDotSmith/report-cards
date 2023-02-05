@@ -9,7 +9,11 @@ const PAGE_COLOR = "#f6f3ec";
 const SignInPageHeader: React.FC = () => (
   <div className="sticky top-0 z-10 flex w-full justify-between bg-[#f6f3ec] px-4 pt-8">
     <div className="flex w-full justify-center sm:w-auto sm:justify-start">
-      logo here
+      <img
+        className="h-8"
+        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
+        alt=""
+      />
     </div>
     <div className="hidden space-x-4 sm:block">
       <span className="text-gray-700">Don&apos;t have an account yet?</span>
