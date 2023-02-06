@@ -201,6 +201,7 @@ const Home: NextPage = () => {
               </svg>
             </div>
           </div>
+          <div className="h-64"></div>
         </main>
       </div>
     </>
