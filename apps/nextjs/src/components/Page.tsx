@@ -12,6 +12,7 @@ interface PageContainerProps extends PropsWithChildren {
   pageTopBar?: React.ReactNode;
   pageBottomBar?: React.ReactNode;
   pageRightBarDisabled?: boolean;
+  path: string;
 }
 
 export const PageContainer: React.FC<PageContainerProps> = ({
@@ -21,12 +22,18 @@ export const PageContainer: React.FC<PageContainerProps> = ({
   pageRightBar,
   pageTopBar,
   pageRightBarDisabled = true,
+  path,
 }) => {
   const { isSignedIn } = useAuth();
   const { pathname } = useRouter();
 
+  const color = colorForPath(path);
+
   return (
-    <main className="flex">
+    <main
+      className="flex"
+      style={{ backgroundColor: color, minHeight: "100vh" }}
+    >
       <div
         className={`hidden w-[calc((100vw-1500px)/2)] bg-gradient-to-l from-[${colorForPath(
           pathname,
@@ -140,13 +147,19 @@ const PageBottomBar: React.FC<BarProps> = ({ component }) => {
   );
 };
 
-export const DefaultPageContainer: React.FC<PropsWithChildren> = ({
+interface DefaultPageContainerProps extends PropsWithChildren {
+  path: string;
+}
+
+export const DefaultPageContainer: React.FC<DefaultPageContainerProps> = ({
   children,
+  path,
 }) => {
+  const color = colorForPath(path);
+
   return (
-    <main>
+    <main style={{ backgroundColor: color, minHeight: "100vh" }}>
       <div
-        style={{ backgroundColor: "#f6f3ec" }}
         className={classNames(
           "mx-auto flex max-w-[1500px] flex-grow justify-center",
         )}
