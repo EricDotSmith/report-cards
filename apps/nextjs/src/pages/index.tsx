@@ -13,7 +13,7 @@ const navigation = [
   { name: "Company", href: "#" },
 ];
 
-const PAGE_COLOR = "#58c1fa";
+const PAGE_COLOR = "#f6f3ec";
 
 const Home: NextPage = () => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
