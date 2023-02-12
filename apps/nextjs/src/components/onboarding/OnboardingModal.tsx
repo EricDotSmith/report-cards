@@ -9,6 +9,7 @@ export const OnboardingModal: React.FC = () => {
   const [isOpen, setIsOpen] = useState(true);
   const [loading, setLoading] = useState(false);
   const [name, setName] = useState("");
+  const [errorText, setErrorText] = useState("");
 
   const utils = trpc.useContext();
 
@@ -19,22 +20,28 @@ export const OnboardingModal: React.FC = () => {
   };
 
   const handleCreateFinishAccountCreation = () => {
-    setLoading(true);
-    createTeacherMutation.mutate(
-      {
-        id: user?.id ?? "",
-        name: name,
-        email: user?.primaryEmailAddress?.emailAddress ?? "",
-      },
-      {
-        onSuccess: async () => {
-          await utils.teacher.byId.invalidate();
-
-          closeModal();
-          setLoading(false);
+    const trimmedName = name.trim();
+    if (trimmedName.length === 0) {
+      setName("");
+      setErrorText("Please enter a name");
+    } else {
+      setLoading(true);
+      createTeacherMutation.mutate(
+        {
+          id: user?.id ?? "",
+          name: trimmedName,
+          email: user?.primaryEmailAddress?.emailAddress ?? "",
         },
-      },
-    );
+        {
+          onSuccess: async () => {
+            await utils.teacher.byId.invalidate();
+
+            closeModal();
+            setLoading(false);
+          },
+        },
+      );
+    }
   };
 
   return (
@@ -73,38 +80,50 @@ export const OnboardingModal: React.FC = () => {
               <Dialog.Panel className="w-full max-w-md transform overflow-hidden rounded-2xl bg-white p-6 text-left align-middle shadow-xl transition-all">
                 <Dialog.Title
                   as="h3"
-                  className="text-lg font-medium leading-6 text-gray-900"
+                  className="text-lg font-medium leading-6 text-sky-800"
                 >
                   Welcome to Report Cards!
                 </Dialog.Title>
                 <div className="mt-2">
-                  <p className="text-sm text-gray-500">
-                    Please enter your name to get started.
+                  <p className="text-md text-gray-500">
+                    Before we continue, please enter your name so we can
+                    personalize your experience. This can be edited later in
+                    settings.
                   </p>
-                  <label
-                    htmlFor="name"
-                    className="block text-sm font-medium text-gray-700"
-                  >
-                    Name
-                  </label>
-                  <input
-                    type="text"
-                    onChange={(e) => setName(e.target.value)}
-                    className="rounded-lg border"
-                  />
+                  <div className="mt-2">
+                    <label
+                      htmlFor="name"
+                      className="block text-sm font-medium text-gray-400"
+                    >
+                      Teachers Name
+                    </label>
+                    <input
+                      type="text"
+                      onChange={(e) => {
+                        setName(e.target.value);
+                        setErrorText("");
+                      }}
+                      value={name}
+                      maxLength={50}
+                      className="rounded-2xl border p-2 focus:border-sky-400 focus:outline-none focus:ring-sky-400"
+                    />
+                    {errorText.length > 0 && (
+                      <p className="text-sm text-red-500">{errorText}</p>
+                    )}
+                  </div>
                 </div>
 
                 <div className="mt-4">
                   <button
                     type="button"
                     disabled={loading}
-                    className="inline-flex justify-center rounded-md border border-transparent bg-blue-100 px-4 py-2 text-sm font-medium text-blue-900 hover:bg-blue-200 focus:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+                    className="inline-flex justify-center rounded-md border border-transparent bg-sky-100 px-4 py-2 text-sm font-medium text-sky-800 hover:bg-sky-200 focus:outline-none focus-visible:ring-1 focus-visible:ring-sky-500 focus-visible:ring-offset-2"
                     onClick={handleCreateFinishAccountCreation}
                   >
                     {loading ? (
                       <DotLoader color="bg-yellow-100" />
                     ) : (
-                      "Got it, thanks!"
+                      "Get started generating reports!"
                     )}
                   </button>
                 </div>
