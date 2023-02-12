@@ -11,8 +11,21 @@ datasource db {
     relationMode = "prisma"
 }
 
-model Post {
-    id      String @id @default(cuid())
-    title   String
-    content String
+model Teacher {
+    id      String @id
+    name    String
+    email   String @unique
+    classes Class[]
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
 }
+
+model Class {
+    id      String @id @default(cuid())
+    className    String
+    teacherId String @unique
+    teacher Teacher @relation(fields: [teacherId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+}
+
