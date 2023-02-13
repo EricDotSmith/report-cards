@@ -115,7 +115,7 @@ const PageTopBar: React.FC<BarProps> = ({ component }) => {
   return (
     <div
       className={classNames(
-        "sticky top-0 z-50 w-full",
+        "sticky top-0 z-40 w-full",
         enableColouredBackground ? "bg-purple-400/40" : "",
       )}
     >

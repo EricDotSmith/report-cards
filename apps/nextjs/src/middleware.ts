@@ -4,11 +4,11 @@ import type { NextRequest } from "next/server";
 
 // Set the paths that don't require the user to be signed in
 const publicPaths = ["/", "/sign-in*", "/sign-up*"];
-const privatePaths = ["/dashboard*", "/settings*", "/test*"];
+export const privatePaths = ["/dashboard*", "/settings*", "/test*"];
 
 const allPaths = [...publicPaths, ...privatePaths];
 
-const isValidPath = (path: string, possiblePaths: string[]) => {
+export const isValidPath = (path: string, possiblePaths: string[]) => {
   return possiblePaths.find((x) =>
     path.match(new RegExp(`^${x}$`.replace("*$", "($|/)"))),
   );

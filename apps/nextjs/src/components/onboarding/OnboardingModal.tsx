@@ -49,7 +49,7 @@ export const OnboardingModal: React.FC = () => {
       <Dialog
         static
         as="div"
-        className="relative z-10"
+        className="relative z-50"
         onClose={() => {
           return;
         }}

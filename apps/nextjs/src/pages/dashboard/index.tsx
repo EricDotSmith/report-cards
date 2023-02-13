@@ -5,20 +5,11 @@ import { NextPage } from "next";
 import Head from "next/head";
 import PageTopBar from "../../components/navigation/PageTopBar";
 import PageRightBar from "../../components/navigation/PageRightBar";
-import { trpc } from "../../utils/trpc";
-import { useAuth } from "@clerk/nextjs";
-import { OnboardingModal } from "../../components/onboarding/OnboardingModal";
 import ClassTable from "../../components/ClassTable";
 
 const PAGE_COLOR = "#58c1fa";
 
 const Dashboard: NextPage = () => {
-  const { userId } = useAuth();
-
-  const teacher = trpc.teacher.byId.useQuery(userId ?? "", {
-    enabled: !!userId,
-  });
-
   return (
     <>
       <Head>
@@ -35,13 +26,7 @@ const Dashboard: NextPage = () => {
         path="/dashboard"
       >
         <div className="pb-8">
-          {!teacher.isLoading && teacher.data ? (
-            <ClassTable />
-          ) : teacher.isLoading ? (
-            <div>Loading</div>
-          ) : (
-            <OnboardingModal />
-          )}
+          <ClassTable />
         </div>
       </PageContainer>
     </>
