@@ -8,6 +8,7 @@ import PageRightBar from "../../components/navigation/PageRightBar";
 import { trpc } from "../../utils/trpc";
 import { useAuth } from "@clerk/nextjs";
 import { OnboardingModal } from "../../components/onboarding/OnboardingModal";
+import ClassTable from "../../components/ClassTable";
 
 const PAGE_COLOR = "#58c1fa";
 
@@ -33,13 +34,15 @@ const Dashboard: NextPage = () => {
         pageTopBar={<PageTopBar />}
         path="/dashboard"
       >
-        {!teacher.isLoading && teacher.data ? (
-          <div>Dashboard Page</div>
-        ) : teacher.isLoading ? (
-          <div>Loading</div>
-        ) : (
-          <OnboardingModal />
-        )}
+        <div className="pb-8">
+          {!teacher.isLoading && teacher.data ? (
+            <ClassTable />
+          ) : teacher.isLoading ? (
+            <div>Loading</div>
+          ) : (
+            <OnboardingModal />
+          )}
+        </div>
       </PageContainer>
     </>
   );
