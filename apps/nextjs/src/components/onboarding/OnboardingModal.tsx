@@ -28,7 +28,6 @@ export const OnboardingModal: React.FC = () => {
       setLoading(true);
       createTeacherMutation.mutate(
         {
-          id: user?.id ?? "",
           name: trimmedName,
           email: user?.primaryEmailAddress?.emailAddress ?? "",
         },

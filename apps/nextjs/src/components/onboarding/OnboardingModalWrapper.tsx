@@ -11,7 +11,7 @@ const OnboardingModalWrapper: React.FC<PropsWithChildren> = ({ children }) => {
 
   const pathIfValid = isValidPath(pathname, privatePaths);
 
-  const teacher = trpc.teacher.byId.useQuery(userId ?? "", {
+  const teacher = trpc.teacher.byId.useQuery(undefined, {
     enabled: !!userId && !!pathIfValid,
   });
 
