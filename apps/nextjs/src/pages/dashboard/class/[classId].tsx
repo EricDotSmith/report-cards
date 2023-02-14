@@ -30,7 +30,7 @@ const ClassPage: NextPage = () => {
         pageTopBar={<PageTopBar />}
         path="/class"
       >
-        <div className="pb-8">{classId ?? "wtf"}</div>
+        <div className="pb-8">{classId ?? "wtfhh"}</div>
       </PageContainer>
     </>
   );
