@@ -1,4 +1,8 @@
+import { useRouter } from "next/router";
+import { useState } from "react";
 import classNames from "../utils/tailwind";
+import { trpc } from "../utils/trpc";
+import DotLoader from "./DotLoader/DotLoader";
 
 const people = [
   {
@@ -7,97 +11,49 @@ const people = [
     email: "lindsay.walton@example.com",
     role: "Member",
   },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
-  {
-    name: "Lindsay Walton",
-    title: "Front-end Developer",
-    email: "lindsay.walton@example.com",
-    role: "Member",
-  },
+
   // More people...
 ];
 
-export default function ClassTable() {
+const ClassTable = () => {
+  const router = useRouter();
+
+  const [createClassClicked, setCreateClassClicked] = useState(false);
+
+  const { isLoading, mutate: createClass } = trpc.class.create.useMutation({
+    onSuccess: ({ id }) => {
+      router.push(`/dashboard/class/${id}`);
+    },
+    onError: () => {
+      setCreateClassClicked(false);
+    },
+  });
+
+  const handleCreateClass = () => {
+    if (!createClassClicked) {
+      setCreateClassClicked(true);
+      createClass();
+    }
+  };
+
   return (
     <div className="p-4 sm:px-6 lg:px-8">
       <div className="sm:flex sm:items-center">
         <div className="sm:flex-auto">
           <h1 className="text-xl font-semibold text-gray-900">Classes</h1>
           <p className="mt-2 text-sm text-gray-700">
-            Here is a list of all the classes that you are currently teaching.
+            Here is a list of all of your classes. To see your progress reports,
+            click on a class.
           </p>
         </div>
         <div className="mt-4 sm:mt-0 sm:ml-16 sm:flex-none">
           <button
             type="button"
+            disabled={createClassClicked}
             className="inline-flex items-center justify-center rounded-md border border-transparent bg-sky-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-sky-700 focus:outline-none focus:ring-2 focus:ring-sky-500 focus:ring-offset-2 sm:w-auto"
+            onClick={handleCreateClass}
           >
-            Add class
+            {isLoading ? <DotLoader /> : "Add class"}
           </button>
         </div>
       </div>
@@ -209,4 +165,6 @@ export default function ClassTable() {
       </div>
     </div>
   );
-}
+};
+
+export default ClassTable;

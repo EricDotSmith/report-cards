@@ -2,12 +2,13 @@ import { router, protectedProcedure } from "../trpc";
 import { z } from "zod";
 
 export const teacherRouter = router({
-  byId: protectedProcedure.input(z.string()).query(({ ctx, input }) => {
-    return ctx.prisma.teacher.findFirst({ where: { id: input } });
+  byId: protectedProcedure.query(({ ctx }) => {
+    return ctx.prisma.teacher.findFirst({ where: { id: ctx.user.id } });
   }),
   create: protectedProcedure
-    .input(z.object({ id: z.string(), name: z.string(), email: z.string() }))
+    .input(z.object({ name: z.string(), email: z.string() }))
     .mutation(({ ctx, input }) => {
-      return ctx.prisma.teacher.create({ data: input });
+      //name and email might already come from the user object
+      return ctx.prisma.teacher.create({ data: { id: ctx.user.id, ...input } });
     }),
 });

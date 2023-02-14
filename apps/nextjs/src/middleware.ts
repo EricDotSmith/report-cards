@@ -6,7 +6,7 @@ import type { NextRequest } from "next/server";
 const publicPaths = ["/", "/sign-in*", "/sign-up*"];
 export const privatePaths = ["/dashboard*", "/settings*", "/test*"];
 
-const allPaths = [...publicPaths, ...privatePaths];
+export const allPaths = [...publicPaths, ...privatePaths];
 
 export const isValidPath = (path: string, possiblePaths: string[]) => {
   return possiblePaths.find((x) =>

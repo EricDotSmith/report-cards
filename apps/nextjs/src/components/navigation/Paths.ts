@@ -4,6 +4,7 @@ import {
   Cog6ToothIcon,
   Squares2X2Icon,
 } from "@heroicons/react/24/outline";
+import { allPaths, isValidPath } from "../../middleware";
 
 export type Color = keyof typeof colorMap;
 
@@ -32,7 +33,11 @@ const sidebarNavigation: SidebarNavigation[] = [
 ];
 
 export const colorForPath = (path: string) => {
-  const pathItem = sidebarNavigation.find((item) => item.href === path);
+  let rootPath = isValidPath(path, allPaths);
+  rootPath = rootPath?.substring(0, rootPath.length - 1);
+
+  const pathItem = sidebarNavigation.find((item) => item.href === rootPath);
+
   return pathItem ? pathItem.color : "#f6f3ec";
 };
 

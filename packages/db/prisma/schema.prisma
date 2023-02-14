@@ -22,10 +22,24 @@ model Teacher {
 
 model Class {
     id      String @id @default(cuid())
-    className    String
-    teacherId String @unique
+    teacherId String
     teacher Teacher @relation(fields: [teacherId], references: [id])
+    students Student[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+
+    @@index([teacherId])
+}
+
+model Student {
+    id      String @id @default(cuid())
+    name    String
+    pronouns String
+    classId String
+    class Class @relation(fields: [classId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([classId])
 }
 
