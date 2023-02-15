@@ -6,10 +6,14 @@ import Head from "next/head";
 import PageTopBar from "../../components/navigation/PageTopBar";
 import PageRightBar from "../../components/navigation/PageRightBar";
 import ClassTable from "../../components/ClassTable";
+import { trpc } from "../../utils/trpc";
+import NoClasses from "../../components/NoClasses";
 
 const PAGE_COLOR = "#58c1fa";
 
 const Dashboard: NextPage = () => {
+  const { data, isLoading } = trpc.class.classes.useQuery();
+
   return (
     <>
       <Head>
@@ -26,7 +30,11 @@ const Dashboard: NextPage = () => {
         path="/dashboard"
       >
         <div className="pb-8">
-          <ClassTable />
+          {isLoading ? null : !!data && data.length > 0 ? (
+            <ClassTable classes={data} />
+          ) : (
+            <NoClasses />
+          )}
         </div>
       </PageContainer>
     </>

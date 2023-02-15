@@ -7,7 +7,7 @@ import PageTopBar from "../../components/navigation/PageTopBar";
 import PageRightBar from "../../components/navigation/PageRightBar";
 
 const PAGE_COLOR = "#f08fa2";
-
+// Possible rename this page to account where billing will also be placed
 const Settings: NextPage = () => {
   return (
     <>
