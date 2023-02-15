@@ -133,7 +133,7 @@ const PageBottomBar: React.FC<BarProps> = ({ component }) => {
   return (
     <div
       className={classNames(
-        "fixed bottom-0 w-full sm:hidden",
+        "fixed bottom-0 z-40 w-full sm:hidden",
         enableColouredBackground ? "bg-red-400/40" : "",
       )}
     >
