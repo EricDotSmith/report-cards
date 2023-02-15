@@ -8,6 +8,7 @@ import PageRightBar from "../../../components/navigation/PageRightBar";
 import { useRouter } from "next/router";
 import { prisma } from "@acme/db";
 import { buildClerkProps, getAuth } from "@clerk/nextjs/server";
+import ClassForm from "../../../components/ClassForm";
 
 const PAGE_COLOR = "#58c1fa";
 
@@ -31,6 +32,7 @@ const ClassPage: NextPage = () => {
         path="/class"
       >
         <div className="pb-8">{classId ?? "wtf"}</div>
+        <ClassForm />
       </PageContainer>
     </>
   );
