@@ -1,3 +1,5 @@
+import StudentList from "./StudentList";
+
 const ClassForm: React.FC = () => {
   return (
     <div className="sm:p-4">
@@ -322,143 +324,27 @@ const ClassForm: React.FC = () => {
           <div className="md:col-span-1">
             <div className="px-4 sm:px-0">
               <h3 className="text-lg font-medium leading-6 text-gray-900">
-                Notifications
+                Students
               </h3>
               <p className="mt-1 text-sm text-gray-600">
-                Decide which communications you'd like to receive and how.
+                Decide which students you&apos;d like to add to this class.
               </p>
             </div>
           </div>
           <div className="mt-5 md:col-span-2 md:mt-0">
             <form action="#" method="POST">
               <div className="overflow-hidden shadow sm:rounded-md">
-                <div className="space-y-6 bg-white px-4 py-5 sm:p-6">
+                <div className="space-y-6 bg-white">
                   <fieldset>
-                    <legend className="sr-only">By Email</legend>
+                    <legend className="sr-only">Students</legend>
                     <div
-                      className="text-base font-medium text-gray-900"
+                      className="p-4 text-base font-medium text-gray-900"
                       aria-hidden="true"
                     >
-                      By Email
+                      Students
                     </div>
-                    <div className="mt-4 space-y-4">
-                      <div className="flex items-start">
-                        <div className="flex h-5 items-center">
-                          <input
-                            id="comments"
-                            name="comments"
-                            type="checkbox"
-                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                        </div>
-                        <div className="ml-3 text-sm">
-                          <label
-                            htmlFor="comments"
-                            className="font-medium text-gray-700"
-                          >
-                            Comments
-                          </label>
-                          <p className="text-gray-500">
-                            Get notified when someones posts a comment on a
-                            posting.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="flex h-5 items-center">
-                          <input
-                            id="candidates"
-                            name="candidates"
-                            type="checkbox"
-                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                        </div>
-                        <div className="ml-3 text-sm">
-                          <label
-                            htmlFor="candidates"
-                            className="font-medium text-gray-700"
-                          >
-                            Candidates
-                          </label>
-                          <p className="text-gray-500">
-                            Get notified when a candidate applies for a job.
-                          </p>
-                        </div>
-                      </div>
-                      <div className="flex items-start">
-                        <div className="flex h-5 items-center">
-                          <input
-                            id="offers"
-                            name="offers"
-                            type="checkbox"
-                            className="h-4 w-4 rounded border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                          />
-                        </div>
-                        <div className="ml-3 text-sm">
-                          <label
-                            htmlFor="offers"
-                            className="font-medium text-gray-700"
-                          >
-                            Offers
-                          </label>
-                          <p className="text-gray-500">
-                            Get notified when a candidate accepts or rejects an
-                            offer.
-                          </p>
-                        </div>
-                      </div>
-                    </div>
-                  </fieldset>
-                  <fieldset>
-                    <legend className="contents text-base font-medium text-gray-900">
-                      Push Notifications
-                    </legend>
-                    <p className="text-sm text-gray-500">
-                      These are delivered via SMS to your mobile phone.
-                    </p>
-                    <div className="mt-4 space-y-4">
-                      <div className="flex items-center">
-                        <input
-                          id="push-everything"
-                          name="push-notifications"
-                          type="radio"
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                        <label
-                          htmlFor="push-everything"
-                          className="ml-3 block text-sm font-medium text-gray-700"
-                        >
-                          Everything
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="push-email"
-                          name="push-notifications"
-                          type="radio"
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                        <label
-                          htmlFor="push-email"
-                          className="ml-3 block text-sm font-medium text-gray-700"
-                        >
-                          Same as email
-                        </label>
-                      </div>
-                      <div className="flex items-center">
-                        <input
-                          id="push-nothing"
-                          name="push-notifications"
-                          type="radio"
-                          className="h-4 w-4 border-gray-300 text-indigo-600 focus:ring-indigo-500"
-                        />
-                        <label
-                          htmlFor="push-nothing"
-                          className="ml-3 block text-sm font-medium text-gray-700"
-                        >
-                          No push notifications
-                        </label>
-                      </div>
+                    <div className="space-y-4">
+                      <StudentList />
                     </div>
                   </fieldset>
                 </div>

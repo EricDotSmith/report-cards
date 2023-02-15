@@ -8,6 +8,7 @@ import PageRightBar from "../../components/navigation/PageRightBar";
 import ClassTable from "../../components/ClassTable";
 import { trpc } from "../../utils/trpc";
 import NoClasses from "../../components/NoClasses";
+import DotLoader from "../../components/DotLoader/DotLoader";
 
 const PAGE_COLOR = "#58c1fa";
 
@@ -30,7 +31,11 @@ const Dashboard: NextPage = () => {
         path="/dashboard"
       >
         <div className="pb-8">
-          {isLoading ? null : !!data && data.length > 0 ? (
+          {isLoading ? (
+            <div className="flex w-full justify-center pt-2">
+              <DotLoader color="bg-sky-300/70" />
+            </div>
+          ) : !!data && data.length > 0 ? (
             <ClassTable classes={data} />
           ) : (
             <NoClasses />
