@@ -1,8 +1,15 @@
+import { AppRouter } from "@acme/api";
+import { inferProcedureOutput } from "@trpc/server";
 import StudentList from "./StudentList";
 
-const ClassForm: React.FC = () => {
+interface ClassFormProps {
+  classData: inferProcedureOutput<AppRouter["class"]["byId"]>;
+}
+
+const ClassForm: React.FC<ClassFormProps> = ({ classData }) => {
   return (
     <div className="sm:p-4">
+      {classData?.id}
       <div>
         <div className="md:grid md:grid-cols-3 md:gap-6">
           <div className="md:col-span-1">

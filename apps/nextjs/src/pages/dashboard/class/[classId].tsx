@@ -1,20 +1,24 @@
 import { PageContainer } from "../../../components/Page";
 import PageLeftBar from "../../../components/navigation/PageLeftBar";
 import PageBottomBar from "../../../components/navigation/PageBottomBar";
-import { GetServerSideProps, NextPage } from "next";
+import { NextPage } from "next";
 import Head from "next/head";
 import PageTopBar from "../../../components/navigation/PageTopBar";
 import PageRightBar from "../../../components/navigation/PageRightBar";
 import { useRouter } from "next/router";
-import { prisma } from "@acme/db";
-import { buildClerkProps, getAuth } from "@clerk/nextjs/server";
 import ClassForm from "../../../components/ClassForm";
+import { trpc } from "../../../utils/trpc";
+import DotLoader from "../../../components/DotLoader/DotLoader";
+import ItemNotFound from "../../../components/ItemNotFound";
 
 const PAGE_COLOR = "#58c1fa";
 
 const ClassPage: NextPage = () => {
   const router = useRouter();
   const { classId } = router.query;
+  const { data, isLoading } = trpc.class.byId.useQuery(classId as string, {
+    enabled: !!classId,
+  });
 
   return (
     <>
@@ -29,39 +33,20 @@ const ClassPage: NextPage = () => {
         pageLeftBar={<PageLeftBar />}
         pageRightBar={<PageRightBar />}
         pageTopBar={<PageTopBar />}
-        path="/class"
+        path="/dashboard/class"
       >
-        <div className="pb-8">{classId ?? "wtf"}</div>
-        <ClassForm />
+        {isLoading ? (
+          <div className="flex w-full justify-center pt-2">
+            <DotLoader color="bg-sky-300/70" />
+          </div>
+        ) : !!data ? (
+          <ClassForm classData={data} />
+        ) : (
+          <ItemNotFound title="Class" />
+        )}
       </PageContainer>
     </>
   );
 };
 
 export default ClassPage;
-
-export const getServerSideProps: GetServerSideProps = async (context) => {
-  const classId = context?.params?.classId;
-  const { userId } = getAuth(context.req);
-
-  if (typeof classId === "string" && typeof userId === "string") {
-    const user = await prisma.class.findFirst({
-      where: {
-        id: classId,
-        teacherId: userId,
-      },
-      select: { id: true },
-    });
-
-    if (user) {
-      return { props: { ...buildClerkProps(context.req) } };
-    }
-  }
-
-  return {
-    redirect: {
-      destination: "/404",
-      permanent: false,
-    },
-  };
-};
