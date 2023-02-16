@@ -1,9 +1,13 @@
 import { useAuth } from "@clerk/nextjs";
+import dynamic from "next/dynamic";
 import { useRouter } from "next/router";
 import { PropsWithChildren } from "react";
 import { isValidPath, privatePaths } from "../../middleware";
 import { trpc } from "../../utils/trpc";
-import { OnboardingModal } from "./OnboardingModal";
+
+const OnboardingModalComponent = dynamic(() =>
+  import("./OnboardingModal").then((mod) => mod.OnboardingModal),
+);
 
 const OnboardingModalWrapper: React.FC<PropsWithChildren> = ({ children }) => {
   const { userId } = useAuth();
@@ -19,7 +23,7 @@ const OnboardingModalWrapper: React.FC<PropsWithChildren> = ({ children }) => {
     <>
       {children}
       {!!pathIfValid && !teacher.isLoading && !!teacher.data === false ? (
-        <OnboardingModal />
+        <OnboardingModalComponent />
       ) : null}
     </>
   );
