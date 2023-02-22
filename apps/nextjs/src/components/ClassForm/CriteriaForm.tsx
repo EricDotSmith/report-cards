@@ -2,6 +2,8 @@ import {
   TrashIcon,
   AdjustmentsHorizontalIcon,
 } from "@heroicons/react/24/outline";
+import { useState } from "react";
+import AddCriteriaModal from "./AddCriteriaModal";
 
 const people = [
   {
@@ -152,11 +154,18 @@ const people = [
 ];
 
 const CriteriaForm: React.FC = () => {
+  const [criteriaModalOpen, setCriteriaModalOpen] = useState(false);
+
   return (
     <>
+      <AddCriteriaModal
+        isOpen={criteriaModalOpen}
+        closeModal={() => setCriteriaModalOpen(false)}
+      />
       <div className="sticky top-16 z-10 flex w-full justify-end bg-orange-200 px-6 py-3 shadow sm:rounded-tl-md sm:rounded-tr-md">
         <button
           type="button"
+          onClick={() => setCriteriaModalOpen(true)}
           className="block rounded-md bg-orange-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
         >
           + Criteria
