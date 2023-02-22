@@ -5,7 +5,7 @@ import { NextPage } from "next";
 import PageTopBar from "../../../components/navigation/PageTopBar";
 import PageRightBar from "../../../components/navigation/PageRightBar";
 import { useRouter } from "next/router";
-import ClassForm from "../../../components/ClassForm";
+import ClassForm from "../../../components/ClassForm/ClassForm";
 import { trpc } from "../../../utils/trpc";
 import DotLoader from "../../../components/DotLoader/DotLoader";
 import ItemNotFound from "../../../components/ItemNotFound";
