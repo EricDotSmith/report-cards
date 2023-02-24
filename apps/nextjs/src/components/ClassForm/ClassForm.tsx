@@ -8,13 +8,16 @@ interface ClassFormProps {
 }
 
 const ClassForm: React.FC<ClassFormProps> = ({ classData }) => {
+  const criteria = classData?.criteria;
+  const students = classData?.students;
+
   return (
     <div className="sm:p-4">
       <SectionCard
         title="Criteria Templates"
         description="Decide which criteria templates you'd like to add to this class."
       >
-        <CriteriaForm />
+        <CriteriaForm criteria={criteria} />
       </SectionCard>
 
       <div className="hidden sm:block" aria-hidden="true">
@@ -27,7 +30,7 @@ const ClassForm: React.FC<ClassFormProps> = ({ classData }) => {
         title="Students"
         description="Decide which students you'd like to add to this class."
       >
-        {/* <Table /> */}
+        {students?.length === 0 ? <p>No students</p> : null}
       </SectionCard>
     </div>
   );

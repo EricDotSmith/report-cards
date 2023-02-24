@@ -1,4 +1,4 @@
-import { CriteriaType } from "@acme/db";
+import { Criteria, CriteriaType } from "@acme/db";
 import { Dialog, Transition } from "@headlessui/react";
 import { useRouter } from "next/router";
 import { Fragment, useEffect, useState } from "react";
@@ -6,37 +6,49 @@ import { trpc } from "../../utils/trpc";
 import DotLoader from "../DotLoader/DotLoader";
 import CriteriaTypeListBox from "./CriteriaTypeListBox";
 
-interface AddCriteriaModalProps {
+interface EditCriteriaModalProps {
   isOpen: boolean;
   closeModal: () => void;
+  criteria: Criteria;
 }
 
-const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
+const EditCriteriaModal: React.FC<EditCriteriaModalProps> = ({
   isOpen,
   closeModal,
+  criteria,
 }) => {
-  const [type, setType] = useState<CriteriaType>("BOOLEAN");
-  const [prompt, setPrompt] = useState("");
+  const [type, setType] = useState<CriteriaType>(criteria.type);
+  const [prompt, setPrompt] = useState(criteria.value);
 
   const router = useRouter();
   const { classId } = router.query;
 
   useEffect(() => {
     if (isOpen) {
-      setType("BOOLEAN");
-      setPrompt("");
+      setType(criteria.type);
+      setPrompt(criteria.value);
     }
-  }, [setType, setPrompt, isOpen]);
+  }, [setType, setPrompt, isOpen, criteria.type, criteria.value]);
 
   const utils = trpc.useContext();
 
-  const { mutate, isLoading } = trpc.criteria.create.useMutation({
+  const { mutate, isLoading } = trpc.criteria.update.useMutation({
     async onSuccess(data) {
       utils.class.byId.setData(classId as string, (old) => {
         if (old) {
           return {
             ...old,
-            criteria: [...old.criteria, data],
+            criteria: old.criteria.map((currentCriteria) => {
+              if (currentCriteria.id === data.id) {
+                return {
+                  ...currentCriteria,
+                  value: data.value,
+                  type: data.type,
+                };
+              }
+
+              return currentCriteria;
+            }),
           };
         }
       });
@@ -45,11 +57,11 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
     },
   });
 
-  const handleCreateClick = () => {
+  const handleEditClick = () => {
     mutate({
       type,
       value: prompt,
-      classId: typeof classId === "string" ? classId : "",
+      criteriaId: criteria.id,
     });
   };
 
@@ -88,7 +100,7 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
                   as="h3"
                   className="text-lg font-medium leading-6 text-orange-900"
                 >
-                  New criteria
+                  Edit criteria
                 </Dialog.Title>
                 <div className="mt-2">
                   <div className="isolate -space-y-px rounded-md shadow-sm">
@@ -99,7 +111,10 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
                       >
                         Criteria Type
                       </label>
-                      <CriteriaTypeListBox onChange={(v) => setType(v)} />
+                      <CriteriaTypeListBox
+                        onChange={(v) => setType(v)}
+                        type={criteria.type}
+                      />
                     </div>
                     <div className="relative rounded-md rounded-t-none border border-gray-300 px-3 py-2 focus-within:z-10 focus-within:border-orange-600 focus-within:ring-1 focus-within:ring-orange-600">
                       <label
@@ -126,9 +141,9 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
                     type="button"
                     disabled={isLoading || prompt.length === 0}
                     className="block rounded-md bg-orange-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600 disabled:bg-orange-300"
-                    onClick={handleCreateClick}
+                    onClick={handleEditClick}
                   >
-                    {isLoading ? <DotLoader /> : "Add Criteria"}
+                    {isLoading ? <DotLoader /> : "Save"}
                   </button>
                 </div>
               </Dialog.Panel>
@@ -140,4 +155,4 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
   );
 };
 
-export default AddCriteriaModal;
+export default EditCriteriaModal;

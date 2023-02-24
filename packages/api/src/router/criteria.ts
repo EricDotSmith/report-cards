@@ -79,4 +79,30 @@ export const criteriaRouter = router({
         },
       });
     }),
+  delete: protectedProcedure
+    .input(
+      z.object({
+        criteriaId: z.string(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const currentCriteria = await ctx.prisma.criteria.findFirst({
+        where: {
+          id: input.criteriaId,
+          AND: { class: { teacherId: ctx.user.id } },
+        },
+        select: { id: true },
+      });
+
+      if (!currentCriteria) {
+        throw new TRPCError({
+          code: "NOT_FOUND",
+          message: "Criteria not found",
+        });
+      }
+
+      return ctx.prisma.criteria.delete({
+        where: { id: input.criteriaId },
+      });
+    }),
 });
