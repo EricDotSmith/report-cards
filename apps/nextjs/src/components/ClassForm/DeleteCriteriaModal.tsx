@@ -47,7 +47,13 @@ const DeleteCriteriaModal: React.FC<DeleteCriteriaModalProps> = ({
       <Dialog
         as="div"
         className="relative z-50"
-        onClose={!isLoading ? closeModal : () => {}}
+        onClose={
+          !isLoading
+            ? closeModal
+            : () => {
+                return;
+              }
+        }
       >
         <Transition.Child
           as={Fragment}

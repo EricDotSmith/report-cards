@@ -70,7 +70,13 @@ const EditCriteriaModal: React.FC<EditCriteriaModalProps> = ({
       <Dialog
         as="div"
         className="relative z-50"
-        onClose={!isLoading ? closeModal : () => {}}
+        onClose={
+          !isLoading
+            ? closeModal
+            : () => {
+                return;
+              }
+        }
       >
         <Transition.Child
           as={Fragment}
