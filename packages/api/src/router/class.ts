@@ -10,6 +10,10 @@ export const classRouter = router({
   byId: protectedProcedure.input(z.string()).query(({ input, ctx }) => {
     return ctx.prisma.class.findFirst({
       where: { id: input, AND: { teacherId: ctx.user.id } },
+      include: {
+        students: true,
+        criteria: true,
+      },
     });
   }),
   create: protectedProcedure.mutation(({ ctx }) => {

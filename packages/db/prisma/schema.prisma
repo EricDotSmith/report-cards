@@ -25,6 +25,7 @@ model Class {
     teacherId String
     teacher Teacher @relation(fields: [teacherId], references: [id])
     students Student[]
+    criteria Criteria[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -43,3 +44,21 @@ model Student {
     @@index([classId])
 }
 
+model Criteria {
+    id      String @id @default(cuid())
+    type    CriteriaType
+    value   String
+    classId String
+    class Class @relation(fields: [classId], references: [id])
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt
+
+    @@index([classId])
+}
+
+enum CriteriaType {
+    BOOLEAN
+    COMMENT
+    SCALE_1TO5
+    SCALE_1TO10
+}
