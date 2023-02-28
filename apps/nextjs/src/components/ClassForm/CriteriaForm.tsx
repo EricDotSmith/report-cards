@@ -68,52 +68,42 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ criteria }) => {
           <EmptyCriteriaForm />
         </div>
       ) : (
-        <div className="grid grid-cols-1 gap-4 bg-orange-100 px-4 py-5  shadow-inner sm:grid-cols-2 sm:rounded-bl-md sm:rounded-br-md sm:p-6">
-          {criteria.map((currentCriteria) => (
-            <div
-              key={currentCriteria.id}
-              className="divide-y divide-gray-200 rounded-lg bg-white shadow"
-            >
-              <div className="flex w-full items-center justify-between space-x-6 p-3">
-                <div className="flex-1 truncate">
-                  <div className="flex items-center space-x-3">
-                    <span className="inline-block flex-shrink-0 font-bold text-orange-800">
-                      {/* <span className="inline-block flex-shrink-0 rounded-full bg-green-100 px-2 py-0.5 text-xs font-bold text-green-800"> */}
+        <div className="grid bg-white px-4 py-5 shadow sm:rounded-bl-md sm:rounded-br-md sm:p-6">
+          <ul role="list" className="-my-5 divide-y divide-gray-200">
+            {criteria.map((currentCriteria) => (
+              <li key={currentCriteria.id} className="py-4">
+                <div className="flex items-center space-x-4">
+                  <div className="min-w-0 flex-1">
+                    <p className="truncate text-sm font-medium text-gray-900">
                       {currentCriteria.type}
-                    </span>
+                    </p>
+                    <p className="truncate text-sm text-gray-500">
+                      {currentCriteria.value}
+                    </p>
                   </div>
-                  <p className="mt-1 truncate text-sm text-gray-500">
-                    {currentCriteria.value}
-                  </p>
-                </div>
-              </div>
-              <div>
-                <div className="-mt-px flex divide-x divide-gray-200">
-                  <div className="flex w-0 flex-1">
+                  <div className="flex items-center space-x-2">
                     <button
                       onClick={() => handleEditCriteriaClick(currentCriteria)}
-                      className="relative -mr-px inline-flex w-0 flex-1 items-center justify-center rounded-bl-lg border border-transparent py-2 text-sm font-medium text-gray-400 hover:text-gray-600"
+                      className="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50"
                     >
                       <AdjustmentsHorizontalIcon
                         className="h-5 w-5 "
                         aria-hidden="true"
                       />
                     </button>
-                  </div>
-                  <div className="-ml-px flex w-0 flex-1">
                     <button
                       onClick={() => {
                         handleDeleteCriteriaClick(currentCriteria);
                       }}
-                      className="relative inline-flex w-0 flex-1 items-center justify-center rounded-br-lg border border-transparent py-2 text-sm font-medium text-gray-400 hover:text-gray-600"
+                      className="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50"
                     >
                       <TrashIcon className="h-5 w-5 " aria-hidden="true" />
                     </button>
                   </div>
                 </div>
-              </div>
-            </div>
-          ))}
+              </li>
+            ))}
+          </ul>
         </div>
       )}
     </>

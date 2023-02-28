@@ -1,5 +1,6 @@
 import { AppRouter } from "@acme/api";
 import { inferProcedureOutput } from "@trpc/server";
+import StudentForm from "../StudentForm";
 import CriteriaForm from "./CriteriaForm";
 import SectionCard from "./SectionCard";
 
@@ -16,6 +17,7 @@ const ClassForm: React.FC<ClassFormProps> = ({ classData }) => {
       <SectionCard
         title="Criteria Templates"
         description="Decide which criteria templates you'd like to add to this class."
+        id="criteria_form"
       >
         <CriteriaForm criteria={criteria} />
       </SectionCard>
@@ -29,8 +31,9 @@ const ClassForm: React.FC<ClassFormProps> = ({ classData }) => {
       <SectionCard
         title="Students"
         description="Decide which students you'd like to add to this class."
+        id="student_form"
       >
-        {students?.length === 0 ? <p>No students</p> : null}
+        <StudentForm students={students} />
       </SectionCard>
     </div>
   );

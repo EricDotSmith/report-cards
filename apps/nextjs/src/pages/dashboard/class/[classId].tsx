@@ -2,7 +2,6 @@ import { PageContainer } from "../../../components/Page";
 import PageLeftBar from "../../../components/navigation/PageLeftBar";
 import PageBottomBar from "../../../components/navigation/PageBottomBar";
 import { NextPage } from "next";
-import PageTopBar from "../../../components/navigation/PageTopBar";
 import PageRightBar from "../../../components/navigation/PageRightBar";
 import { useRouter } from "next/router";
 import ClassForm from "../../../components/ClassForm/ClassForm";
@@ -10,6 +9,7 @@ import { trpc } from "../../../utils/trpc";
 import DotLoader from "../../../components/DotLoader/DotLoader";
 import ItemNotFound from "../../../components/ItemNotFound";
 import { NextSeo } from "next-seo";
+import ClassPageTopBar from "../../../components/navigation/ClassPageTopBar";
 
 const PAGE_COLOR = "#58c1fa";
 
@@ -33,7 +33,7 @@ const ClassPage: NextPage = () => {
         pageBottomBar={<PageBottomBar />}
         pageLeftBar={<PageLeftBar />}
         pageRightBar={<PageRightBar />}
-        pageTopBar={<PageTopBar />}
+        pageTopBar={<ClassPageTopBar currentClass={data} />}
         path="/dashboard/class"
       >
         {isLoading ? (
