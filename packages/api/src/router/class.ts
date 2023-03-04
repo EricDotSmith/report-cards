@@ -5,6 +5,15 @@ export const classRouter = router({
   classes: protectedProcedure.query(({ ctx }) => {
     return ctx.prisma.class.findMany({
       where: { teacherId: ctx.user.id },
+      // maybe make a separate query for the counts of students and criteria
+      include: {
+        _count: {
+          select: {
+            students: true,
+            criteria: true,
+          },
+        },
+      },
     });
   }),
   byId: protectedProcedure.input(z.string()).query(({ input, ctx }) => {
