@@ -13,7 +13,7 @@ const ClassForm: React.FC<ClassFormProps> = ({ classData }) => {
   const students = classData?.students;
 
   return (
-    <div className="sm:p-4">
+    <div className="p-4">
       <SectionCard
         title="Criteria Templates"
         description="Decide which criteria templates you'd like to add to this class."
