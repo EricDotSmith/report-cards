@@ -70,7 +70,7 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
     }
   };
   return (
-    <div className="sm:p-4">
+    <div className="p-4">
       <div className="mt-10 mb-5 px-4 sm:mt-0 sm:flex-auto sm:px-0">
         <h1 className="text-xl font-semibold text-gray-900">Classes</h1>
         <p className="mt-2 text-sm text-gray-700">
@@ -78,7 +78,7 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
           click on a class.
         </p>
       </div>
-      <div className="sticky top-16 z-10 flex w-full justify-end bg-[#58c1fa] px-6 py-3 shadow sm:rounded-tl-md sm:rounded-tr-md">
+      <div className="sticky top-16 z-10 flex w-full justify-end rounded-tl-md rounded-tr-md bg-[#58c1fa] px-6 py-3 shadow">
         <div className="flex w-full items-center justify-between">
           <div className="text-base font-bold text-white">
             {classes.length} Classes
@@ -94,11 +94,11 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
         </div>
       </div>
       {classes.length === 0 ? (
-        <div className="flex w-full items-center justify-center bg-sky-100 px-4 py-5  shadow-inner sm:rounded-bl-md sm:rounded-br-md sm:p-6">
+        <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-sky-100  px-4 py-5 shadow-inner sm:p-6">
           no classes
         </div>
       ) : (
-        <div className="grid bg-white px-4 py-5 shadow sm:rounded-bl-md sm:rounded-br-md sm:p-6">
+        <div className="grid rounded-bl-md rounded-br-md bg-white px-4 py-5 shadow sm:p-6">
           <ul role="list" className="-my-5 divide-y divide-gray-200">
             {classes.map((currentClass) => (
               <li key={currentClass.id} className="py-4">
@@ -126,29 +126,29 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
                         colorProfile="shadow-gray-200/50 text-gray-500 bg-gray-100 border-gray-200"
                       />
                     </div>
-                    <div className="flex max-w-min space-x-1 sm:hidden">
-                      <div className="space-y-1">
+                    <div className="flex max-w-min flex-col space-y-2 sm:hidden">
+                      <div className="flex space-x-2">
                         <Group
                           num={currentClass._count.students.toString()}
                           title="Students"
-                          colorProfile="shadow-pink-200/50 text-pink-500 bg-pink-100 border-pink-200"
+                          colorProfile="shadow-pink-200/50 text-pink-500 bg-pink-100 border-pink-200 max-w-min"
                         />
-                        <Group
-                          num={currentClass._count.criteria.toString()}
-                          title="Criteria"
-                          colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200"
-                        />
-                      </div>
-                      <div className="space-y-1">
                         <Group
                           num={currentClass._count.criteria.toString()}
                           title="Criteria"
                           colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200 max-w-min"
                         />
                         <Group
+                          num={currentClass._count.criteria.toString()}
+                          title="Criteria"
+                          colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200 max-w-min"
+                        />
+                      </div>
+                      <div className="">
+                        <Group
                           num={formatDate(currentClass.createdAt)}
                           title=""
-                          colorProfile="shadow-gray-200/50 text-gray-500 bg-gray-100 border-gray-200"
+                          colorProfile="shadow-gray-200/50 text-gray-500 bg-gray-100 border-gray-200 max-w-min"
                         />
                       </div>
                     </div>

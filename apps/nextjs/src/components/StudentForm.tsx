@@ -49,7 +49,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ students }) => {
           student={studentToEdit}
         />
       )}
-      <div className="sticky top-16 z-10 flex w-full justify-end bg-sky-200 px-6 py-3 shadow sm:rounded-tl-md sm:rounded-tr-md">
+      <div className="sticky top-16 z-10 flex w-full justify-end rounded-tl-md rounded-tr-md bg-sky-200 px-6 py-3 shadow">
         <div className="flex w-full items-center justify-between">
           <div className="text-base font-bold text-sky-700">
             {students?.length ?? 0} Students
@@ -64,11 +64,11 @@ const StudentForm: React.FC<StudentFormProps> = ({ students }) => {
         </div>
       </div>
       {!students || students.length === 0 ? (
-        <div className="flex w-full items-center justify-center bg-transparent px-4 py-5  shadow sm:rounded-bl-md sm:rounded-br-md sm:p-6">
+        <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-transparent px-4 py-5 shadow sm:p-6">
           <EmptyStudentForm />
         </div>
       ) : (
-        <div className="grid bg-white px-4 py-5 shadow sm:rounded-bl-md sm:rounded-br-md sm:p-6">
+        <div className="grid rounded-bl-md rounded-br-md bg-white px-4 py-5 shadow sm:p-6">
           <ul role="list" className="-my-5 divide-y divide-gray-200">
             {students.map((student) => (
               <li key={student.id} className="py-4">

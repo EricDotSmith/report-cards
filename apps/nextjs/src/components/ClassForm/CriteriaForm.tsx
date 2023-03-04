@@ -49,7 +49,7 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ criteria }) => {
           criteria={criteriaToEdit}
         />
       )}
-      <div className="sticky top-16 z-10 flex w-full justify-end bg-orange-200 px-6 py-3 shadow sm:rounded-tl-md sm:rounded-tr-md">
+      <div className="sticky top-16 z-10 flex w-full justify-end rounded-tl-md rounded-tr-md bg-orange-200 px-6 py-3 shadow">
         <div className="flex w-full items-center justify-between">
           <div className="text-base font-bold text-orange-700">
             {criteria?.length ?? 0} Criteria
@@ -64,11 +64,11 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ criteria }) => {
         </div>
       </div>
       {!criteria || criteria.length === 0 ? (
-        <div className="flex w-full items-center justify-center bg-orange-100 px-4 py-5  shadow-inner sm:rounded-bl-md sm:rounded-br-md sm:p-6">
+        <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-orange-100 px-4 py-5 shadow-inner sm:p-6">
           <EmptyCriteriaForm />
         </div>
       ) : (
-        <div className="grid bg-white px-4 py-5 shadow sm:rounded-bl-md sm:rounded-br-md sm:p-6">
+        <div className="grid rounded-bl-md rounded-br-md bg-white px-4 py-5 shadow sm:p-6">
           <ul role="list" className="-my-5 divide-y divide-gray-200">
             {criteria.map((currentCriteria) => (
               <li key={currentCriteria.id} className="py-4">
