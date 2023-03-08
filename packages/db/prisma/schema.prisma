@@ -26,6 +26,7 @@ model Class {
     teacher Teacher @relation(fields: [teacherId], references: [id])
     students Student[]
     criteria Criteria[]
+    reports Report[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
 
@@ -54,6 +55,50 @@ model Criteria {
     updatedAt DateTime @updatedAt
 
     @@index([classId])
+}
+
+model Report {
+    id      String @id @default(cuid())
+    classId String
+    class Class @relation(fields: [classId], references: [id])
+    studentEvaluation StudentEvaluation[]
+    comments Comment[]
+
+    @@index([classId])
+}
+
+model StudentEvaluation {
+    id      String @id @default(cuid())
+    studentId String
+    criteriaValue CriteriaValuePair[]
+    reportId String
+    report Report @relation(fields: [reportId], references: [id])
+
+    @@index([studentId])
+    @@index([reportId])
+}
+
+model CriteriaValuePair {
+    id      String @id @default(cuid())
+    studentEvaluationId String
+    studentEvaluation StudentEvaluation @relation(fields: [studentEvaluationId], references: [id])
+    criteriaId String
+    criteriaType CriteriaType
+    criteriaPrompt String
+    criteriaValue String
+
+    @@index([studentEvaluationId])
+}
+
+model Comment {
+    id      String @id @default(cuid())
+    reportId String
+    report Report @relation(fields: [reportId], references: [id])
+    studentId String
+    comment String
+
+    @@index([reportId])
+    @@index([studentId])
 }
 
 enum CriteriaType {
