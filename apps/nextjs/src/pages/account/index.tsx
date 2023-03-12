@@ -12,7 +12,7 @@ const Settings: NextPage = () => {
   return (
     <>
       <NextSeo
-        title="Settings"
+        title="Account"
         titleTemplate="Report Cards | %s"
         description="Overview"
         additionalMetaTags={[{ name: "theme-color", content: PAGE_COLOR }]}
@@ -23,9 +23,9 @@ const Settings: NextPage = () => {
         pageLeftBar={<PageLeftBar />}
         pageRightBar={<PageRightBar />}
         pageTopBar={<PageTopBar />}
-        path="/settings"
+        path="/account"
       >
-        <div>Settings Page</div>
+        <div>Account Page</div>
       </PageContainer>
     </>
   );
