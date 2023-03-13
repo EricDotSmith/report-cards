@@ -30,7 +30,7 @@ const getFingerPrint = (req: NextApiRequest) => {
 const rateLimiter = createTRPCUpstashLimiter({
   root: t,
   fingerprint: (ctx) => getFingerPrint(ctx.req),
-  windowMs: 20000,
+  windowMs: 10000,
   message: (hitInfo) =>
     `Too many requests, please try again later. ${Math.ceil(
       (hitInfo.reset - Date.now()) / 1000,
@@ -38,7 +38,7 @@ const rateLimiter = createTRPCUpstashLimiter({
   onLimit: (hitInfo) => {
     console.log(hitInfo);
   },
-  max: 5,
+  max: 10,
 });
 
 export const router = t.router;
