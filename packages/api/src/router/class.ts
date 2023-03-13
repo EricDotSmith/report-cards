@@ -11,6 +11,7 @@ export const classRouter = router({
           select: {
             students: true,
             criteria: true,
+            reports: true,
           },
         },
       },
@@ -22,6 +23,7 @@ export const classRouter = router({
       include: {
         students: true,
         criteria: true,
+        reports: true,
       },
     });
   }),

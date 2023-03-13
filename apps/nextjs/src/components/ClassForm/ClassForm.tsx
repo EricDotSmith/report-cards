@@ -1,5 +1,6 @@
 import { AppRouter } from "@acme/api";
 import { inferProcedureOutput } from "@trpc/server";
+import ReportForm from "../ReportForm";
 import StudentForm from "../StudentForm";
 import CriteriaForm from "./CriteriaForm";
 import SectionCard from "./SectionCard";
@@ -11,6 +12,7 @@ interface ClassFormProps {
 const ClassForm: React.FC<ClassFormProps> = ({ classData }) => {
   const criteria = classData?.criteria;
   const students = classData?.students;
+  const reports = classData?.reports;
 
   return (
     <div className="p-4">
@@ -35,6 +37,22 @@ const ClassForm: React.FC<ClassFormProps> = ({ classData }) => {
       >
         <StudentForm students={students} />
       </SectionCard>
+
+      <div className="hidden sm:block" aria-hidden="true">
+        <div className="py-5">
+          <div className="border-t border-gray-200" />
+        </div>
+      </div>
+
+      <SectionCard
+        title="Reports"
+        description="Decide which reports you'd like to add to this class."
+        id="report_form"
+      >
+        <ReportForm reports={reports} />
+      </SectionCard>
+
+      <div className="mb-12"></div>
     </div>
   );
 };

@@ -1,3 +1,4 @@
+import { reportRouter } from "./report";
 import { criteriaRouter } from "./criteria";
 import { router } from "../trpc";
 import { teacherRouter } from "./teacher";
@@ -10,6 +11,7 @@ export const appRouter = router({
   class: classRouter,
   student: studentRouter,
   criteria: criteriaRouter,
+  report: reportRouter,
   auth: authRouter,
 });
 

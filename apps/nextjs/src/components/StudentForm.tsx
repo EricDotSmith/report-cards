@@ -104,7 +104,6 @@ const StudentForm: React.FC<StudentFormProps> = ({ students }) => {
           </ul>
         </div>
       )}
-      <div className="mb-12"></div>
     </>
   );
 };

@@ -56,7 +56,7 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
 
   const { mutate: createClass } = trpc.class.create.useMutation({
     onSuccess: ({ id }) => {
-      router.push(`/dashboard/class/${id}`);
+      router.push(`/class/${id}`);
     },
     onError: () => {
       setCreateClassClicked(false);
@@ -69,6 +69,7 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
       createClass();
     }
   };
+
   return (
     <div className="p-4">
       <div className="mt-10 mb-5 px-4 sm:mt-0 sm:flex-auto sm:px-0">
@@ -116,8 +117,8 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
                         colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200"
                       />
                       <Group
-                        num={currentClass._count.criteria.toString()}
-                        title="Criteria"
+                        num={currentClass._count.reports.toString()}
+                        title="Reports"
                         colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200"
                       />
                       <Group
@@ -139,8 +140,8 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
                           colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200 max-w-min"
                         />
                         <Group
-                          num={currentClass._count.criteria.toString()}
-                          title="Criteria"
+                          num={currentClass._count.reports.toString()}
+                          title="Reports"
                           colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200 max-w-min"
                         />
                       </div>
@@ -155,7 +156,7 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
                   </div>
                   <div className="flex items-center space-x-4">
                     <Link
-                      href={`/dashboard/class/${currentClass.id}`}
+                      href={`/class/${currentClass.id}`}
                       className="text-sky-600 hover:text-sky-900"
                     >
                       View

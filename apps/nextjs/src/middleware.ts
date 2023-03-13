@@ -4,7 +4,7 @@ import type { NextRequest } from "next/server";
 
 // Set the paths that don't require the user to be signed in
 const publicPaths = ["/", "/sign-in*", "/sign-up*"];
-export const privatePaths = ["/dashboard*", "/settings*", "/test*"];
+export const privatePaths = ["/dashboard*", "/account*", "/class*", "/report*"];
 
 export const allPaths = [...publicPaths, ...privatePaths];
 

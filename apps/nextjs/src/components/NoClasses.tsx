@@ -9,7 +9,7 @@ const NoClasses = () => {
 
   const { mutate: createClass } = trpc.class.create.useMutation({
     onSuccess: ({ id }) => {
-      router.push(`/dashboard/class/${id}`);
+      router.push(`/class/${id}`);
     },
     onError: () => {
       setCreateClassClicked(false);

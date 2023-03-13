@@ -23,12 +23,31 @@ const sidebarNavigation: SidebarNavigation[] = [
     icon: Squares2X2Icon,
     color: "#58c1fa",
   },
-  { name: "Test", href: "/test", icon: PhotoIcon, color: "#f2aa4b" },
   {
-    name: "Settings",
-    href: "/settings",
+    name: "Account",
+    href: "/account",
     icon: Cog6ToothIcon,
     color: "#f08fa2",
+  },
+];
+
+const pageColors: { href: string; color: keyof typeof colorMap }[] = [
+  { href: "/", color: "#f6f3ec" },
+  {
+    href: "/dashboard",
+    color: "#58c1fa",
+  },
+  {
+    href: "/account",
+    color: "#f08fa2",
+  },
+  {
+    href: "/class",
+    color: "#f08fa2",
+  },
+  {
+    href: "/report",
+    color: "#f2aa4b",
   },
 ];
 
@@ -36,7 +55,7 @@ export const colorForPath = (path: string) => {
   let rootPath = isValidPath(path, allPaths);
   rootPath = rootPath?.substring(0, rootPath.length - 1);
 
-  const pathItem = sidebarNavigation.find((item) => item.href === rootPath);
+  const pathItem = pageColors.find((item) => item.href === rootPath);
 
   return pathItem ? pathItem.color : "#f6f3ec";
 };
