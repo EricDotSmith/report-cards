@@ -15,10 +15,14 @@ type IUserProps = {
  *  - trpc's `createSSGHelpers` where we don't have req/res
  * @see https://beta.create.t3.gg/en/usage/trpc#-servertrpccontextts
  */
-export const createContextInner = async ({ user }: IUserProps) => {
+export const createContextInner = async (
+  { user }: IUserProps,
+  opts: CreateNextContextOptions,
+) => {
   return {
     user,
     prisma,
+    ...opts,
   };
 };
 
@@ -37,7 +41,7 @@ export const createContext = async (opts: CreateNextContextOptions) => {
 
   const user = await getUser();
 
-  return await createContextInner({ user });
+  return await createContextInner({ user }, opts);
 };
 
 export type Context = inferAsyncReturnType<typeof createContext>;
