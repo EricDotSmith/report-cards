@@ -9,7 +9,7 @@ import { trpc } from "../../utils/trpc";
 import { useState } from "react";
 
 const PAGE_COLOR = "#f08fa2";
-// Possible rename this page to account where billing will also be placed
+// Possible rename this page to account where billing will also be placed.
 const Settings: NextPage = () => {
   const [prompt, setPrompt] = useState("");
   const [executionId, setExecutionId] = useState("");
