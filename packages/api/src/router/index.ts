@@ -5,6 +5,7 @@ import { teacherRouter } from "./teacher";
 import { authRouter } from "./auth";
 import { classRouter } from "./class";
 import { studentRouter } from "./student";
+import { completionRouter } from "./completion";
 
 export const appRouter = router({
   teacher: teacherRouter,
@@ -12,6 +13,7 @@ export const appRouter = router({
   student: studentRouter,
   criteria: criteriaRouter,
   report: reportRouter,
+  completion: completionRouter,
   auth: authRouter,
 });
 
