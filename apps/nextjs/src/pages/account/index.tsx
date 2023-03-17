@@ -25,6 +25,11 @@ const Settings: NextPage = () => {
     refetchInterval: 1000,
   });
 
+  const { data: reportData } = trpc.report.byId.useQuery(
+    "clf7egsws0002jp08aayggfql",
+    { refetchInterval: 1000 },
+  );
+
   return (
     <>
       <NextSeo
@@ -42,16 +47,25 @@ const Settings: NextPage = () => {
         path="/account"
       >
         <div>Account Page</div>
+
         <textarea
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
         ></textarea>
-        <button onClick={() => createCompletion({ prompt })}>Ask prompt</button>
+        <button
+          onClick={() =>
+            createCompletion({ prompt, reportId: "clf7egsws0002jp08aayggfql" })
+          }
+        >
+          Ask prompt
+        </button>
         <div>Result</div>
         <div>ExecutionID: {executionId}</div>
         <div className="min-h-[100px] bg-green-400 text-green-700">
           {JSON.stringify(data)}
         </div>
+
+        <div>{JSON.stringify(reportData?.comments)}</div>
       </PageContainer>
     </>
   );
