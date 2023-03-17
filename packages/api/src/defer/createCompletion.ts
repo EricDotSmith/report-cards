@@ -1,5 +1,6 @@
 import { defer } from "@defer/client";
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
+import { prisma } from "../../../db";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
@@ -7,7 +8,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-async function createCompletion(prompt: string) {
+async function createCompletion(prompt: string, reportId: string) {
   const messages: ChatCompletionRequestMessage[] = [
     {
       role: "system",
@@ -26,6 +27,20 @@ async function createCompletion(prompt: string) {
   });
 
   const chatGPTMessage = chatGPT.data.choices[0]?.message;
+
+  await prisma.report.update({
+    where: {
+      id: reportId,
+    },
+    data: {
+      comments: {
+        create: {
+          comment: chatGPTMessage?.content ?? "",
+          studentId: "1",
+        },
+      },
+    },
+  });
 
   return chatGPTMessage;
 }
