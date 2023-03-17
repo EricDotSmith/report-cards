@@ -14,15 +14,11 @@ export const completionRouter = router({
     .input(
       z.object({
         prompt: z.string(),
-        reportId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       //ensure not creating a job that's already in progress
-      const { id: executionId } = await createCompletion(
-        input.prompt,
-        input.reportId,
-      );
+      const { id: executionId } = await createCompletion(input.prompt);
       return { executionId };
     }),
 });
