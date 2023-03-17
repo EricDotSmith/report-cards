@@ -6,6 +6,7 @@ export const reportRouter = router({
   byId: protectedProcedure.input(z.string()).query(({ input, ctx }) => {
     return ctx.prisma.report.findFirst({
       where: { id: input, AND: { class: { teacherId: ctx.user.id } } },
+      include: { comments: true },
     });
   }),
   create: protectedProcedure
