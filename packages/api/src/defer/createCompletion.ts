@@ -1,20 +1,12 @@
-import { generateEncryptedJwt } from "./../../../../apps/nextjs/src/utils/jwt";
 import { defer } from "@defer/client";
 import { ChatCompletionRequestMessage, Configuration, OpenAIApi } from "openai";
-import axios from "axios";
+import { prisma } from "../../../db";
 
 const configuration = new Configuration({
   apiKey: process.env.OPENAI_API_KEY,
 });
 
 const openai = new OpenAIApi(configuration);
-
-const secret = Buffer.from(process.env.SECRET_KEY_FOR_JWT as string, "hex");
-
-const apiUrl =
-  process.env.NODE_ENV !== "development"
-    ? "https://reportcards.io/api/updateCompletionStatus"
-    : "http://localhost:3000/api/updateCompletionStatus";
 
 async function createCompletion(prompt: string, reportId: string) {
   const messages: ChatCompletionRequestMessage[] = [
@@ -36,21 +28,21 @@ async function createCompletion(prompt: string, reportId: string) {
 
   const chatGPTMessage = chatGPT.data.choices[0]?.message;
 
-  const encryptedJwt = await generateEncryptedJwt(
-    "createCompletionResponse",
-    { message: chatGPTMessage, reportId },
-    secret,
-  );
-
-  const response = await axios.post(apiUrl, undefined, {
-    headers: { Authorization: `Bearer ${encryptedJwt}` },
+  await prisma.report.update({
+    where: {
+      id: reportId,
+    },
+    data: {
+      comments: {
+        create: {
+          comment: chatGPTMessage?.content ?? "",
+          studentId: "1",
+        },
+      },
+    },
   });
 
-  if (response.status !== 200) {
-    throw new Error("Error creating completion");
-  }
-
-  return encryptedJwt;
+  return chatGPTMessage;
 }
 
 export default defer(createCompletion);
