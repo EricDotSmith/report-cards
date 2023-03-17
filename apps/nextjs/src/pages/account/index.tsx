@@ -9,6 +9,7 @@ import { trpc } from "../../utils/trpc";
 import { useState } from "react";
 
 const PAGE_COLOR = "#f08fa2";
+const reportId = "clf7egsws0002jp08aayggfql";
 // Possible rename this page to account where billing will also be placed.
 const Settings: NextPage = () => {
   const [prompt, setPrompt] = useState("");
@@ -22,6 +23,10 @@ const Settings: NextPage = () => {
 
   const { data } = trpc.completion.byExecutionId.useQuery(executionId, {
     enabled: !!executionId,
+    refetchInterval: 1000,
+  });
+
+  const { data: reportData } = trpc.report.byId.useQuery(reportId, {
     refetchInterval: 1000,
   });
 
@@ -46,11 +51,16 @@ const Settings: NextPage = () => {
           value={prompt}
           onChange={(e) => setPrompt(e.target.value)}
         ></textarea>
-        <button onClick={() => createCompletion({ prompt })}>Ask prompt</button>
+        <button onClick={() => createCompletion({ prompt, reportId })}>
+          Ask prompt
+        </button>
         <div>Result</div>
         <div>ExecutionID: {executionId}</div>
         <div className="min-h-[100px] bg-green-400 text-green-700">
           {JSON.stringify(data)}
+        </div>
+        <div className="min-h-[100px] bg-pink-400 text-pink-700">
+          {JSON.stringify(reportData?.comments)}
         </div>
       </PageContainer>
     </>
