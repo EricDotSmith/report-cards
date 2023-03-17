@@ -34,7 +34,7 @@ export default async function handler(
 
       return;
     } catch (e) {
-      console.log(e);
+      console.log("Error: ", e);
     }
   }
 
