@@ -8,7 +8,7 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-async function createCompletion(prompt: string, reportId: string) {
+async function createCompletion(gptPrompt: string, reportId: string) {
   const messages: ChatCompletionRequestMessage[] = [
     {
       role: "system",
@@ -17,7 +17,7 @@ async function createCompletion(prompt: string, reportId: string) {
     },
     {
       role: "user",
-      content: prompt,
+      content: gptPrompt,
     },
   ];
 
