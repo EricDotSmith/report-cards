@@ -95,7 +95,7 @@ model Comment {
     reportId String
     report Report @relation(fields: [reportId], references: [id])
     studentId String
-    comment String
+    comment String @db.Text
 
     @@index([reportId])
     @@index([studentId])
