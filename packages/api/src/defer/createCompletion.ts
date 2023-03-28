@@ -37,6 +37,7 @@ async function createCompletion(gptPrompt: string, reportId: string) {
         create: {
           comment: chatGPTMessage?.content ?? "",
           studentId: "1",
+          prompt: gptPrompt,
         },
       },
     },

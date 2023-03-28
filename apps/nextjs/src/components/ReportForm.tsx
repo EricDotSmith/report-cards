@@ -1,5 +1,5 @@
 import { Report } from "@acme/db";
-import { TrashIcon } from "@heroicons/react/24/outline";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import { useState } from "react";
 import { trpc } from "../utils/trpc";
@@ -68,9 +68,12 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports }) => {
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
-                    <button className="inline-flex items-center rounded-full border border-gray-300 bg-white px-2.5 py-0.5 text-sm font-medium leading-5 text-gray-700 shadow-sm hover:bg-gray-50">
-                      <TrashIcon className="h-5 w-5 " aria-hidden="true" />
-                    </button>
+                    <Link
+                      href={`/report/${report.id}`}
+                      className="text-sky-600 hover:text-sky-900"
+                    >
+                      View
+                    </Link>
                   </div>
                 </div>
               </li>
