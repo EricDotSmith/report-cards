@@ -1,7 +1,7 @@
 import { AppRouter } from "@acme/api";
 import { CriteriaValuePair, StudentEvaluation } from "@acme/db";
 import { inferProcedureOutput } from "@trpc/server";
-import SectionCard from "../ClassForm/SectionCard";
+import useReportPageStore from "../../store/reportPageStore";
 
 interface ReportPageContentProps {
   report: inferProcedureOutput<AppRouter["report"]["byId"]>;
@@ -79,34 +79,32 @@ const RenderEvaluation: React.FC<RenderEvaluationProps> = ({ evaluation }) => {
 const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
   const studentEvaluations = report?.studentEvaluation;
   const comments = report?.comments;
+  const tab = useReportPageStore((state) => state.tab);
 
   return (
-    <div className="p-4">
-      <SectionCard title="Evaluations" id="evaluations" description="">
-        {/* <CriteriaForm criteria={criteria} /> */}
-        {studentEvaluations?.map((studentEvaluation) => {
-          return (
-            <RenderEvaluation
-              key={studentEvaluation.id}
-              evaluation={studentEvaluation}
-            />
-          );
-        })}
-      </SectionCard>
-
-      <div className="hidden sm:block" aria-hidden="true">
-        <div className="py-5">
-          <div className="border-t border-gray-200" />
-        </div>
-      </div>
-
-      <SectionCard title="Comments" id="comments" description="">
-        {/* <CriteriaForm criteria={criteria} /> */}
-        {JSON.stringify(comments, null, 4)}
-      </SectionCard>
-
-      <div className="mb-12"></div>
-    </div>
+    <>
+      {tab === "evaluation" ? (
+        <>
+          <div className="sticky top-16 z-10 flex h-12 items-center justify-between bg-white px-4">
+            <span>Hi</span>
+            <div>Generate</div>
+          </div>
+          <div className="p-4 md:px-32">
+            {studentEvaluations?.map((studentEvaluation) => {
+              return (
+                <RenderEvaluation
+                  key={studentEvaluation.id}
+                  evaluation={studentEvaluation}
+                />
+              );
+            })}
+            <div className="mb-12"></div>
+          </div>
+        </>
+      ) : tab === "report" ? (
+        <div>Report</div>
+      ) : null}
+    </>
   );
 };
 
