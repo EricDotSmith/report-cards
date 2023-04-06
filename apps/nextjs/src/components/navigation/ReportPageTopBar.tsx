@@ -5,7 +5,7 @@ import classNames from "../../utils/tailwind";
 
 const tabs: { name: string; tab: Tabs }[] = [
   { name: "Student Evaluations", tab: "evaluation" },
-  { name: "Report (Generated 12-12-2023)", tab: "report" },
+  { name: "Report (Generated 12-12-2023)", tab: "report" }, //for this tab change it to click to generate report and show appropriate modal if not all students evaluated yet
 ];
 
 interface ClassPageTopBarProps {

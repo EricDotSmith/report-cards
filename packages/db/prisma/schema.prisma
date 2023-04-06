@@ -76,6 +76,7 @@ model StudentEvaluation {
     criteriaValues CriteriaValuePair[]
     reportId String
     report Report @relation(fields: [reportId], references: [id])
+    completed Boolean @default(false)
 
     @@index([studentId])
     @@index([reportId])
