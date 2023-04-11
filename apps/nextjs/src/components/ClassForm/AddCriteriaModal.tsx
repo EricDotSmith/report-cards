@@ -43,6 +43,10 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
 
       closeModal();
     },
+    onError(error, variables, context) {
+      //TODO: Add proper error handling here
+      console.log(error);
+    },
   });
 
   const handleCreateClick = () => {

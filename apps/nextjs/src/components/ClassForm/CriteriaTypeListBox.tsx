@@ -3,11 +3,12 @@ import { Listbox, Transition } from "@headlessui/react";
 import { CheckIcon, ChevronUpDownIcon } from "@heroicons/react/20/solid";
 import { CriteriaType } from "@acme/db";
 
-const types: { type: CriteriaType }[] = [
-  { type: "BOOLEAN" },
-  { type: "COMMENT" },
-  { type: "SCALE_1TO10" },
-  { type: "SCALE_1TO5" },
+type TypeObject = { type: CriteriaType; label: string };
+
+const types: TypeObject[] = [
+  { type: "BOOLEAN", label: "Yes / No" },
+  { type: "COMMENT", label: "Comment" },
+  { type: "ASSESSMENT", label: "Performance Assessment" },
 ];
 
 interface CriteriaTypeListBoxProps {
@@ -19,9 +20,13 @@ const CriteriaTypeListBox: React.FC<CriteriaTypeListBoxProps> = ({
   onChange,
   type,
 }) => {
-  const [selected, setSelected] = useState(!!type ? { type } : types[0]);
+  const [selected, setSelected] = useState<TypeObject | undefined>(
+    !!type
+      ? { type, label: types.find((t) => t.type === type)?.label ?? "" }
+      : types[0],
+  );
 
-  const handleSelect = (value: { type: CriteriaType }) => {
+  const handleSelect = (value: TypeObject) => {
     setSelected(value);
     onChange(value.type);
   };
@@ -31,7 +36,7 @@ const CriteriaTypeListBox: React.FC<CriteriaTypeListBoxProps> = ({
       <Listbox name="type" value={selected} onChange={handleSelect}>
         <div className="relative mt-1">
           <Listbox.Button className="relative w-full cursor-default rounded-lg bg-[#f6f3ec] py-2 text-left focus:outline-none  focus-visible:ring-[#f6f3ec] focus-visible:ring-opacity-75 focus-visible:ring-offset-2 sm:text-sm">
-            <span className="block truncate">{selected?.type}</span>
+            <span className="block truncate">{selected?.label}</span>
             <span className="pointer-events-none absolute inset-y-0 right-0 flex items-center">
               <ChevronUpDownIcon
                 className="h-5 w-5 text-gray-400"
@@ -66,7 +71,7 @@ const CriteriaTypeListBox: React.FC<CriteriaTypeListBoxProps> = ({
                           selected ? "font-medium" : "font-normal"
                         }`}
                       >
-                        {type.type}
+                        {type.label}
                       </span>
                       {selected ? (
                         <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-amber-600">

@@ -9,6 +9,11 @@ import { CheckCircleIcon } from "@heroicons/react/20/solid";
 import { Dispatch, SetStateAction, useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc";
 import DotLoader from "../DotLoader/DotLoader";
+import Toggle from "./Toggle";
+import StudentAssessmentRadioGroup, {
+  StudentAssessmentRadioOption,
+} from "./StudentAssessmentRadioGroup";
+import { PlusIcon } from "@heroicons/react/20/solid";
 
 interface ReportPageContentProps {
   report: inferProcedureOutput<AppRouter["report"]["byId"]>;
@@ -34,8 +39,7 @@ const SpecialInput: React.FC<SpecialInputProps> = ({ criteria }) => {
         >
           {criteria.criteriaPrompt}
         </label>
-        <input
-          type="text"
+        <textarea
           name={criteria.criteriaType}
           id={criteria.criteriaId}
           value={reportPageStore.getValueForKey(criteria.id) ?? ""}
@@ -43,35 +47,57 @@ const SpecialInput: React.FC<SpecialInputProps> = ({ criteria }) => {
             const value = e.target.value;
             reportPageStore.updateFormState(criteria.id, value);
           }}
+          rows={3}
           className="block w-full border-0 bg-transparent p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-          placeholder="Head of Tomfoolery"
+          placeholder="Please enter the criteria prompt here."
         />
       </>
     );
   } else if (criteria.criteriaType === "BOOLEAN") {
+    //TODO: change this to toggle type
     return (
       <>
         <label
           htmlFor={criteria.criteriaType}
-          className="block text-xs font-medium text-gray-900"
+          className="block pb-1 text-xs font-medium text-gray-900"
         >
           {criteria.criteriaPrompt}
         </label>
-        <input
-          type="checkbox"
+        <Toggle
           name={criteria.criteriaType}
           id={criteria.criteriaId}
-          checked={
+          enabled={
             reportPageStore.getValueForKey(criteria.id) === "true"
               ? true
               : false
           }
-          onChange={(e) => {
-            const value = e.target.checked;
-            reportPageStore.updateFormState(criteria.id, value.toString());
+          setEnabled={(enabled) => {
+            reportPageStore.updateFormState(criteria.id, enabled.toString());
           }}
-          className="block w-full border-0 p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
-          placeholder="Head of Tomfoolery"
+        />
+      </>
+    );
+  } else if (criteria.criteriaType === "ASSESSMENT") {
+    //TODO: change this to toggle type
+    return (
+      <>
+        <label
+          htmlFor={criteria.criteriaType}
+          className="block pb-1 text-xs font-medium text-gray-900"
+        >
+          {criteria.criteriaPrompt}
+        </label>
+        <StudentAssessmentRadioGroup
+          name={criteria.criteriaType}
+          id={criteria.criteriaId}
+          setSelectedRadio={(option) => {
+            reportPageStore.updateFormState(criteria.id, option);
+          }}
+          selectedRadio={
+            reportPageStore.getValueForKey(
+              criteria.id,
+            ) as StudentAssessmentRadioOption
+          }
         />
       </>
     );
@@ -139,16 +165,21 @@ const RenderEvaluation: React.FC<RenderEvaluationProps> = ({ evaluation }) => {
         return (
           <div
             key={criteria.id}
-            className={`relative rounded-md rounded-t-none ${
-              idx === evaluation.criteriaValues.length - 1
-                ? ""
-                : "rounded-b-none"
-            } px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600`}
+            className={`relative rounded-md rounded-t-none rounded-b-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600`}
           >
             <SpecialInput criteria={criteria} />
           </div>
         );
       })}
+
+      <div className="relative flex w-full justify-center rounded-md rounded-t-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
+        <button
+          type="button"
+          className="rounded-full bg-indigo-600 p-2 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+        >
+          <PlusIcon className="h-5 w-5" aria-hidden="true" />
+        </button>
+      </div>
     </div>
   );
 };
