@@ -7,6 +7,7 @@ import { trpc } from "../../utils/trpc";
 import DotLoader from "../DotLoader/DotLoader";
 import RenderEvaluation from "./RenderEvaluation";
 import StudentList from "./StudentList";
+import { shallow } from "zustand/shallow";
 
 interface ReportPageContentProps {
   report: inferProcedureOutput<AppRouter["report"]["byId"]>;
@@ -18,12 +19,25 @@ const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
   const [currentEvaluationIndex, setCurrentEvaluationIndex] =
     useState<number>(0);
 
-  const reportPageStore = useReportPageStore();
-
   const utils = trpc.useContext();
 
   // const comments = report?.comments;
-  const tab = useReportPageStore((state) => state.tab);
+  const {
+    tab,
+    checkIfRequiredFieldsAreFilled,
+    getValueForKey,
+    getRequiredForKey,
+    formState,
+  } = useReportPageStore(
+    (state) => ({
+      tab: state.tab,
+      checkIfRequiredFieldsAreFilled: state.checkIfRequiredFieldsAreFilled,
+      getValueForKey: state.getValueForKey,
+      getRequiredForKey: state.getRequiredForKey,
+      formState: state.formState,
+    }),
+    shallow,
+  );
 
   const { mutate: updateEvaluation, isLoading } =
     trpc.evaluation.update.useMutation({
@@ -54,20 +68,22 @@ const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
       : undefined;
 
     if (!!currentEvaluation) {
-      updateEvaluation({
-        evaluationId: currentEvaluation.id,
-        studentName: reportPageStore.getValueForKey("name"),
-        studentPronouns: reportPageStore.getValueForKey("pronouns"),
-        criteriaValues: Object.keys(reportPageStore.formState ?? {})
-          .filter((v) => v !== "name" && v !== "pronouns")
-          .map((key) => {
-            return {
-              id: key,
-              value: reportPageStore.getValueForKey(key) ?? "",
-              required: reportPageStore.getRequiredForKey(key) ?? false,
-            };
-          }),
-      });
+      if (checkIfRequiredFieldsAreFilled()) {
+        updateEvaluation({
+          evaluationId: currentEvaluation.id,
+          studentName: getValueForKey("name"),
+          studentPronouns: getValueForKey("pronouns"),
+          criteriaValues: Object.keys(formState ?? {})
+            .filter((v) => v !== "name" && v !== "pronouns")
+            .map((key) => {
+              return {
+                id: key,
+                value: getValueForKey(key) ?? "",
+                required: getRequiredForKey(key) ?? false,
+              };
+            }),
+        });
+      }
     }
   };
 

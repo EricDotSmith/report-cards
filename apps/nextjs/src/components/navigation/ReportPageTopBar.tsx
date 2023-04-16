@@ -13,7 +13,8 @@ interface ClassPageTopBarProps {
 }
 
 const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({}) => {
-  const reportPageStore = useReportPageStore();
+  const changeTab = useReportPageStore((state) => state.changeTab);
+  const currentTab = useReportPageStore((state) => state.tab);
 
   return (
     <div className="flex h-16 w-full justify-start bg-white shadow-sm">
@@ -25,10 +26,10 @@ const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({}) => {
           <button
             key={tab.name}
             onClick={() => {
-              reportPageStore.changeTab(tab.tab);
+              changeTab(tab.tab);
             }}
             className={classNames(
-              tab.tab === reportPageStore.tab
+              tab.tab === currentTab
                 ? "text-gray-900"
                 : "text-gray-500 hover:text-gray-700",
               "group relative flex w-full min-w-0 flex-1 items-center justify-center overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10",
@@ -38,9 +39,7 @@ const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({}) => {
             <span
               aria-hidden="true"
               className={classNames(
-                tab.tab === reportPageStore.tab
-                  ? "bg-indigo-500"
-                  : "bg-transparent",
+                tab.tab === currentTab ? "bg-indigo-500" : "bg-transparent",
                 "absolute inset-x-0 bottom-0 h-0.5",
               )}
             />

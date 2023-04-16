@@ -19,6 +19,7 @@ export const criteriaRouter = router({
       z.object({
         type: z.nativeEnum(CriteriaType),
         value: z.string(),
+        required: z.boolean(),
         classId: z.string(),
       }),
     )
@@ -39,6 +40,7 @@ export const criteriaRouter = router({
         data: {
           type: input.type,
           value: input.value,
+          required: input.required,
           class: {
             connect: {
               id: input.classId,
@@ -52,6 +54,7 @@ export const criteriaRouter = router({
       z.object({
         type: z.nativeEnum(CriteriaType),
         value: z.string(),
+        required: z.boolean(),
         criteriaId: z.string(),
       }),
     )
@@ -76,6 +79,7 @@ export const criteriaRouter = router({
         data: {
           type: input.type,
           value: input.value,
+          required: input.required,
         },
       });
     }),

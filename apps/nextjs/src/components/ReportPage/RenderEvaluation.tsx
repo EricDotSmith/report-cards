@@ -4,29 +4,48 @@ import useReportPageStore, {
   EvaluationType,
 } from "../../store/reportPageStore";
 import SpecialInput from "./SpecialInput";
+import classNames from "../../utils/tailwind";
+import { shallow } from "zustand/shallow";
 
 interface RenderEvaluationProps {
   evaluation: EvaluationType;
 }
 
 const RenderEvaluation: React.FC<RenderEvaluationProps> = ({ evaluation }) => {
-  const reportPageStore = useReportPageStore();
-  const setFormStateFromEvaluation = reportPageStore.setFormStateFromEvaluation;
+  const {
+    requiredFieldsFilledMap,
+    setFormStateFromEvaluation,
+    updateFormState,
+    formState,
+  } = useReportPageStore(
+    (state) => ({
+      requiredFieldsFilledMap: state.requiredFieldsFilledMap,
+      setFormStateFromEvaluation: state.setFormStateFromEvaluation,
+      updateFormState: state.updateFormState,
+      formState: state.formState,
+    }),
+    shallow,
+  );
 
   useEffect(() => {
     setFormStateFromEvaluation(evaluation);
   }, [evaluation, setFormStateFromEvaluation]);
 
   const formStateChangeHandler = (key: string, value: string) => {
-    reportPageStore.updateFormState(key, value);
+    updateFormState(key, value);
   };
-  console.log("A", evaluation.criteriaValues);
+
   return (
     <div className="isolate mb-8 -space-y-px rounded-md shadow-sm">
-      <div className="relative rounded-md rounded-b-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
+      <div className="relative rounded-md rounded-b-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-orange-600">
         <label
           htmlFor="name"
-          className="block text-xs font-medium text-gray-900"
+          className={classNames(
+            "block text-xs font-medium",
+            requiredFieldsFilledMap?.get("name") === false
+              ? "text-red-500"
+              : "text-gray-900",
+          )}
         >
           Student Name
         </label>
@@ -38,15 +57,20 @@ const RenderEvaluation: React.FC<RenderEvaluationProps> = ({ evaluation }) => {
             const value = e.target.value;
             formStateChangeHandler("name", value);
           }}
-          value={reportPageStore.formState?.name?.value ?? ""}
+          value={formState?.name?.value ?? ""}
           className="block w-full border-0 bg-transparent p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
           placeholder="Jane Smith"
         />
       </div>
-      <div className="relative rounded-md rounded-t-none rounded-b-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
+      <div className="relative rounded-md rounded-t-none rounded-b-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-orange-600">
         <label
           htmlFor="pronouns"
-          className="block text-xs font-medium text-gray-900"
+          className={classNames(
+            "block text-xs font-medium",
+            requiredFieldsFilledMap?.get("pronouns") === false
+              ? "text-red-500"
+              : "text-gray-900",
+          )}
         >
           Pronouns
         </label>
@@ -58,7 +82,7 @@ const RenderEvaluation: React.FC<RenderEvaluationProps> = ({ evaluation }) => {
             const value = e.target.value;
             formStateChangeHandler("pronouns", value);
           }}
-          value={reportPageStore.formState?.pronouns?.value ?? ""}
+          value={formState?.pronouns?.value ?? ""}
           className="block w-full border-0 bg-transparent p-0 text-gray-900 placeholder:text-gray-400 focus:ring-0 sm:text-sm sm:leading-6"
           placeholder="Head of Tomfoolery"
         />
@@ -68,17 +92,17 @@ const RenderEvaluation: React.FC<RenderEvaluationProps> = ({ evaluation }) => {
         return (
           <div
             key={criteria.id}
-            className={`relative rounded-md rounded-t-none rounded-b-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600`}
+            className={`relative rounded-md rounded-t-none rounded-b-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-orange-600`}
           >
             <SpecialInput criteria={criteria} />
           </div>
         );
       })}
 
-      <div className="relative flex w-full justify-center rounded-md rounded-t-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-indigo-600">
+      <div className="relative flex w-full justify-center rounded-md rounded-t-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-orange-600">
         <button
           type="button"
-          className="rounded-full bg-indigo-600 p-2 text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
+          className="rounded-full bg-orange-600 p-2 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
         >
           <PlusIcon className="h-5 w-5" aria-hidden="true" />
         </button>

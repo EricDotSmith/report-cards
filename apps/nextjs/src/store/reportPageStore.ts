@@ -49,6 +49,8 @@ interface ReportPageStore {
   setFormStateFromEvaluation: (evaluation: EvaluationType) => void;
   getValueForKey: (key: string) => string | undefined;
   getRequiredForKey: (key: string) => boolean | undefined;
+  checkIfRequiredFieldsAreFilled: () => boolean;
+  requiredFieldsFilledMap: Map<string, boolean> | undefined;
 }
 // create store
 const useReportPageStore = create<ReportPageStore>((set, get) => ({
@@ -57,6 +59,7 @@ const useReportPageStore = create<ReportPageStore>((set, get) => ({
     set(() => ({ tab: newTab }));
   },
   formState: undefined,
+  requiredFieldsFilledMap: undefined,
   getValueForKey: (key: string) => {
     return get().formState?.[key]?.value;
   },
@@ -75,9 +78,35 @@ const useReportPageStore = create<ReportPageStore>((set, get) => ({
       },
     }));
   },
+  checkIfRequiredFieldsAreFilled: () => {
+    const formState = get().formState;
+
+    if (!formState) {
+      return false;
+    }
+
+    const requiredFields = Object.keys(formState).filter(
+      (key) => formState?.[key]?.required,
+    );
+
+    const requiredFieldsFilledArray: [string, boolean][] = requiredFields.map(
+      (key) => [key, formState?.[key]?.value !== ""],
+    );
+
+    set(() => ({
+      requiredFieldsFilledMap: new Map(requiredFieldsFilledArray),
+    }));
+
+    const hasOneEmptyRequiredField = requiredFieldsFilledArray.some(
+      (field) => field[1] === false,
+    );
+
+    return !hasOneEmptyRequiredField;
+  },
   setFormStateFromEvaluation: (evaluation: EvaluationType) => {
     set(() => ({
       formState: initializeFormState(evaluation),
+      requiredFieldsFilledMap: undefined,
     }));
   },
 }));
