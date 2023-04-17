@@ -74,9 +74,16 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ criteria }) => {
               <li key={currentCriteria.id} className="py-4">
                 <div className="flex items-center space-x-4">
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-gray-900">
-                      {currentCriteria.type}
-                    </p>
+                    <div className="flex items-center space-x-2">
+                      <p className="truncate text-sm font-medium text-gray-900">
+                        {currentCriteria.type}
+                      </p>
+                      {currentCriteria.required ? (
+                        <span className="truncate rounded-md bg-green-400 p-1 text-sm text-green-900">
+                          Required
+                        </span>
+                      ) : null}
+                    </div>
                     <p className="truncate text-sm text-gray-500">
                       {currentCriteria.value}
                     </p>

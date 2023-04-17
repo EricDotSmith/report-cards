@@ -5,6 +5,7 @@ import { Fragment, useEffect, useState } from "react";
 import { trpc } from "../../utils/trpc";
 import DotLoader from "../DotLoader/DotLoader";
 import CriteriaTypeListBox from "./CriteriaTypeListBox";
+import Toggle from "../ReportPage/Toggle";
 
 interface AddCriteriaModalProps {
   isOpen: boolean;
@@ -17,6 +18,7 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
 }) => {
   const [type, setType] = useState<CriteriaType>("BOOLEAN");
   const [prompt, setPrompt] = useState("");
+  const [isRequired, setIsRequired] = useState(false);
 
   const router = useRouter();
   const { classId } = router.query;
@@ -25,8 +27,9 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
     if (isOpen) {
       setType("BOOLEAN");
       setPrompt("");
+      setIsRequired(false);
     }
-  }, [setType, setPrompt, isOpen]);
+  }, [setType, setPrompt, isOpen, setIsRequired]);
 
   const utils = trpc.useContext();
 
@@ -43,12 +46,17 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
 
       closeModal();
     },
+    onError(error, variables, context) {
+      //TODO: Add proper error handling here
+      console.log(error);
+    },
   });
 
   const handleCreateClick = () => {
     mutate({
       type,
       value: prompt,
+      required: isRequired,
       classId: typeof classId === "string" ? classId : "",
     });
   };
@@ -107,7 +115,7 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
                       </label>
                       <CriteriaTypeListBox onChange={(v) => setType(v)} />
                     </div>
-                    <div className="relative rounded-md rounded-t-none border border-gray-300 px-3 py-2 focus-within:z-10 focus-within:border-orange-600 focus-within:ring-1 focus-within:ring-orange-600">
+                    <div className="relative rounded-md rounded-t-none rounded-b-none border border-gray-300 px-3 py-2 focus-within:z-10 focus-within:border-orange-600 focus-within:ring-1 focus-within:ring-orange-600">
                       <label
                         htmlFor="prompt"
                         className="block text-xs font-medium text-gray-900"
@@ -122,6 +130,22 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
                         rows={3}
                         className="block w-full resize-none border-0 bg-transparent p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
                         placeholder="Please enter the criteria prompt here."
+                      />
+                    </div>
+                    <div className="relative rounded-md rounded-t-none border border-gray-300 px-3 py-2 focus-within:z-10 focus-within:border-orange-600 focus-within:ring-1 focus-within:ring-orange-600">
+                      <label
+                        htmlFor="required"
+                        className="block pb-1 text-xs font-medium text-gray-900"
+                      >
+                        Is this criteria required?
+                      </label>
+                      <Toggle
+                        name="required"
+                        id="required"
+                        enabled={isRequired}
+                        setEnabled={(enabled) => {
+                          setIsRequired(enabled);
+                        }}
                       />
                     </div>
                   </div>

@@ -8,6 +8,8 @@ import { trpc } from "../../utils/trpc";
 import DotLoader from "../../components/DotLoader/DotLoader";
 import ItemNotFound from "../../components/ItemNotFound";
 import { NextSeo } from "next-seo";
+import ReportPageTopBar from "../../components/navigation/ReportPageTopBar";
+import ReportPageContent from "../../components/ReportPage/ReportPageContent";
 
 const PAGE_COLOR = "#58c1fa";
 
@@ -31,7 +33,7 @@ const ReportPage: NextPage = () => {
         pageBottomBar={<PageBottomBar />}
         pageLeftBar={<PageLeftBar />}
         pageRightBar={<PageRightBar />}
-        // pageTopBar={<ClassPageTopBar currentClass={data} />}
+        pageTopBar={<ReportPageTopBar report={data} />}
         path="/report"
       >
         {isLoading ? (
@@ -39,7 +41,7 @@ const ReportPage: NextPage = () => {
             <DotLoader color="bg-sky-300/70" />
           </div>
         ) : !!data ? (
-          <div>report id {reportId}</div>
+          <ReportPageContent report={data} />
         ) : (
           <ItemNotFound title="Report" />
         )}

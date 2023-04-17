@@ -50,6 +50,7 @@ model Criteria {
     type    CriteriaType
     value   String
     classId String
+    required Boolean @default(false)
     class Class @relation(fields: [classId], references: [id])
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
@@ -61,7 +62,7 @@ model Report {
     id      String @id @default(cuid())
     classId String
     class Class @relation(fields: [classId], references: [id])
-    studentEvaluation StudentEvaluation[]
+    studentEvaluation StudentEvaluation[] //fill with each student and their criteria
     comments Comment[]
 
     @@index([classId])
@@ -70,9 +71,12 @@ model Report {
 model StudentEvaluation {
     id      String @id @default(cuid())
     studentId String
-    criteriaValue CriteriaValuePair[]
+    studentName String
+    studentPronouns String
+    criteriaValues CriteriaValuePair[]
     reportId String
     report Report @relation(fields: [reportId], references: [id])
+    completed Boolean @default(false)
 
     @@index([studentId])
     @@index([reportId])
@@ -84,8 +88,9 @@ model CriteriaValuePair {
     studentEvaluation StudentEvaluation @relation(fields: [studentEvaluationId], references: [id])
     criteriaId String
     criteriaType CriteriaType
-    criteriaPrompt String
+    criteriaPrompt String @default("")
     criteriaValue String
+    required Boolean
 
     @@index([studentEvaluationId])
 }
@@ -95,6 +100,7 @@ model Comment {
     reportId String
     report Report @relation(fields: [reportId], references: [id])
     studentId String
+    prompt String @db.Text
     comment String @db.Text
 
     @@index([reportId])
@@ -104,6 +110,5 @@ model Comment {
 enum CriteriaType {
     BOOLEAN
     COMMENT
-    SCALE_1TO5
-    SCALE_1TO10
+    ASSESSMENT
 }
