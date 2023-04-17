@@ -1,4 +1,3 @@
-import { PlusIcon } from "@heroicons/react/20/solid";
 import { useEffect } from "react";
 import useReportPageStore, {
   EvaluationType,
@@ -36,12 +35,12 @@ const RenderEvaluation: React.FC<RenderEvaluationProps> = ({ evaluation }) => {
   };
 
   return (
-    <div className="isolate mb-8 -space-y-px rounded-md shadow-sm">
+    <div className="isolate mb-4 -space-y-px rounded-md shadow-sm">
       <div className="relative rounded-md rounded-b-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-orange-600">
         <label
           htmlFor="name"
           className={classNames(
-            "block text-xs font-medium",
+            "block text-sm font-bold",
             requiredFieldsFilledMap?.get("name") === false
               ? "text-red-500"
               : "text-gray-900",
@@ -66,7 +65,7 @@ const RenderEvaluation: React.FC<RenderEvaluationProps> = ({ evaluation }) => {
         <label
           htmlFor="pronouns"
           className={classNames(
-            "block text-xs font-medium",
+            "block text-sm font-bold",
             requiredFieldsFilledMap?.get("pronouns") === false
               ? "text-red-500"
               : "text-gray-900",
@@ -92,21 +91,25 @@ const RenderEvaluation: React.FC<RenderEvaluationProps> = ({ evaluation }) => {
         return (
           <div
             key={criteria.id}
-            className={`relative rounded-md rounded-t-none rounded-b-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-orange-600`}
+            className={`relative rounded-md rounded-t-none ${
+              idx === evaluation.criteriaValues.length - 1
+                ? ""
+                : "rounded-b-none"
+            } px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-orange-600`}
           >
             <SpecialInput criteria={criteria} />
           </div>
         );
       })}
 
-      <div className="relative flex w-full justify-center rounded-md rounded-t-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-orange-600">
+      {/* <div className="relative flex w-full justify-center rounded-md rounded-t-none px-3 pt-2.5 pb-1.5 ring-1 ring-inset ring-gray-300 focus-within:z-10 focus-within:ring-2 focus-within:ring-orange-600">
         <button
           type="button"
           className="rounded-full bg-orange-600 p-2 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
         >
           <PlusIcon className="h-5 w-5" aria-hidden="true" />
         </button>
-      </div>
+      </div> */}
     </div>
   );
 };

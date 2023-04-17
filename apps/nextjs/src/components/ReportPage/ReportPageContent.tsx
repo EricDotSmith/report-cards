@@ -8,6 +8,8 @@ import DotLoader from "../DotLoader/DotLoader";
 import RenderEvaluation from "./RenderEvaluation";
 import StudentList from "./StudentList";
 import { shallow } from "zustand/shallow";
+import EvaluationProgressTopBar from "./EvaluationProgressTopBar";
+import MissingFieldsAlert from "./MissingFieldsAlert";
 
 interface ReportPageContentProps {
   report: inferProcedureOutput<AppRouter["report"]["byId"]>;
@@ -18,6 +20,8 @@ const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
 
   const [currentEvaluationIndex, setCurrentEvaluationIndex] =
     useState<number>(0);
+
+  const [showMissingFieldsAlert, setShowMissingFieldsAlert] = useState(false);
 
   const utils = trpc.useContext();
 
@@ -68,7 +72,9 @@ const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
       : undefined;
 
     if (!!currentEvaluation) {
-      if (checkIfRequiredFieldsAreFilled()) {
+      const requiredFieldsAreFilled = checkIfRequiredFieldsAreFilled();
+      setShowMissingFieldsAlert(!requiredFieldsAreFilled);
+      if (requiredFieldsAreFilled) {
         updateEvaluation({
           evaluationId: currentEvaluation.id,
           studentName: getValueForKey("name"),
@@ -91,48 +97,34 @@ const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
     ? studentEvaluations[currentEvaluationIndex]
     : undefined;
 
-  const totalStudentEvaluations = studentEvaluations?.length ?? 0;
-  const totalCompletedStudentEvaluations =
-    studentEvaluations?.filter((evaluation) => evaluation.completed).length ??
-    0;
-
   return (
     <>
       {tab === "evaluation" ? (
         <>
-          <div className="sticky top-16 z-10 flex flex-col items-center space-y-2 bg-white p-2 px-2 shadow">
-            <div>Evaluation Progress</div>
-            <div className="flex h-4 w-full overflow-hidden rounded-full bg-gray-200">
-              <div
-                className="flex flex-col justify-center overflow-hidden bg-blue-500 text-center text-xs text-white"
-                role="progressbar"
-                style={{
-                  width: `${
-                    (totalCompletedStudentEvaluations /
-                      totalStudentEvaluations) *
-                    100
-                  }%`,
-                }}
-              >
-                {`${totalCompletedStudentEvaluations}/${totalStudentEvaluations}`}
-              </div>
-            </div>
-          </div>
+          <EvaluationProgressTopBar evaluations={studentEvaluations} />
           <div className="p-4 md:px-32">
             {currentEvaluation ? (
               <RenderEvaluation evaluation={currentEvaluation} />
             ) : null}
 
-            <button
-              type="button"
-              onClick={saveAndContinueButtonClickHandler}
-              disabled={isLoading}
-              className="inline-flex items-center gap-x-1.5 rounded-md bg-indigo-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600"
-            >
-              <CheckCircleIcon className="-ml-0.5 h-5 w-5" aria-hidden="true" />
+            {showMissingFieldsAlert ? <MissingFieldsAlert /> : null}
 
-              {isLoading ? <DotLoader /> : "Save and continue"}
-            </button>
+            <div className="flex w-full justify-center">
+              <button
+                type="button"
+                onClick={saveAndContinueButtonClickHandler}
+                disabled={isLoading}
+                className="inline-flex items-center justify-center gap-x-1.5 rounded-md bg-green-600 px-3 py-2 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+              >
+                {isLoading ? null : (
+                  <CheckCircleIcon
+                    className="-ml-0.5 h-5 w-5"
+                    aria-hidden="true"
+                  />
+                )}
+                {isLoading ? <DotLoader /> : "Save and continue"}
+              </button>
+            </div>
             <div>Students</div>
             {studentEvaluations ? (
               <StudentList

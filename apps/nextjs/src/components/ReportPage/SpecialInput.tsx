@@ -6,6 +6,7 @@ import { CriteriaValuePair } from "@acme/db";
 import useReportPageStore from "../../store/reportPageStore";
 import classNames from "../../utils/tailwind";
 import { shallow } from "zustand/shallow";
+import YesNoListBox from "./YesNoListBox";
 
 interface SpecialInputProps {
   criteria: CriteriaValuePair;
@@ -22,15 +23,13 @@ const SpecialInput: React.FC<SpecialInputProps> = ({ criteria }) => {
       shallow,
     );
 
-  console.log("::::", requiredFieldsFilledMap);
-  //this shit appears to be broken
   if (criteria.criteriaType === "COMMENT") {
     return (
       <>
         <label
           htmlFor={criteria.criteriaType}
           className={classNames(
-            "block text-xs font-medium",
+            "block text-sm font-bold",
             requiredFieldsFilledMap?.get(criteria.id) === false
               ? "text-red-500"
               : "text-gray-900",
@@ -59,7 +58,7 @@ const SpecialInput: React.FC<SpecialInputProps> = ({ criteria }) => {
         <label
           htmlFor={criteria.criteriaType}
           className={classNames(
-            "block text-xs font-medium",
+            "block text-sm font-bold",
             requiredFieldsFilledMap?.get(criteria.id) === false
               ? "text-red-500"
               : "text-gray-900",
@@ -67,14 +66,15 @@ const SpecialInput: React.FC<SpecialInputProps> = ({ criteria }) => {
         >
           {criteria.criteriaPrompt}
         </label>
-        <Toggle
+        <YesNoListBox
+          type={(getValueForKey(criteria.id) as any) ?? ""}
           name={criteria.criteriaType}
           id={criteria.criteriaId}
-          enabled={getValueForKey(criteria.id) === "true" ? true : false}
-          setEnabled={(enabled) => {
-            updateFormState(criteria.id, enabled.toString());
+          onChange={(value) => {
+            updateFormState(criteria.id, value);
           }}
         />
+        <div className="h-1 w-32"></div>
       </>
     );
   } else if (criteria.criteriaType === "ASSESSMENT") {
@@ -84,7 +84,7 @@ const SpecialInput: React.FC<SpecialInputProps> = ({ criteria }) => {
         <label
           htmlFor={criteria.criteriaType}
           className={classNames(
-            "block text-xs font-medium",
+            "block text-sm font-bold",
             requiredFieldsFilledMap?.get(criteria.id) === false
               ? "text-red-500"
               : "text-gray-900",

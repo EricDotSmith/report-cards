@@ -29,13 +29,13 @@ const StudentAssessmentRadioGroup: React.FC<
             type="radio"
             name={`${name}-${id}-${idx}`}
             id={`${name}-${id}-${idx}`}
-            className="mt-0.5 shrink-0 rounded-full border-gray-200 text-blue-600 focus:ring-blue-500"
+            className="mt-0.5 shrink-0 rounded-full border-gray-200 text-orange-600 focus:ring-orange-500"
             checked={selectedRadio === option}
             onChange={() => setSelectedRadio(option)}
           />
           <label
             htmlFor={`${name}-${id}-${idx}`}
-            className="ml-2 text-sm text-gray-500 dark:text-gray-400"
+            className="ml-2 text-sm text-gray-900"
           >
             {option}
           </label>

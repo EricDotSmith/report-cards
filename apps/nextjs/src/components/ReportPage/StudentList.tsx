@@ -1,6 +1,7 @@
 import { Dispatch, SetStateAction } from "react";
 import { EvaluationType } from "../../store/reportPageStore";
 import classNames from "../../utils/tailwind";
+import React from "react";
 
 interface StudentListProps {
   evaluations: EvaluationType[];
