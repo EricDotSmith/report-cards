@@ -1,51 +1,129 @@
-import { AppRouter } from "@acme/api";
-import { inferProcedureOutput } from "@trpc/server";
-import useReportPageStore, { Tabs } from "../../store/reportPageStore";
-import classNames from "../../utils/tailwind";
-
-const tabs: { name: string; tab: Tabs }[] = [
-  { name: "Student Evaluations", tab: "evaluation" },
-  { name: "Report (Generated 12-12-2023)", tab: "report" }, //for this tab change it to click to generate report and show appropriate modal if not all students evaluated yet
-];
+import { EvaluationType } from "../../store/reportPageStore";
+import { trpc } from "../../utils/trpc";
+import DotLoader from "../DotLoader/DotLoader";
 
 interface ClassPageTopBarProps {
-  report?: inferProcedureOutput<AppRouter["report"]["byId"]>;
+  evaluations?: EvaluationType[];
+  hasReportBeenGenerated?: boolean;
 }
 
-const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({}) => {
-  const changeTab = useReportPageStore((state) => state.changeTab);
-  const currentTab = useReportPageStore((state) => state.tab);
+const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({
+  evaluations,
+  hasReportBeenGenerated,
+}) => {
+  const totalStudentEvaluations = evaluations?.length ?? 0;
+  const totalCompletedStudentEvaluations =
+    evaluations?.filter((evaluation) => evaluation.completed).length ?? 0;
+  const percentComplete =
+    totalCompletedStudentEvaluations / totalStudentEvaluations;
+
+  const utils = trpc.useContext();
+
+  const { mutate: createCompletion, isLoading } =
+    trpc.completion.create.useMutation({
+      onSuccess(data, variables, context) {
+        console.log(data);
+        if (data.executionId) {
+          utils.report.byId.setData(data.reportId, (old) => {
+            if (old) {
+              return {
+                ...old,
+                reportGenerated: true,
+              };
+            }
+          });
+        }
+      },
+    });
+
+  const onGenerateReportClick = () => {
+    if (evaluations === undefined) {
+      return;
+    }
+
+    const reportId = evaluations[0]?.reportId;
+
+    if (reportId === undefined) {
+      return;
+    }
+
+    createCompletion({
+      gptPrompt: evaluations.map((evaluation) => ({
+        studentId: evaluation.studentId,
+        studentName: evaluation.studentName,
+        studentPronouns: evaluation.studentPronouns,
+        studentCriteriaEvaluations: evaluation.criteriaValues.map(
+          (criteriaValue) => ({
+            criteriaQuestion: criteriaValue.criteriaPrompt,
+            teacherResponse: criteriaValue.criteriaValue,
+          }),
+        ),
+      })),
+      reportId,
+    });
+  };
+
+  if (evaluations === undefined) {
+    return (
+      <div className="flex h-16 w-full justify-start bg-white shadow-sm"></div>
+    );
+  }
 
   return (
-    <div className="flex h-16 w-full justify-start bg-white shadow-sm">
-      <nav
-        className="flex h-full w-full divide-x divide-gray-200 shadow"
-        aria-label="Tabs"
-      >
-        {tabs.map((tab, tabIdx) => (
+    <div className="flex w-full flex-col items-center justify-start space-y-2 bg-white py-2 px-1 shadow-sm">
+      {hasReportBeenGenerated ? (
+        <div>Generating comments, please wait...</div>
+      ) : percentComplete === 1 ? (
+        <>
+          {/* <div>Evaluation Completed</div> */}
           <button
-            key={tab.name}
-            onClick={() => {
-              changeTab(tab.tab);
-            }}
-            className={classNames(
-              tab.tab === currentTab
-                ? "text-gray-900"
-                : "text-gray-500 hover:text-gray-700",
-              "group relative flex w-full min-w-0 flex-1 items-center justify-center overflow-hidden bg-white py-4 px-4 text-center text-sm font-medium hover:bg-gray-50 focus:z-10",
-            )}
+            type="button"
+            className="inline-flex items-center gap-x-2 rounded-md bg-green-600 px-3.5 py-2.5 text-sm font-semibold text-white shadow-sm hover:bg-green-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-green-600"
+            onClick={onGenerateReportClick}
+            disabled={isLoading}
           >
-            <span>{tab.name}</span>
-            <span
+            <svg
+              className="-ml-0.5 h-5 w-5"
+              viewBox="0 0 20 20"
+              fill="currentColor"
               aria-hidden="true"
-              className={classNames(
-                tab.tab === currentTab ? "bg-indigo-500" : "bg-transparent",
-                "absolute inset-x-0 bottom-0 h-0.5",
-              )}
-            />
+            >
+              <path
+                fill-rule="evenodd"
+                d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.857-9.809a.75.75 0 00-1.214-.882l-3.483 4.79-1.88-1.88a.75.75 0 10-1.06 1.061l2.5 2.5a.75.75 0 001.137-.089l4-5.5z"
+                clip-rule="evenodd"
+              />
+            </svg>
+            {isLoading ? <DotLoader /> : "Generate Report"}
           </button>
-        ))}
-      </nav>
+        </>
+      ) : (
+        <>
+          <div>Evaluation Progress</div>
+          <div className="flex h-6 w-full overflow-hidden rounded-full bg-gray-200">
+            {totalCompletedStudentEvaluations === 0 ? (
+              <div
+                className={`flex w-full flex-col justify-center overflow-hidden bg-gray-200 text-center text-xs text-gray-900`}
+                role="progressbar"
+              >
+                {`${totalCompletedStudentEvaluations}/${totalStudentEvaluations}`}
+              </div>
+            ) : (
+              <div
+                className={`flex flex-col justify-center overflow-hidden ${
+                  percentComplete === 1 ? "bg-green-500" : "bg-blue-500"
+                } text-center text-xs text-white`}
+                role="progressbar"
+                style={{
+                  width: `${percentComplete * 100}%`,
+                }}
+              >
+                {`${totalCompletedStudentEvaluations}/${totalStudentEvaluations}`}
+              </div>
+            )}
+          </div>
+        </>
+      )}
     </div>
   );
 };

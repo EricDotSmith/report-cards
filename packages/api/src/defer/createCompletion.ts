@@ -8,16 +8,55 @@ const configuration = new Configuration({
 
 const openai = new OpenAIApi(configuration);
 
-async function createCompletion(gptPrompt: string, reportId: string) {
+type CreateCompletionInput = {
+  studentId: string;
+  studentName: string;
+  studentPronouns: string;
+  studentCriteriaEvaluations: {
+    criteriaQuestion: string;
+    teacherResponse: string;
+  }[];
+}[];
+
+type GPTResponse = {
+  studentId: string;
+  studentName: string;
+  gptResponse: string;
+}[];
+
+const systemContent = `
+You are to take the role of a teacher. It is report card season and I want you to create a comment based on the information for each student provided to you. 
+
+When you write a response, always have the response written in the following JSON format:
+
+[]{
+"studentId": string,
+"studentName": string,
+"gptResponse": string
+}
+
+Student information will arrive to you in the following array of objects format:
+
+[]{ 
+"studentId": string, 
+"studentName": string,
+"studentPronouns": string,
+"studentCriteriaEvaluations": []{"criteriaQuestion": string, "teacherResponse": string}
+}
+`;
+
+async function createCompletion(
+  gptPrompt: CreateCompletionInput,
+  reportId: string,
+) {
   const messages: ChatCompletionRequestMessage[] = [
     {
       role: "system",
-      content:
-        "You are teacher. You are to write a comment for a students report card based on provided evaluation criteria.",
+      content: systemContent,
     },
     {
       role: "user",
-      content: gptPrompt,
+      content: JSON.stringify(gptPrompt),
     },
   ];
 
@@ -26,24 +65,34 @@ async function createCompletion(gptPrompt: string, reportId: string) {
     messages,
   });
 
-  const chatGPTMessage = chatGPT.data.choices[0]?.message;
+  const chatGPTResponseContent = chatGPT.data.choices[0]?.message?.content;
 
-  await prisma.report.update({
-    where: {
-      id: reportId,
-    },
-    data: {
-      comments: {
-        create: {
-          comment: chatGPTMessage?.content ?? "",
-          studentId: "1",
-          prompt: gptPrompt,
+  if (!!chatGPTResponseContent) {
+    const responseMessages = JSON.parse(chatGPTResponseContent) as GPTResponse;
+
+    await prisma.report.update({
+      where: {
+        id: reportId,
+      },
+      data: {
+        comments: {
+          createMany: {
+            data: responseMessages.map((response) => ({
+              studentId: response.studentId,
+              comment: response.gptResponse,
+              prompt: JSON.stringify(
+                gptPrompt.find(
+                  (prompt) => prompt.studentId === response.studentId,
+                ),
+              ),
+            })),
+          },
         },
       },
-    },
-  });
+    });
+  }
 
-  return chatGPTMessage;
+  return { success: true };
 }
 
 export default defer(createCompletion);

@@ -2,7 +2,15 @@ import { protectedProcedure, router } from "../trpc";
 import { z } from "zod";
 import createCompletion from "../defer/createCompletion";
 import { getExecution } from "@defer/client";
-
+export type CreateCompletionInput = {
+  studentId: string;
+  studentName: string;
+  studentPronouns: string;
+  studentCriteriaEvaluations: {
+    criteriaQuestion: string;
+    teacherResponse: string;
+  }[];
+}[];
 export const completionRouter = router({
   byExecutionId: protectedProcedure
     .input(z.string())
@@ -13,16 +21,39 @@ export const completionRouter = router({
   create: protectedProcedure
     .input(
       z.object({
-        prompt: z.string(),
+        gptPrompt: z.array(
+          z.object({
+            studentId: z.string(),
+            studentName: z.string(),
+            studentPronouns: z.string(),
+            studentCriteriaEvaluations: z.array(
+              z.object({
+                criteriaQuestion: z.string(),
+                teacherResponse: z.string(),
+              }),
+            ),
+          }),
+        ),
         reportId: z.string(),
       }),
     )
     .mutation(async ({ ctx, input }) => {
       //ensure not creating a job that's already in progress
       const { id: executionId } = await createCompletion(
-        input.prompt,
+        input.gptPrompt,
         input.reportId,
       );
-      return { executionId };
+
+      //store executionId in report
+      await ctx.prisma.report.update({
+        where: {
+          id: input.reportId,
+        },
+        data: {
+          reportGenerated: true,
+        },
+      });
+
+      return { executionId, reportId: input.reportId };
     }),
 });

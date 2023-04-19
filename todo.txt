@@ -1,0 +1,2 @@
+TODO: add max characters for each field and do that for prisma as well
+

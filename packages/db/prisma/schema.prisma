@@ -64,6 +64,7 @@ model Report {
     class Class @relation(fields: [classId], references: [id])
     studentEvaluation StudentEvaluation[] //fill with each student and their criteria
     comments Comment[]
+    reportGenerated Boolean @default(false)
 
     @@index([classId])
 }
