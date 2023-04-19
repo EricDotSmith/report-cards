@@ -65,6 +65,8 @@ model Report {
     studentEvaluation StudentEvaluation[] //fill with each student and their criteria
     comments Comment[]
     reportGenerated Boolean @default(false)
+    reportExecutionId String @default("")
+    //add whether report succeeded or failed to generate
 
     @@index([classId])
 }

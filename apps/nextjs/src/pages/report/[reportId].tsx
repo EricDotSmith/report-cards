@@ -12,7 +12,7 @@ import ReportPageTopBar from "../../components/navigation/ReportPageTopBar";
 import ReportPageContent from "../../components/ReportPage/ReportPageContent";
 import GeneratedReportContent from "../../components/ReportPage/GeneratedReportContent";
 
-const PAGE_COLOR = "#58c1fa";
+const PAGE_COLOR = "#f2aa4b";
 
 const ReportPage: NextPage = () => {
   const router = useRouter();
@@ -43,10 +43,15 @@ const ReportPage: NextPage = () => {
         pageLeftBar={<PageLeftBar />}
         pageRightBar={<PageRightBar />}
         pageTopBar={
-          <ReportPageTopBar
-            evaluations={data?.studentEvaluation}
-            hasReportBeenGenerated={data?.reportGenerated}
-          />
+          !isLoading ? (
+            <ReportPageTopBar
+              evaluations={data?.studentEvaluation}
+              hasReportBeenGenerated={data?.reportGenerated}
+              isReportCompleted={data?.comments?.length !== 0}
+            />
+          ) : (
+            <></>
+          )
         }
         path="/report"
       >

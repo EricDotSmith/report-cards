@@ -45,12 +45,14 @@ export const completionRouter = router({
       );
 
       //store executionId in report
+      //then fetch on pull rate the executionId until success?
       await ctx.prisma.report.update({
         where: {
           id: input.reportId,
         },
         data: {
           reportGenerated: true,
+          reportExecutionId: executionId,
         },
       });
 

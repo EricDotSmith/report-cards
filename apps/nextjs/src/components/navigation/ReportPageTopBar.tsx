@@ -1,15 +1,18 @@
 import { EvaluationType } from "../../store/reportPageStore";
+import classNames from "../../utils/tailwind";
 import { trpc } from "../../utils/trpc";
 import DotLoader from "../DotLoader/DotLoader";
 
 interface ClassPageTopBarProps {
   evaluations?: EvaluationType[];
   hasReportBeenGenerated?: boolean;
+  isReportCompleted?: boolean;
 }
 
 const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({
   evaluations,
   hasReportBeenGenerated,
+  isReportCompleted,
 }) => {
   const totalStudentEvaluations = evaluations?.length ?? 0;
   const totalCompletedStudentEvaluations =
@@ -22,13 +25,13 @@ const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({
   const { mutate: createCompletion, isLoading } =
     trpc.completion.create.useMutation({
       onSuccess(data, variables, context) {
-        console.log(data);
         if (data.executionId) {
           utils.report.byId.setData(data.reportId, (old) => {
             if (old) {
               return {
                 ...old,
                 reportGenerated: true,
+                reportExecutionId: data.executionId,
               };
             }
           });
@@ -70,9 +73,18 @@ const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({
   }
 
   return (
-    <div className="flex w-full flex-col items-center justify-start space-y-2 bg-white py-2 px-1 shadow-sm">
-      {hasReportBeenGenerated ? (
-        <div>Generating comments, please wait...</div>
+    <div
+      className={classNames(
+        "flex w-full flex-col items-center justify-start space-y-2 py-2 px-1 shadow-sm",
+        hasReportBeenGenerated ? "bg-orange-200" : "bg-white",
+      )}
+    >
+      {hasReportBeenGenerated && !isReportCompleted ? (
+        <div className="font-bold text-orange-900">
+          Generating report, please wait...
+        </div>
+      ) : isReportCompleted ? (
+        <div className="font-bold text-orange-900">Report (Generated on)</div>
       ) : percentComplete === 1 ? (
         <>
           {/* <div>Evaluation Completed</div> */}
