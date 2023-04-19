@@ -10,15 +10,24 @@ import ItemNotFound from "../../components/ItemNotFound";
 import { NextSeo } from "next-seo";
 import ReportPageTopBar from "../../components/navigation/ReportPageTopBar";
 import ReportPageContent from "../../components/ReportPage/ReportPageContent";
+import GeneratedReportContent from "../../components/ReportPage/GeneratedReportContent";
 
-const PAGE_COLOR = "#58c1fa";
+const PAGE_COLOR = "#f2aa4b";
 
 const ReportPage: NextPage = () => {
   const router = useRouter();
   const { reportId } = router.query;
+
   const { data, isLoading } = trpc.report.byId.useQuery(reportId as string, {
     enabled: !!reportId,
+    refetchOnWindowFocus: false,
   });
+
+  const showReportPageContent = !isLoading && !!data;
+  const showReport =
+    !isLoading &&
+    !!data &&
+    (data.comments.length > 0 || data.reportGenerated === true);
 
   return (
     <>
@@ -33,14 +42,26 @@ const ReportPage: NextPage = () => {
         pageBottomBar={<PageBottomBar />}
         pageLeftBar={<PageLeftBar />}
         pageRightBar={<PageRightBar />}
-        pageTopBar={<ReportPageTopBar report={data} />}
+        pageTopBar={
+          !isLoading ? (
+            <ReportPageTopBar
+              evaluations={data?.studentEvaluation}
+              hasReportBeenGenerated={data?.reportGenerated}
+              isReportCompleted={data?.comments?.length !== 0}
+            />
+          ) : (
+            <></>
+          )
+        }
         path="/report"
       >
         {isLoading ? (
           <div className="flex w-full justify-center pt-2">
             <DotLoader color="bg-sky-300/70" />
           </div>
-        ) : !!data ? (
+        ) : showReport ? (
+          <GeneratedReportContent report={data} />
+        ) : showReportPageContent ? (
           <ReportPageContent report={data} />
         ) : (
           <ItemNotFound title="Report" />

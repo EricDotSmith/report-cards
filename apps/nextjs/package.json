@@ -15,7 +15,7 @@
     "@acme/api": "*",
     "@acme/db": "*",
     "@acme/tailwind-config": "*",
-    "@clerk/nextjs": "^4.11.14",
+    "@clerk/nextjs": "^4.16.2",
     "@defer/client": "^1.3.0",
     "@headlessui/react": "^1.7.8",
     "@heroicons/react": "^2.0.14",

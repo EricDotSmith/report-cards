@@ -2,8 +2,6 @@
 import { CriteriaValuePair, StudentEvaluation } from "@acme/db";
 import { create } from "zustand";
 
-export type Tabs = "evaluation" | "report";
-
 export type EvaluationType = StudentEvaluation & {
   criteriaValues: CriteriaValuePair[];
 };
@@ -42,8 +40,6 @@ const initializeFormState = (evaluation: EvaluationType) => {
 };
 
 interface ReportPageStore {
-  tab: Tabs;
-  changeTab: (newColor: Tabs) => void;
   formState: FormStateType | undefined;
   updateFormState: (key: string, value: string) => void;
   setFormStateFromEvaluation: (evaluation: EvaluationType) => void;
@@ -54,10 +50,6 @@ interface ReportPageStore {
 }
 // create store
 const useReportPageStore = create<ReportPageStore>((set, get) => ({
-  tab: "evaluation",
-  changeTab: (newTab: Tabs) => {
-    set(() => ({ tab: newTab }));
-  },
   formState: undefined,
   requiredFieldsFilledMap: undefined,
   getValueForKey: (key: string) => {
