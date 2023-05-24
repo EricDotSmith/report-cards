@@ -4,7 +4,7 @@ import PageBottomBar from "../../components/navigation/PageBottomBar";
 import { NextPage } from "next";
 import PageRightBar from "../../components/navigation/PageRightBar";
 import { NextSeo } from "next-seo";
-import { UserButton, useAuth, useUser } from "@clerk/nextjs/dist/client";
+import { UserButton, useAuth, useUser } from "@clerk/nextjs";
 import AccountPageTopBar from "./AccountPageTopBar";
 import { trpc } from "../../utils/trpc";
 
