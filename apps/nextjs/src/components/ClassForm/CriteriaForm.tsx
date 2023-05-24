@@ -1,4 +1,4 @@
-import { Criteria } from "@acme/db";
+import { Criteria, CriteriaType } from "@acme/db";
 import {
   TrashIcon,
   AdjustmentsHorizontalIcon,
@@ -8,6 +8,18 @@ import AddCriteriaModal from "./AddCriteriaModal";
 import DeleteCriteriaModal from "./DeleteCriteriaModal";
 import EditCriteriaModal from "./EditCriteriaModal";
 import EmptyCriteriaForm from "./EmptyCriteriaForm";
+
+const criteriaLabelFromType = (criteria: CriteriaType): string => {
+  if (criteria === "BOOLEAN") {
+    return "Yes / No";
+  } else if (criteria === "ASSESSMENT") {
+    return "Performance Assessment";
+  } else if (criteria === "COMMENT") {
+    return "Comment";
+  }
+
+  return "";
+};
 
 interface CriteriaFormProps {
   criteria?: Criteria[];
@@ -76,7 +88,7 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ criteria }) => {
                   <div className="min-w-0 flex-1">
                     <div className="flex items-center space-x-2">
                       <p className="truncate text-sm font-medium text-gray-900">
-                        {currentCriteria.type}
+                        {criteriaLabelFromType(currentCriteria.type)}
                       </p>
                       {currentCriteria.required ? (
                         <span className="truncate rounded-md bg-green-400 p-1 text-sm text-green-900">

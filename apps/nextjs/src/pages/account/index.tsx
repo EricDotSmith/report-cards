@@ -4,8 +4,9 @@ import PageBottomBar from "../../components/navigation/PageBottomBar";
 import { NextPage } from "next";
 import PageRightBar from "../../components/navigation/PageRightBar";
 import { NextSeo } from "next-seo";
-import { useAuth, useUser } from "@clerk/nextjs/dist/client";
+import { UserButton, useAuth, useUser } from "@clerk/nextjs/dist/client";
 import AccountPageTopBar from "./AccountPageTopBar";
+import { trpc } from "../../utils/trpc";
 
 const PAGE_COLOR = "#f08fa2";
 
@@ -13,6 +14,7 @@ const PAGE_COLOR = "#f08fa2";
 const Account: NextPage = () => {
   const { user } = useUser();
   const { signOut } = useAuth();
+  const { data: teacherData } = trpc.teacher.byId.useQuery();
 
   return (
     <>
@@ -37,19 +39,12 @@ const Account: NextPage = () => {
               <div className="rounded-lg bg-gray-50 shadow-sm ring-1 ring-gray-900/5">
                 <dl className="flex flex-wrap">
                   <div className="flex-auto pl-6 pt-6">
-                    <dt className="text-sm font-semibold leading-6 text-gray-900">
-                      Email
-                    </dt>
-                    <dd className="mt-1 text-base font-semibold leading-6 text-gray-900">
-                      {user?.emailAddresses[0]?.emailAddress}
+                    <dd className="mt-1 flex items-center space-x-2 text-base font-semibold leading-6 text-gray-900">
+                      <UserButton />
+                      <span>{user?.emailAddresses[0]?.emailAddress}</span>
                     </dd>
                   </div>
-                  <div className="flex-none self-end px-6 pt-4">
-                    <dt className="sr-only">Status</dt>
-                    <dd className="rounded-md bg-green-50 px-2 py-1 text-xs font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
-                      2 Report Credits Available
-                    </dd>
-                  </div>
+
                   {user?.firstName && user?.lastName && (
                     <div className="mt-6 flex w-full flex-none gap-x-4 border-t border-gray-900/5 px-6 pt-6">
                       <dt className="flex-none">
@@ -112,20 +107,11 @@ const Account: NextPage = () => {
                       </svg>
                     </dt>
                     <dd className="text-sm leading-6 text-gray-500">
-                      Generated 10 reports
+                      Generated {teacherData?.reportCreditsUsed} reports
                     </dd>
                   </div>
                 </dl>
                 <div className="mt-6 space-y-4 border-t border-gray-900/5 px-6 py-6">
-                  <button
-                    onClick={() => {
-                      // user?.updatePassword({});
-                    }}
-                    type="button"
-                    className="w-full rounded-full bg-white px-4 py-2.5 text-sm font-semibold text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 hover:bg-gray-50"
-                  >
-                    Update password
-                  </button>
                   <button
                     onClick={() => {
                       signOut({});

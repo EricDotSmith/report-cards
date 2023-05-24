@@ -38,6 +38,34 @@ export const completionRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      const availableCredits = await ctx.prisma.teacher.findUnique({
+        where: {
+          id: ctx.user.id,
+        },
+        select: {
+          reportCredits: true,
+          reportCreditsUsed: true,
+        },
+      });
+
+      if (availableCredits?.reportCredits === 0) {
+        return {
+          executionId: null,
+          reportId: input.reportId,
+          error: "No credits available",
+        };
+      }
+
+      await ctx.prisma.teacher.update({
+        where: {
+          id: ctx.user.id,
+        },
+        data: {
+          reportCredits: (availableCredits?.reportCredits ?? 0) - 1,
+          reportCreditsUsed: (availableCredits?.reportCreditsUsed ?? 0) + 1,
+        },
+      });
+
       //ensure not creating a job that's already in progress
       const { id: executionId } = await createCompletion(
         input.gptPrompt,

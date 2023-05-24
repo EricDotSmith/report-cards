@@ -2,13 +2,13 @@ import { PageContainer } from "../../components/Page";
 import PageLeftBar from "../../components/navigation/PageLeftBar";
 import PageBottomBar from "../../components/navigation/PageBottomBar";
 import { NextPage } from "next";
-import PageTopBar from "../../components/navigation/PageTopBar";
 import PageRightBar from "../../components/navigation/PageRightBar";
 import ClassTable from "../../components/ClassTable";
 import { trpc } from "../../utils/trpc";
 import NoClasses from "../../components/NoClasses";
 import DotLoader from "../../components/DotLoader/DotLoader";
 import { NextSeo } from "next-seo";
+import AccountPageTopBar from "../account/AccountPageTopBar";
 
 const PAGE_COLOR = "#58c1fa";
 
@@ -28,7 +28,7 @@ const Dashboard: NextPage = () => {
         pageBottomBar={<PageBottomBar />}
         pageLeftBar={<PageLeftBar />}
         pageRightBar={<PageRightBar />}
-        pageTopBar={<PageTopBar />}
+        pageTopBar={<AccountPageTopBar />}
         path="/dashboard"
       >
         <div className="pb-8">
