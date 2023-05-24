@@ -11,4 +11,29 @@ export const teacherRouter = router({
       //name and email might already come from the user object
       return ctx.prisma.teacher.create({ data: { id: ctx.user.id, ...input } });
     }),
+  subscriptionStatus: protectedProcedure.query(async ({ ctx }) => {
+    const {
+      prisma,
+      user: { id },
+    } = ctx;
+
+    if (!id) {
+      throw new Error("Not authenticated");
+    }
+
+    const data = await prisma.teacher.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        stripeSubscriptionStatus: true,
+      },
+    });
+
+    if (!data) {
+      throw new Error("Could not find user");
+    }
+
+    return data.stripeSubscriptionStatus;
+  }),
 });

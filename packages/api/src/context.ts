@@ -1,4 +1,5 @@
 import { prisma } from "@acme/db";
+import { stripe } from "./stripe/client";
 import { type inferAsyncReturnType } from "@trpc/server";
 import { type CreateNextContextOptions } from "@trpc/server/adapters/next";
 import { getAuth, clerkClient } from "@clerk/nextjs/server";
@@ -22,6 +23,7 @@ export const createContextInner = async (
   return {
     user,
     prisma,
+    stripe,
     ...opts,
   };
 };

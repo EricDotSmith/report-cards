@@ -18,6 +18,11 @@ model Teacher {
     classes Class[]
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt
+    stripeCustomerId         String?
+    stripeSubscriptionId     String?
+    stripeSubscriptionStatus StripeSubscriptionStatus?
+    reportCredits            Int?    @default(0)
+    reportCreditsUsed        Int?    @default(0)
 }
 
 model Class {
@@ -66,6 +71,8 @@ model Report {
     comments Comment[]
     reportGenerated Boolean @default(false)
     reportExecutionId String @default("")
+    createdAt DateTime @default(now())
+    updatedAt DateTime @updatedAt @default(now())
     //add whether report succeeded or failed to generate
 
     @@index([classId])
@@ -114,4 +121,28 @@ enum CriteriaType {
     BOOLEAN
     COMMENT
     ASSESSMENT
+}
+
+enum StripeSubscriptionStatus {
+    incomplete
+    incomplete_expired
+    trialing
+    active
+    past_due
+    canceled
+    unpaid
+    paused
+}
+
+model StripeEvent {
+    id               String   @id @unique
+    api_version      String?
+    data             Json
+    request          Json?
+    type             String
+    object           String
+    account          String?
+    created          DateTime
+    livemode         Boolean
+    pending_webhooks Int
 }

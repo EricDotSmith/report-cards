@@ -1,17 +1,14 @@
 import type { NextPage } from "next";
-import Head from "next/head";
 import { useState } from "react";
 import { Dialog } from "@headlessui/react";
 import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
-import { useAuth, UserButton } from "@clerk/nextjs";
+import { useAuth } from "@clerk/nextjs";
 import { NextSeo } from "next-seo";
 
 const navigation = [
   { name: "Product", href: "#" },
-  { name: "Features", href: "#" },
-  { name: "Marketplace", href: "#" },
-  { name: "Company", href: "#" },
+  { name: "Price", href: "#" },
 ];
 
 const PAGE_COLOR = "#f6f3ec";
@@ -158,7 +155,6 @@ const Home: NextPage = () => {
                   Get started generating reports for your students in minutes.
                   Saving you hours of time.
                 </p>
-                <AuthShowcase />
                 <div className="mt-10 flex items-center justify-center gap-x-6">
                   <Link
                     href="/sign-up"
@@ -224,18 +220,6 @@ const AuthShowcase: React.FC = () => {
           >
             Dashboard <span aria-hidden="true">&rarr;</span>
           </Link>
-          <div className="flex items-center justify-center">
-            <UserButton
-              appearance={{
-                elements: {
-                  userButtonAvatarBox: {
-                    width: "3rem",
-                    height: "3rem",
-                  },
-                },
-              }}
-            />
-          </div>
         </>
       )}
       {!isSignedIn && (

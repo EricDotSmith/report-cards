@@ -49,7 +49,11 @@ const ClassForm: React.FC<ClassFormProps> = ({ classData }) => {
         description="Decide which reports you'd like to add to this class."
         id="report_form"
       >
-        <ReportForm reports={reports} />
+        <ReportForm
+          criteriaCount={criteria?.length}
+          studentCount={students?.length}
+          reports={reports}
+        />
       </SectionCard>
 
       <div className="mb-12"></div>

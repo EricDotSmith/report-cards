@@ -5,16 +5,24 @@ import { useState } from "react";
 import { trpc } from "../utils/trpc";
 import EmptyReportForm from "./ClassForm/EmptyReportForm";
 import DotLoader from "./DotLoader/DotLoader";
+import GenericInfoModal from "./GenericInfoModal";
 
 interface ReportFormProps {
   reports?: Report[];
+  criteriaCount?: number;
+  studentCount?: number;
 }
 
-const ReportForm: React.FC<ReportFormProps> = ({ reports }) => {
+const ReportForm: React.FC<ReportFormProps> = ({
+  reports,
+  criteriaCount,
+  studentCount,
+}) => {
   const router = useRouter();
   const { classId } = router.query;
 
   const [createReportClicked, setCreateReportClicked] = useState(false);
+  const [showNeedsMoreInfoModal, setShowNeedsMoreInfoModal] = useState(false);
 
   const { mutate: createReport } = trpc.report.create.useMutation({
     onSuccess: ({ id }) => {
@@ -26,14 +34,25 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports }) => {
   });
 
   const handleCreateReport = () => {
-    if (!createReportClicked) {
-      setCreateReportClicked(true);
-      createReport({ classId: classId as string });
+    if (studentCount === 0 || criteriaCount === 0) {
+      setShowNeedsMoreInfoModal(true);
+    } else {
+      if (!createReportClicked) {
+        setCreateReportClicked(true);
+        createReport({ classId: classId as string });
+      }
     }
   };
 
   return (
     <>
+      <GenericInfoModal
+        isOpen={showNeedsMoreInfoModal}
+        closeModal={() => setShowNeedsMoreInfoModal(false)}
+        modalTitleText="Needs more criteria or students"
+        modalBodyText="You need at least one criteria and one student to start a report."
+        modalButtonText="Continue"
+      />
       <div className="sticky top-16 z-10 flex w-full justify-end rounded-tl-md rounded-tr-md bg-purple-200 px-6 py-3 shadow">
         <div className="flex w-full items-center justify-between">
           <div className="text-base font-bold text-purple-700">
@@ -60,11 +79,18 @@ const ReportForm: React.FC<ReportFormProps> = ({ reports }) => {
               <li key={report.id} className="py-4">
                 <div className="flex items-center space-x-4">
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-gray-900">
-                      {report.id}
-                    </p>
+                    {report.reportGenerated ? (
+                      <p className="max-w-min truncate rounded bg-green-400 p-1 text-sm font-medium text-green-900">
+                        Status: Complete
+                      </p>
+                    ) : (
+                      <p className="max-w-min truncate rounded bg-yellow-400 p-1 text-sm font-medium text-yellow-900">
+                        Status: In-Progress
+                      </p>
+                    )}
                     <p className="truncate text-sm text-gray-500">
-                      {report.classId}
+                      Created:&nbsp;
+                      {report.createdAt.toLocaleString().split(",")[0]}
                     </p>
                   </div>
                   <div className="flex items-center space-x-2">
