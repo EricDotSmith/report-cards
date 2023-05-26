@@ -60,7 +60,7 @@ export const handleInvoicePaid = async ({
   const paymentIntent = event.data.object as Stripe.PaymentIntent;
   const { quantity, userId } = paymentIntent.metadata;
 
-  const currentQuantity = await prisma.teacher.findUnique({
+  const currentQuantity = await prisma.teacher.findFirst({
     where: {
       id: userId,
     },
