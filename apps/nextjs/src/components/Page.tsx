@@ -35,14 +35,14 @@ export const PageContainer: React.FC<PageContainerProps> = ({
       style={{ backgroundColor: color, minHeight: "100vh" }}
     >
       <div
-        className={`hidden w-[calc((100vw-1500px)/2)] bg-gradient-to-l from-[${colorForPath(
+        className={`hidden w-[calc((100vw-2000px)/2)] bg-gradient-to-l from-[${colorForPath(
           pathname,
-        )}] to-[${colorMap[colorForPath(pathname)]}] min-[1500px]:block`}
+        )}] to-[${colorMap[colorForPath(pathname)]}] min-[2000px]:block`}
       ></div>
       <div
         style={{ backgroundColor: "#f6f3ec" }}
         className={classNames(
-          "mx-auto flex max-w-[1500px] flex-grow justify-center",
+          "mx-auto flex max-w-[2000px] flex-grow justify-center",
         )}
       >
         {/* //note that conditional rendering causes pop in */}
@@ -63,9 +63,9 @@ export const PageContainer: React.FC<PageContainerProps> = ({
         ) : null}
       </div>
       <div
-        className={`hidden w-[calc((100vw-1500px)/2)] bg-gradient-to-r from-[${colorForPath(
+        className={`hidden w-[calc((100vw-2000px)/2)] bg-gradient-to-r from-[${colorForPath(
           pathname,
-        )}] to-[${colorMap[colorForPath(pathname)]}] min-[1500px]:block`}
+        )}] to-[${colorMap[colorForPath(pathname)]}] min-[2000px]:block`}
       ></div>
     </main>
   );
@@ -161,7 +161,7 @@ export const DefaultPageContainer: React.FC<DefaultPageContainerProps> = ({
     <main style={{ backgroundColor: color, minHeight: "100vh" }}>
       <div
         className={classNames(
-          "mx-auto flex max-w-[1500px] flex-grow justify-center",
+          "mx-auto flex max-w-[2000px] flex-grow justify-center",
         )}
       >
         {children}
