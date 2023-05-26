@@ -69,7 +69,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
         </div>
       </div>
       {!reports || reports.length === 0 ? (
-        <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-transparent px-4 py-5 shadow sm:p-6">
+        <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-purple-100 px-4 py-5 shadow sm:p-6">
           <EmptyReportForm />
         </div>
       ) : (
