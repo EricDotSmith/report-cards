@@ -145,4 +145,14 @@ model StripeEvent {
     created          DateTime
     livemode         Boolean
     pending_webhooks Int
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt @default(now())
+}
+
+model PaymentIntent {
+    id                String   @id @unique
+    userId            String?
+    status            String
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
 }

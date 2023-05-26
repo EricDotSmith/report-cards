@@ -60,6 +60,16 @@ export const handleInvoicePaid = async ({
   const paymentIntent = event.data.object as Stripe.PaymentIntent;
   const { quantity, userId } = paymentIntent.metadata;
 
+  const storedPaymentIntent = await prisma.paymentIntent.findUnique({
+    where: {
+      id: paymentIntent.id,
+    },
+  });
+
+  if (storedPaymentIntent?.status === "succeeded") {
+    return;
+  }
+
   const currentQuantity = await prisma.teacher.findUnique({
     where: {
       id: userId,
@@ -82,6 +92,14 @@ export const handleInvoicePaid = async ({
       },
       data: {
         reportCredits: newQuantity,
+      },
+    });
+
+    await prisma.paymentIntent.create({
+      data: {
+        id: paymentIntent.id,
+        status: paymentIntent.status,
+        userId,
       },
     });
   }

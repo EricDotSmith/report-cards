@@ -2,11 +2,7 @@ import type { NextApiRequest, NextApiResponse } from "next";
 import { prisma } from "../../../../../packages/db";
 import type Stripe from "stripe";
 import { buffer } from "micro";
-import {
-  handleInvoicePaid,
-  handleSubscriptionCanceled,
-  handleSubscriptionCreatedOrUpdated,
-} from "../../../../../packages/api/src/stripe/stripe-webhook-handlers";
+import { handleInvoicePaid } from "../../../../../packages/api/src/stripe/stripe-webhook-handlers";
 import { stripe } from "../../../../../packages/api/src/stripe/client";
 
 // Stripe requires the raw body to construct the event.
@@ -42,34 +38,7 @@ export default async function handler(
             prisma,
           });
           break;
-        case "customer.subscription.created":
-          // Used to provision services as they are added to a subscription.
-          // await handleSubscriptionCreatedOrUpdated({
-          //   event,
-          //   prisma,
-          // });
-          break;
-        case "customer.subscription.updated":
-          // Used to provision services as they are updated.
-          // await handleSubscriptionCreatedOrUpdated({
-          //   event,
-          //   prisma,
-          // });
-          break;
-        case "invoice.payment_failed":
-          // If the payment fails or the customer does not have a valid payment method,
-          //  an invoice.payment_failed event is sent, the subscription becomes past_due.
-          // Use this webhook to notify your user that their payment has
-          // failed and to retrieve new card details.
-          // Can also have Stripe send an email to the customer notifying them of the failure. See settings: https://dashboard.stripe.com/settings/billing/automatic
-          break;
-        case "customer.subscription.deleted":
-          // handle subscription cancelled automatically based
-          // upon your subscription settings.
-          // await handleSubscriptionCanceled({
-          //   event,
-          //   prisma,
-          // });
+        case "payment_intent.payment_failed":
           break;
         default:
         // Unexpected event type
