@@ -44,27 +44,38 @@ export default async function handler(
         // Unexpected event type
       }
 
-      // record the event in the database
-      await prisma.stripeEvent.create({
-        data: {
+      const existingStripEventRecord = await prisma.stripeEvent.findUnique({
+        where: {
           id: event.id,
-          type: event.type,
-          object: event.object,
-          api_version: event.api_version,
-          account: event.account,
-          created: new Date(event.created * 1000), // convert to milliseconds
-          data: {
-            object: event.data.object,
-            previous_attributes: event.data.previous_attributes,
-          },
-          livemode: event.livemode,
-          pending_webhooks: event.pending_webhooks,
-          request: {
-            id: event.request?.id,
-            idempotency_key: event.request?.idempotency_key,
-          },
+        },
+        select: {
+          id: true,
         },
       });
+
+      if (!existingStripEventRecord) {
+        // record the event in the database
+        await prisma.stripeEvent.create({
+          data: {
+            id: event.id,
+            type: event.type,
+            object: event.object,
+            api_version: event.api_version,
+            account: event.account,
+            created: new Date(event.created * 1000), // convert to milliseconds
+            data: {
+              object: event.data.object,
+              previous_attributes: event.data.previous_attributes,
+            },
+            livemode: event.livemode,
+            pending_webhooks: event.pending_webhooks,
+            request: {
+              id: event.request?.id,
+              idempotency_key: event.request?.idempotency_key,
+            },
+          },
+        });
+      }
 
       res.json({ received: true });
     } catch (err) {
