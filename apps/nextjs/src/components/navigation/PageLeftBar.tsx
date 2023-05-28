@@ -1,6 +1,7 @@
 import classNames from "../../utils/tailwind";
 import { useRouter } from "next/router";
 import sidebarNavigation, { colorForPath } from "./Paths";
+import Image from "next/image";
 
 const PageLeftBar: React.FC = () => {
   const { pathname } = useRouter();
@@ -12,10 +13,11 @@ const PageLeftBar: React.FC = () => {
     >
       <div className="flex w-full flex-col items-center py-6">
         <div className="flex flex-shrink-0 items-center">
-          <img
-            className="h-8 w-auto"
-            src="https://tailwindui.com/img/logos/mark.svg?color=white"
-            alt="Your Company"
+          <Image
+            src="/report-card-icon.png"
+            width={32}
+            height={32}
+            alt="Picture of the author"
           />
         </div>
         <div className="mt-6 w-full flex-1 space-y-1 px-2">

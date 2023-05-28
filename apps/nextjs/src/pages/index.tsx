@@ -5,6 +5,7 @@ import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
 import Link from "next/link";
 import { useAuth } from "@clerk/nextjs";
 import { NextSeo } from "next-seo";
+import Image from "next/image";
 
 const navigation = [
   { name: "Product", href: "#" },
@@ -59,10 +60,11 @@ const Home: NextPage = () => {
             <div className="flex lg:flex-1">
               <a href="#" className="-m-1.5 p-1.5">
                 <span className="sr-only">Your Company</span>
-                <img
-                  className="h-8"
-                  src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                  alt=""
+                <Image
+                  src="/report-card-icon.png"
+                  width={32}
+                  height={32}
+                  alt="Picture of the author"
                 />
               </a>
             </div>
@@ -99,10 +101,11 @@ const Home: NextPage = () => {
               <div className="flex items-center justify-between">
                 <a href="#" className="-m-1.5 p-1.5">
                   <span className="sr-only">Your Company</span>
-                  <img
-                    className="h-8"
-                    src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-                    alt=""
+                  <Image
+                    src="/report-card-icon.png"
+                    width={32}
+                    height={32}
+                    alt="Picture of the author"
                   />
                 </a>
                 <button
