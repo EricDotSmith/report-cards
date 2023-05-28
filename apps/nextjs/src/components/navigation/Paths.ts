@@ -43,7 +43,7 @@ const pageColors: { href: string; color: keyof typeof colorMap }[] = [
   },
   {
     href: "/class",
-    color: "#fb923c",
+    color: "#f2aa4b",
   },
   {
     href: "/report",
