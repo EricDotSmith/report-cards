@@ -43,11 +43,11 @@ const pageColors: { href: string; color: keyof typeof colorMap }[] = [
   },
   {
     href: "/class",
-    color: "#f08fa2",
+    color: "#fb923c",
   },
   {
     href: "/report",
-    color: "#f2aa4b",
+    color: "#b97cfc",
   },
 ];
 
@@ -66,6 +66,8 @@ export const colorMap = {
   "#f08fa2": "#ffbeec",
   "#f2aa4b": "#ffe0b6",
   "#f6f3ec": "#f6f3ec",
+  "#b97cfc": "#e9d5ff",
+  "#fb923c": "#fac091",
 };
 
 //changeColor("#5cc956");

@@ -11,7 +11,7 @@ import ItemNotFound from "../../components/ItemNotFound";
 import { NextSeo } from "next-seo";
 import ClassPageTopBar from "../../components/navigation/ClassPageTopBar";
 
-const PAGE_COLOR = "#f08fa2";
+const PAGE_COLOR = "#fb923c";
 
 const ClassPage: NextPage = () => {
   const router = useRouter();

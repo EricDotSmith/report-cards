@@ -79,13 +79,21 @@ const ReportForm: React.FC<ReportFormProps> = ({
               <li key={report.id} className="py-4">
                 <div className="flex items-center space-x-4">
                   <div className="min-w-0 flex-1">
-                    {report.reportGenerated ? (
+                    {report.reportStatus === "GENERATED" ? (
                       <p className="max-w-min truncate rounded bg-green-400 p-1 text-sm font-medium text-green-900">
                         Status: Complete
                       </p>
-                    ) : (
+                    ) : report.reportStatus === "GENERATING" ? (
                       <p className="max-w-min truncate rounded bg-yellow-400 p-1 text-sm font-medium text-yellow-900">
-                        Status: In-Progress
+                        Status: Generating
+                      </p>
+                    ) : report.reportStatus === "FAILED" ? (
+                      <p className="max-w-min truncate rounded bg-red-400 p-1 text-sm font-medium text-red-900">
+                        Status: Failed
+                      </p>
+                    ) : (
+                      <p className="max-w-min truncate rounded bg-orange-400 p-1 text-sm font-medium text-orange-900">
+                        Status: Editing
                       </p>
                     )}
                     <p className="truncate text-sm text-gray-500">

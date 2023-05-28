@@ -37,7 +37,7 @@ const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({
             if (old) {
               return {
                 ...old,
-                reportGenerated: true,
+                reportStatus: "GENERATING",
                 reportExecutionId: data.executionId,
               };
             }
