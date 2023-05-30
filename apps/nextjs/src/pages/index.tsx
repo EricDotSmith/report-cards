@@ -271,16 +271,16 @@ const AuthShowcase: React.FC = () => {
 };
 
 const ContactUs: React.FC = () => {
-  const form = useRef();
+  const form = useRef<HTMLFormElement>(null);
 
-  const sendEmail = (e) => {
+  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
 
     emailjs
       .sendForm(
         "service_56t4kb8",
         "template_xoqwght",
-        form.current,
+        form.current ?? "",
         "rHykzTHgaxaq2J74_",
       )
       .then(
