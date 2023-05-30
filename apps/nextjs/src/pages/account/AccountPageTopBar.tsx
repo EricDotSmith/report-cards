@@ -26,7 +26,7 @@ const AccountPageTopBar: React.FC = () => {
 
   return (
     <div className="flex h-16 w-full items-center justify-between bg-white px-4 shadow-sm">
-      <div className="">
+      <div className="pr-2">
         <dt className="sr-only">Report Credits</dt>
         <dd className="rounded-md bg-green-50 px-2 py-1 text-sm font-medium text-green-600 ring-1 ring-inset ring-green-600/20">
           {teacherData?.reportCredits} Report Credits Available

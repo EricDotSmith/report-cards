@@ -5,6 +5,7 @@ import { useRouter } from "next/router";
 import { trpc } from "../utils/trpc";
 import { useState } from "react";
 import Link from "next/link";
+import GenericInfoModal from "./GenericInfoModal";
 
 interface GroupProps {
   num: string;
@@ -53,12 +54,18 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
   const router = useRouter();
 
   const [createClassClicked, setCreateClassClicked] = useState(false);
+  const [showTooManyClassesInDayModal, setShowTooManyClassesInDayModal] =
+    useState(false);
 
   const { mutate: createClass } = trpc.class.create.useMutation({
     onSuccess: ({ id }) => {
       router.push(`/class/${id}`);
     },
-    onError: () => {
+    onError: ({ data }) => {
+      if (data?.code === "TOO_MANY_REQUESTS") {
+        setShowTooManyClassesInDayModal(true);
+      }
+
       setCreateClassClicked(false);
     },
   });
@@ -71,104 +78,113 @@ const ClassTable: React.FC<ClassTableProps> = ({ classes }) => {
   };
 
   return (
-    <div className="p-4">
-      <div className="mt-10 mb-5 px-4 sm:mt-0 sm:flex-auto sm:px-0">
-        <h1 className="text-xl font-semibold text-gray-900">Classes</h1>
-        <p className="mt-2 text-sm text-gray-700">
-          Here is a list of all of your classes. To see your progress reports,
-          click on a class.
-        </p>
-      </div>
-      <div className="sticky top-16 z-10 flex w-full justify-end rounded-tl-md rounded-tr-md bg-[#58c1fa] px-6 py-3 shadow">
-        <div className="flex w-full items-center justify-between">
-          <div className="text-base font-bold text-white">
-            {classes.length} Classes
+    <>
+      <GenericInfoModal
+        isOpen={showTooManyClassesInDayModal}
+        closeModal={() => setShowTooManyClassesInDayModal(false)}
+        modalTitleText="Too many classes in a day"
+        modalBodyText="You have reached the maximum number of classes you can create in a day. Please try again tomorrow."
+        modalButtonText="Continue"
+      />
+      <div className="p-4">
+        <div className="mt-10 mb-5 px-4 sm:mt-0 sm:flex-auto sm:px-0">
+          <h1 className="text-xl font-semibold text-gray-900">Classes</h1>
+          <p className="mt-2 text-sm text-gray-700">
+            Here is a list of all of your classes. To see your progress reports,
+            click on a class.
+          </p>
+        </div>
+        <div className="sticky top-16 z-10 flex w-full justify-end rounded-tl-md rounded-tr-md bg-[#58c1fa] px-6 py-3 shadow">
+          <div className="flex w-full items-center justify-between">
+            <div className="text-base font-bold text-white">
+              {classes.length} Classes
+            </div>
+            <button
+              type="button"
+              disabled={createClassClicked}
+              onClick={handleCreateClass}
+              className="block rounded-md bg-sky-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
+            >
+              {createClassClicked ? <DotLoader /> : "+ Class"}
+            </button>
           </div>
-          <button
-            type="button"
-            disabled={createClassClicked}
-            onClick={handleCreateClass}
-            className="block rounded-md bg-sky-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
-          >
-            {createClassClicked ? <DotLoader /> : "+ Class"}
-          </button>
         </div>
-      </div>
-      {classes.length === 0 ? (
-        <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-sky-100  px-4 py-5 shadow-inner sm:p-6">
-          no classes
-        </div>
-      ) : (
-        <div className="grid rounded-bl-md rounded-br-md bg-white px-4 py-5 shadow sm:p-6">
-          <ul role="list" className="-my-5 divide-y divide-gray-200">
-            {classes.map((currentClass) => (
-              <li key={currentClass.id} className="py-4">
-                <div className="flex items-center space-x-4">
-                  <div className="min-w-0 flex-1">
-                    <div className="hidden flex-row space-x-2 sm:flex">
-                      <Group
-                        num={currentClass._count.students.toString()}
-                        title="Students"
-                        colorProfile="shadow-pink-200/50 text-pink-500 bg-pink-100 border-pink-200"
-                      />
-                      <Group
-                        num={currentClass._count.criteria.toString()}
-                        title="Criteria"
-                        colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200"
-                      />
-                      <Group
-                        num={currentClass._count.reports.toString()}
-                        title="Reports"
-                        colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200"
-                      />
-                      <Group
-                        num={formatDate(currentClass.createdAt)}
-                        title=""
-                        colorProfile="shadow-gray-200/50 text-gray-500 bg-gray-100 border-gray-200"
-                      />
-                    </div>
-                    <div className="flex max-w-min flex-col space-y-2 sm:hidden">
-                      <div className="flex space-x-2">
+        {classes.length === 0 ? (
+          <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-sky-100  px-4 py-5 shadow-inner sm:p-6">
+            no classes
+          </div>
+        ) : (
+          <div className="grid rounded-bl-md rounded-br-md bg-white px-4 py-5 shadow sm:p-6">
+            <ul role="list" className="-my-5 divide-y divide-gray-200">
+              {classes.map((currentClass) => (
+                <li key={currentClass.id} className="py-4">
+                  <div className="flex items-center space-x-4">
+                    <div className="min-w-0 flex-1">
+                      <div className="hidden flex-row space-x-2 sm:flex">
                         <Group
                           num={currentClass._count.students.toString()}
                           title="Students"
-                          colorProfile="shadow-pink-200/50 text-pink-500 bg-pink-100 border-pink-200 max-w-min"
+                          colorProfile="shadow-pink-200/50 text-pink-500 bg-pink-100 border-pink-200"
                         />
                         <Group
                           num={currentClass._count.criteria.toString()}
                           title="Criteria"
-                          colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200 max-w-min"
+                          colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200"
                         />
                         <Group
                           num={currentClass._count.reports.toString()}
                           title="Reports"
-                          colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200 max-w-min"
+                          colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200"
                         />
-                      </div>
-                      <div className="">
                         <Group
                           num={formatDate(currentClass.createdAt)}
                           title=""
-                          colorProfile="shadow-gray-200/50 text-gray-500 bg-gray-100 border-gray-200 max-w-min"
+                          colorProfile="shadow-gray-200/50 text-gray-500 bg-gray-100 border-gray-200"
                         />
                       </div>
+                      <div className="flex max-w-min flex-col space-y-2 sm:hidden">
+                        <div className="flex space-x-2">
+                          <Group
+                            num={currentClass._count.students.toString()}
+                            title="Students"
+                            colorProfile="shadow-pink-200/50 text-pink-500 bg-pink-100 border-pink-200 max-w-min"
+                          />
+                          <Group
+                            num={currentClass._count.criteria.toString()}
+                            title="Criteria"
+                            colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200 max-w-min"
+                          />
+                          <Group
+                            num={currentClass._count.reports.toString()}
+                            title="Reports"
+                            colorProfile="shadow-orange-200/50 text-orange-500 bg-orange-100 border-orange-200 max-w-min"
+                          />
+                        </div>
+                        <div className="">
+                          <Group
+                            num={formatDate(currentClass.createdAt)}
+                            title=""
+                            colorProfile="shadow-gray-200/50 text-gray-500 bg-gray-100 border-gray-200 max-w-min"
+                          />
+                        </div>
+                      </div>
+                    </div>
+                    <div className="flex items-center space-x-4">
+                      <Link
+                        href={`/class/${currentClass.id}`}
+                        className="text-sky-600 hover:text-sky-900"
+                      >
+                        View
+                      </Link>
                     </div>
                   </div>
-                  <div className="flex items-center space-x-4">
-                    <Link
-                      href={`/class/${currentClass.id}`}
-                      className="text-sky-600 hover:text-sky-900"
-                    >
-                      View
-                    </Link>
-                  </div>
-                </div>
-              </li>
-            ))}
-          </ul>
-        </div>
-      )}
-    </div>
+                </li>
+              ))}
+            </ul>
+          </div>
+        )}
+      </div>
+    </>
   );
 };
 

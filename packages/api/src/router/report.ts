@@ -25,7 +25,15 @@ export const reportRouter = router({
     .mutation(async ({ ctx, input }) => {
       const currentClass = await ctx.prisma.class.findFirst({
         where: { id: input.classId, AND: { teacherId: ctx.user.id } },
-        include: { students: true, criteria: true },
+        include: {
+          students: true,
+          criteria: true,
+          _count: {
+            select: {
+              reports: true,
+            },
+          },
+        },
       });
 
       if (!currentClass) {
@@ -35,36 +43,12 @@ export const reportRouter = router({
         });
       }
 
-      // return ctx.prisma.report.create({
-      //   data: {
-      //     studentEvaluation: {
-      //       create: [
-      //         {
-      //           studentId: "studentId",
-      //           studentName: "studentName",
-      //           studentPronouns: "studentPronouns",
-      //           criteriaValues: {
-      //             createMany: {
-      //               data: [
-      //                 {
-      //                   criteriaId: "1",
-      //                   criteriaType: "BOOLEAN",
-      //                   criteriaValue: "we",
-      //                   required: false,
-      //                 },
-      //               ],
-      //             },
-      //           },
-      //         },
-      //       ],
-      //     },
-      //     class: {
-      //       connect: {
-      //         id: input.classId,
-      //       },
-      //     },
-      //   },
-      // });
+      if (currentClass._count.reports >= 5) {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message: "Max reports per class exceeded",
+        });
+      }
 
       return ctx.prisma.report.create({
         data: {

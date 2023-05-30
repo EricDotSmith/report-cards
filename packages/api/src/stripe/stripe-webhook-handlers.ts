@@ -60,31 +60,49 @@ export const handleInvoicePaid = async ({
   const paymentIntent = event.data.object as Stripe.PaymentIntent;
   const { quantity, userId } = paymentIntent.metadata;
 
-  // const currentQuantity = await prisma.teacher.findFirst({
-  //   where: {
-  //     id: userId,
-  //   },
-  //   select: {
-  //     reportCredits: true,
-  //   },
-  // });
+  const storedPaymentIntent = await prisma.paymentIntent.findUnique({
+    where: {
+      id: paymentIntent.id,
+    },
+  });
 
-  // if (
-  //   typeof currentQuantity?.reportCredits === "number" &&
-  //   typeof quantity === "string"
-  // ) {
-  //   const newQuantity = currentQuantity.reportCredits + parseInt(quantity);
+  if (storedPaymentIntent?.status === "succeeded") {
+    return;
+  }
 
-  //   // update user with subscription data
-  //   await prisma.teacher.update({
-  //     where: {
-  //       id: userId,
-  //     },
-  //     data: {
-  //       reportCredits: newQuantity,
-  //     },
-  //   });
-  // }
+  const currentQuantity = await prisma.teacher.findUnique({
+    where: {
+      id: userId,
+    },
+    select: {
+      reportCredits: true,
+    },
+  });
+
+  if (
+    typeof currentQuantity?.reportCredits === "number" &&
+    typeof quantity === "string"
+  ) {
+    const newQuantity = currentQuantity.reportCredits + parseInt(quantity);
+
+    // update user with subscription data
+    await prisma.teacher.update({
+      where: {
+        id: userId,
+      },
+      data: {
+        reportCredits: newQuantity,
+      },
+    });
+
+    await prisma.paymentIntent.create({
+      data: {
+        id: paymentIntent.id,
+        status: paymentIntent.status,
+        userId,
+      },
+    });
+  }
 };
 
 // export const handleInvoicePaid = async ({

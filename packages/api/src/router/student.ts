@@ -24,13 +24,26 @@ export const studentRouter = router({
     .mutation(async ({ ctx, input }) => {
       const currentClass = await ctx.prisma.class.findFirst({
         where: { id: input.classId, AND: { teacherId: ctx.user.id } },
-        select: { id: true },
+        include: {
+          _count: {
+            select: {
+              students: true,
+            },
+          },
+        },
       });
 
       if (!currentClass) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Class not found",
+        });
+      }
+
+      if (currentClass._count.students >= 50) {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message: "Max students per class exceeded",
         });
       }
 

@@ -26,13 +26,26 @@ export const criteriaRouter = router({
     .mutation(async ({ ctx, input }) => {
       const currentClass = await ctx.prisma.class.findFirst({
         where: { id: input.classId, AND: { teacherId: ctx.user.id } },
-        select: { id: true },
+        include: {
+          _count: {
+            select: {
+              criteria: true,
+            },
+          },
+        },
       });
 
       if (!currentClass) {
         throw new TRPCError({
           code: "NOT_FOUND",
           message: "Class not found",
+        });
+      }
+
+      if (currentClass._count.criteria >= 10) {
+        throw new TRPCError({
+          code: "PRECONDITION_FAILED",
+          message: "Max criteria per class exceeded",
         });
       }
 

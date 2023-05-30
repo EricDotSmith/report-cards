@@ -5,16 +5,18 @@ import Link from "next/link";
 import { useRouter } from "next/router";
 import { useEffect } from "react";
 import { DefaultPageContainer } from "../../components/Page";
+import Image from "next/image";
 
 const PAGE_COLOR = "#f6f3ec";
 
 const SignUpPageHeader: React.FC = () => (
   <div className="flex w-full justify-between bg-[#f7f3ed] px-4 pt-8">
     <div className="flex w-full justify-center sm:w-auto sm:justify-start">
-      <img
-        className="h-8"
-        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&shade=600"
-        alt=""
+      <Image
+        src="/report-card-icon.png"
+        width={32}
+        height={32}
+        alt="Picture of the author"
       />
     </div>
     <div className="hidden space-x-4 sm:block">

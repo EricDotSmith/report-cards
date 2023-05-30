@@ -60,34 +60,48 @@ async function createCompletion(
     },
   ];
 
-  const chatGPT = await openai.createChatCompletion({
-    model: "gpt-3.5-turbo",
-    messages,
-  });
+  try {
+    const chatGPT = await openai.createChatCompletion({
+      model: "gpt-3.5-turbo",
+      messages,
+    });
 
-  const chatGPTResponseContent = chatGPT.data.choices[0]?.message?.content;
+    const chatGPTResponseContent = chatGPT.data.choices[0]?.message?.content;
 
-  if (!!chatGPTResponseContent) {
-    const responseMessages = JSON.parse(chatGPTResponseContent) as GPTResponse;
+    if (!!chatGPTResponseContent) {
+      const responseMessages = JSON.parse(
+        chatGPTResponseContent,
+      ) as GPTResponse;
 
+      await prisma.report.update({
+        where: {
+          id: reportId,
+        },
+        data: {
+          comments: {
+            createMany: {
+              data: responseMessages.map((response) => ({
+                studentId: response.studentId,
+                comment: response.gptResponse,
+                prompt: JSON.stringify(
+                  gptPrompt.find(
+                    (prompt) => prompt.studentId === response.studentId,
+                  ),
+                ),
+              })),
+            },
+          },
+          reportStatus: "GENERATED",
+        },
+      });
+    }
+  } catch (e) {
     await prisma.report.update({
       where: {
         id: reportId,
       },
       data: {
-        comments: {
-          createMany: {
-            data: responseMessages.map((response) => ({
-              studentId: response.studentId,
-              comment: response.gptResponse,
-              prompt: JSON.stringify(
-                gptPrompt.find(
-                  (prompt) => prompt.studentId === response.studentId,
-                ),
-              ),
-            })),
-          },
-        },
+        reportStatus: "FAILED",
       },
     });
   }

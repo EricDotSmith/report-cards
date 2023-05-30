@@ -8,6 +8,7 @@ import {
   TrashIcon,
   AdjustmentsHorizontalIcon,
 } from "@heroicons/react/24/outline";
+import GenericInfoModal from "./GenericInfoModal";
 
 interface StudentFormProps {
   students?: Student[];
@@ -17,6 +18,8 @@ const StudentForm: React.FC<StudentFormProps> = ({ students }) => {
   const [addStudentModalOpen, setAddStudentModalOpen] = useState(false);
   const [editStudentModalOpen, setEditStudentModalOpen] = useState(false);
   const [deleteStudentModalOpen, setDeleteStudentModalOpen] = useState(false);
+  const [showReachedMaxStudentsModal, setShowReachedMaxStudentsModal] =
+    useState(false);
   const [studentToEdit, setStudentToEdit] = useState<Student | null>(null);
 
   const handleEditStudentClick = (student: Student) => {
@@ -27,6 +30,14 @@ const StudentForm: React.FC<StudentFormProps> = ({ students }) => {
   const handleDeleteCriteriaClick = (student: Student) => {
     setStudentToEdit(student);
     setDeleteStudentModalOpen(true);
+  };
+
+  const handleAddStudentClick = () => {
+    if (students?.length === 50) {
+      setShowReachedMaxStudentsModal(true);
+    } else {
+      setAddStudentModalOpen(true);
+    }
   };
 
   return (
@@ -49,6 +60,13 @@ const StudentForm: React.FC<StudentFormProps> = ({ students }) => {
           student={studentToEdit}
         />
       )}
+      <GenericInfoModal
+        isOpen={showReachedMaxStudentsModal}
+        closeModal={() => setShowReachedMaxStudentsModal(false)}
+        modalTitleText="Reached max students"
+        modalBodyText="You have reached the maximum amount of students you can have for a single class."
+        modalButtonText="Continue"
+      />
       <div className="sticky top-16 z-10 flex w-full justify-end rounded-tl-md rounded-tr-md bg-sky-200 px-6 py-3 shadow">
         <div className="flex w-full items-center justify-between">
           <div className="text-base font-bold text-sky-700">
@@ -56,7 +74,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ students }) => {
           </div>
           <button
             type="button"
-            onClick={() => setAddStudentModalOpen(true)}
+            onClick={handleAddStudentClick}
             className="block rounded-md bg-sky-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
           >
             + Student
@@ -64,7 +82,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ students }) => {
         </div>
       </div>
       {!students || students.length === 0 ? (
-        <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-transparent px-4 py-5 shadow sm:p-6">
+        <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-sky-100 px-4 py-5 shadow sm:p-6">
           <EmptyStudentForm />
         </div>
       ) : (

@@ -63,13 +63,20 @@ model Criteria {
     @@index([classId])
 }
 
+enum ReportStatus {
+    PENDING
+    GENERATING
+    GENERATED
+    FAILED
+}
+
 model Report {
     id      String @id @default(cuid())
     classId String
     class Class @relation(fields: [classId], references: [id])
     studentEvaluation StudentEvaluation[] //fill with each student and their criteria
     comments Comment[]
-    reportGenerated Boolean @default(false)
+    reportStatus ReportStatus @default(PENDING)
     reportExecutionId String @default("")
     createdAt DateTime @default(now())
     updatedAt DateTime @updatedAt @default(now())
@@ -145,4 +152,14 @@ model StripeEvent {
     created          DateTime
     livemode         Boolean
     pending_webhooks Int
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt @default(now())
+}
+
+model PaymentIntent {
+    id                String   @id @unique
+    userId            String?
+    status            String
+    createdAt         DateTime @default(now())
+    updatedAt         DateTime @updatedAt
 }

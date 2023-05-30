@@ -23,6 +23,8 @@ const ReportForm: React.FC<ReportFormProps> = ({
 
   const [createReportClicked, setCreateReportClicked] = useState(false);
   const [showNeedsMoreInfoModal, setShowNeedsMoreInfoModal] = useState(false);
+  const [showReachedMaxReportsModal, setShowReachedMaxReportsModal] =
+    useState(false);
 
   const { mutate: createReport } = trpc.report.create.useMutation({
     onSuccess: ({ id }) => {
@@ -36,6 +38,8 @@ const ReportForm: React.FC<ReportFormProps> = ({
   const handleCreateReport = () => {
     if (studentCount === 0 || criteriaCount === 0) {
       setShowNeedsMoreInfoModal(true);
+    } else if ((reports?.length ?? 0) >= 5) {
+      setShowReachedMaxReportsModal(true);
     } else {
       if (!createReportClicked) {
         setCreateReportClicked(true);
@@ -51,6 +55,13 @@ const ReportForm: React.FC<ReportFormProps> = ({
         closeModal={() => setShowNeedsMoreInfoModal(false)}
         modalTitleText="Needs more criteria or students"
         modalBodyText="You need at least one criteria and one student to start a report."
+        modalButtonText="Continue"
+      />
+      <GenericInfoModal
+        isOpen={showReachedMaxReportsModal}
+        closeModal={() => setShowReachedMaxReportsModal(false)}
+        modalTitleText="Reached max reports"
+        modalBodyText="You have reached the maximum amount of reports you can have for a single class."
         modalButtonText="Continue"
       />
       <div className="sticky top-16 z-10 flex w-full justify-end rounded-tl-md rounded-tr-md bg-purple-200 px-6 py-3 shadow">
@@ -69,7 +80,7 @@ const ReportForm: React.FC<ReportFormProps> = ({
         </div>
       </div>
       {!reports || reports.length === 0 ? (
-        <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-transparent px-4 py-5 shadow sm:p-6">
+        <div className="flex w-full items-center justify-center rounded-bl-md rounded-br-md bg-purple-100 px-4 py-5 shadow sm:p-6">
           <EmptyReportForm />
         </div>
       ) : (
@@ -79,13 +90,21 @@ const ReportForm: React.FC<ReportFormProps> = ({
               <li key={report.id} className="py-4">
                 <div className="flex items-center space-x-4">
                   <div className="min-w-0 flex-1">
-                    {report.reportGenerated ? (
+                    {report.reportStatus === "GENERATED" ? (
                       <p className="max-w-min truncate rounded bg-green-400 p-1 text-sm font-medium text-green-900">
                         Status: Complete
                       </p>
-                    ) : (
+                    ) : report.reportStatus === "GENERATING" ? (
                       <p className="max-w-min truncate rounded bg-yellow-400 p-1 text-sm font-medium text-yellow-900">
-                        Status: In-Progress
+                        Status: Generating
+                      </p>
+                    ) : report.reportStatus === "FAILED" ? (
+                      <p className="max-w-min truncate rounded bg-red-400 p-1 text-sm font-medium text-red-900">
+                        Status: Failed
+                      </p>
+                    ) : (
+                      <p className="max-w-min truncate rounded bg-orange-400 p-1 text-sm font-medium text-orange-900">
+                        Status: Editing
                       </p>
                     )}
                     <p className="truncate text-sm text-gray-500">
