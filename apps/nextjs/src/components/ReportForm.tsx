@@ -23,6 +23,8 @@ const ReportForm: React.FC<ReportFormProps> = ({
 
   const [createReportClicked, setCreateReportClicked] = useState(false);
   const [showNeedsMoreInfoModal, setShowNeedsMoreInfoModal] = useState(false);
+  const [showReachedMaxReportsModal, setShowReachedMaxReportsModal] =
+    useState(false);
 
   const { mutate: createReport } = trpc.report.create.useMutation({
     onSuccess: ({ id }) => {
@@ -36,6 +38,8 @@ const ReportForm: React.FC<ReportFormProps> = ({
   const handleCreateReport = () => {
     if (studentCount === 0 || criteriaCount === 0) {
       setShowNeedsMoreInfoModal(true);
+    } else if ((reports?.length ?? 0) >= 5) {
+      setShowReachedMaxReportsModal(true);
     } else {
       if (!createReportClicked) {
         setCreateReportClicked(true);
@@ -51,6 +55,13 @@ const ReportForm: React.FC<ReportFormProps> = ({
         closeModal={() => setShowNeedsMoreInfoModal(false)}
         modalTitleText="Needs more criteria or students"
         modalBodyText="You need at least one criteria and one student to start a report."
+        modalButtonText="Continue"
+      />
+      <GenericInfoModal
+        isOpen={showReachedMaxReportsModal}
+        closeModal={() => setShowReachedMaxReportsModal(false)}
+        modalTitleText="Reached max reports"
+        modalBodyText="You have reached the maximum amount of reports you can have for a single class."
         modalButtonText="Continue"
       />
       <div className="sticky top-16 z-10 flex w-full justify-end rounded-tl-md rounded-tr-md bg-purple-200 px-6 py-3 shadow">

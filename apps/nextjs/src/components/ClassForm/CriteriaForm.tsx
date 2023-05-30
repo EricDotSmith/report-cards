@@ -8,6 +8,7 @@ import AddCriteriaModal from "./AddCriteriaModal";
 import DeleteCriteriaModal from "./DeleteCriteriaModal";
 import EditCriteriaModal from "./EditCriteriaModal";
 import EmptyCriteriaForm from "./EmptyCriteriaForm";
+import GenericInfoModal from "../GenericInfoModal";
 
 const criteriaLabelFromType = (criteria: CriteriaType): string => {
   if (criteria === "BOOLEAN") {
@@ -29,6 +30,8 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ criteria }) => {
   const [addCriteriaModalOpen, setAddCriteriaModalOpen] = useState(false);
   const [editCriteriaModalOpen, setEditCriteriaModalOpen] = useState(false);
   const [deleteCriteriaModalOpen, setDeleteCriteriaModalOpen] = useState(false);
+  const [showReachedMaxCriteriaModal, setShowReachedMaxCriteriaModal] =
+    useState(false);
   const [criteriaToEdit, setCriteriaToEdit] = useState<Criteria | null>(null);
 
   const handleEditCriteriaClick = (criteria: Criteria) => {
@@ -39,6 +42,14 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ criteria }) => {
   const handleDeleteCriteriaClick = (criteria: Criteria) => {
     setCriteriaToEdit(criteria);
     setDeleteCriteriaModalOpen(true);
+  };
+
+  const handleAddCriteriaClick = () => {
+    if (criteria?.length === 10) {
+      setShowReachedMaxCriteriaModal(true);
+    } else {
+      setAddCriteriaModalOpen(true);
+    }
   };
 
   return (
@@ -61,6 +72,13 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ criteria }) => {
           criteria={criteriaToEdit}
         />
       )}
+      <GenericInfoModal
+        isOpen={showReachedMaxCriteriaModal}
+        closeModal={() => setShowReachedMaxCriteriaModal(false)}
+        modalTitleText="Reached max criteria"
+        modalBodyText="You have reached the maximum amount of criteria you can have for a single class."
+        modalButtonText="Continue"
+      />
       <div className="sticky top-16 z-10 flex w-full justify-end rounded-tl-md rounded-tr-md bg-orange-200 px-6 py-3 shadow">
         <div className="flex w-full items-center justify-between">
           <div className="text-base font-bold text-orange-700">
@@ -68,7 +86,7 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ criteria }) => {
           </div>
           <button
             type="button"
-            onClick={() => setAddCriteriaModalOpen(true)}
+            onClick={handleAddCriteriaClick}
             className="block rounded-md bg-orange-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-orange-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-orange-600"
           >
             + Criteria
