@@ -94,15 +94,15 @@ const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({
       <div
         className={classNames(
           "flex w-full flex-col items-center justify-start space-y-2 py-2 px-1 shadow-sm",
-          hasReportBeenGenerated ? "bg-orange-200" : "bg-white",
+          hasReportBeenGenerated ? "bg-purple-200" : "bg-white",
         )}
       >
         {hasReportBeenGenerated && !isReportCompleted ? (
-          <div className="font-bold text-orange-900">
+          <div className="font-bold text-purple-900">
             Generating report, please wait...
           </div>
         ) : isReportCompleted ? (
-          <div className="font-bold text-orange-900">Report (Generated on)</div>
+          <div className="font-bold text-purple-900">Report (Generated on)</div>
         ) : percentComplete === 1 ? (
           <div className="flex w-full items-center justify-between">
             <div className="">

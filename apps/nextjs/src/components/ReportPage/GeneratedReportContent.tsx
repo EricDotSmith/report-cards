@@ -4,6 +4,7 @@ import { trpc } from "../../utils/trpc";
 import DotLoader from "../DotLoader/DotLoader";
 import { useState } from "react";
 import { EvaluationType } from "../../store/reportPageStore";
+import ReportCard from "./ReportCard";
 
 interface GeneratedReportContentProps {
   report: inferProcedureOutput<AppRouter["report"]["byId"]>;
@@ -63,7 +64,7 @@ const RetryButton: React.FC<RetryButtonProps> = ({
     <button
       disabled={isLoading}
       onClick={handleRetryClick}
-      className="block rounded-md bg-sky-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
+      className="block rounded-md bg-purple-600 py-1.5 px-3 text-center text-sm font-semibold leading-6 text-white shadow-sm hover:bg-purple-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-purple-600"
     >
       Retry
     </button>
@@ -98,37 +99,38 @@ const GeneratedReportContent: React.FC<GeneratedReportContentProps> = ({
   );
 
   const isLoadingReport = isFetching || report?.comments.length === 0;
-  // const errorHasOccurred =
-  //   data?.state === "failed" ||
-  //   (data?.state === undefined && report?.reportStatus === "GENERATING");
 
   const errorHasOccurred =
     report?.reportStatus === "FAILED" || executionErrored;
 
   return (
-    <div>
-      {isLoadingReport && !errorHasOccurred && (
-        <div className="flex w-full justify-center pt-2">
-          <DotLoader color="bg-sky-300/70" />
-        </div>
-      )}
+    <>
       {errorHasOccurred ? (
-        <RetryButton
-          reportId={report?.id}
-          evaluations={report?.studentEvaluation}
-          onClick={() => {
-            setExecutionErrored(false);
-          }}
-        />
+        <div className="flex justify-center p-8">
+          <RetryButton
+            reportId={report?.id}
+            evaluations={report?.studentEvaluation}
+            onClick={() => {
+              setExecutionErrored(false);
+            }}
+          />
+        </div>
       ) : (
         <></>
       )}
-      {report?.comments.map((comment) => (
-        <div key={comment.id} className="pb-2">
-          {comment.comment}
+      <div className="flex w-full justify-center p-4">
+        {isLoadingReport && !errorHasOccurred && (
+          <div className="flex w-full justify-center pt-2">
+            <DotLoader color="bg-sky-300/70" />
+          </div>
+        )}
+        <div className="space-y-4 pb-8">
+          {report?.comments.map((comment) => (
+            <ReportCard comment={comment} key={comment.id} />
+          ))}
         </div>
-      ))}
-    </div>
+      </div>
+    </>
   );
 };
 

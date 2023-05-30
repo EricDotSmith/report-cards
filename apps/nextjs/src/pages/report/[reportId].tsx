@@ -43,7 +43,7 @@ const ReportPage: NextPage = () => {
         pageLeftBar={<PageLeftBar />}
         pageRightBar={<PageRightBar />}
         pageTopBar={
-          !isLoading ? (
+          !isLoading && data?.comments?.length === 0 ? (
             <ReportPageTopBar
               evaluations={data?.studentEvaluation}
               hasReportBeenGenerated={data?.reportStatus !== "PENDING"}
