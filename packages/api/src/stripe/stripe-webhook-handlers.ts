@@ -79,11 +79,11 @@ export const handleInvoicePaid = async ({
     },
   });
 
-  // if (
-  //   typeof currentQuantity?.reportCredits === "number" &&
-  //   typeof quantity === "string"
-  // ) {
-  //   const newQuantity = currentQuantity.reportCredits + parseInt(quantity);
+  if (
+    typeof currentQuantity?.reportCredits === "number" &&
+    typeof quantity === "string"
+  ) {
+    const newQuantity = currentQuantity.reportCredits + parseInt(quantity);
 
     // update user with subscription data
     await prisma.teacher.update({
