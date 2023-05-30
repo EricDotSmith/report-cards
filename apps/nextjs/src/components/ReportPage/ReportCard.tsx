@@ -1,5 +1,6 @@
 import { Comment } from "@acme/db";
-
+import { useState } from "react";
+import { ClipboardIcon } from "@heroicons/react/24/outline";
 interface ReportCardProps {
   comment: Comment;
 }
@@ -13,6 +14,34 @@ interface CompletionPrompt {
     teacherResponse: string;
   }[];
 }
+
+interface CopyToClipboardProps {
+  text: string;
+}
+
+const CopyToClipboard: React.FC<CopyToClipboardProps> = ({ text }) => {
+  const [isCopied, setIsCopied] = useState(false);
+
+  const copyToClipboard = () => {
+    navigator.clipboard.writeText(text);
+    setIsCopied(true);
+    setTimeout(() => {
+      setIsCopied(false);
+    }, 2000);
+  };
+
+  return (
+    <div className="relative">
+      <button
+        className="focus:shadow-outline-blue flex items-center justify-center rounded-md border border-transparent bg-transparent px-4 py-2 text-sm font-medium leading-5 text-purple-700 transition-colors duration-150  focus:outline-none "
+        onClick={copyToClipboard}
+      >
+        <ClipboardIcon className="mr-2 h-4 w-4" />
+        {isCopied ? "Copied!" : "Copy to Clipboard"}
+      </button>
+    </div>
+  );
+};
 
 const ReportCard: React.FC<ReportCardProps> = ({ comment }) => {
   const {
@@ -39,8 +68,11 @@ const ReportCard: React.FC<ReportCardProps> = ({ comment }) => {
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
             <dt className="text-sm font-medium text-gray-900">Comment</dt>
-            <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+            <dd className="mt-1 text-sm font-bold leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
               {comment.comment}
+              <div className="flex w-full justify-end">
+                <CopyToClipboard text={comment.comment} />
+              </div>
             </dd>
           </div>
           <div className="px-4 py-6 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-6">
