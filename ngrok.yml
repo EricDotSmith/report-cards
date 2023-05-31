@@ -1,0 +1,11 @@
+tunnels:
+    clerk-webhook:
+        addr: 3000
+        proto: http
+        host_header: localhost:3000
+        inspect: false
+        schemes:
+            - https
+version: "2"
+region: us
+authtoken: 2QZR6jsxjRj4XXmjiKPtW86bY7q_82BqG4RSmPEruAGLugk6h
