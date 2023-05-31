@@ -1,12 +1,13 @@
 import type { NextPage } from "next";
-import React, { useState, useRef } from "react";
-import { Dialog } from "@headlessui/react";
-import { Bars3Icon, XMarkIcon } from "@heroicons/react/24/outline";
+import React from "react";
 import Link from "next/link";
-import { useAuth } from "@clerk/nextjs";
 import { NextSeo } from "next-seo";
 import Image from "next/image";
-import emailjs from "@emailjs/browser";
+import HowItWorks from "../components/Home/HowItWorks";
+import Pricing from "../components/Home/Pricing";
+import ContactUs from "../components/Home/ContactUs";
+import AuthShowcase from "../components/Home/AuthShowcase";
+import ScrollTo from "react-scroll-into-view";
 
 const navigation = [
   { name: "Product", href: "#product" },
@@ -17,8 +18,6 @@ const navigation = [
 const PAGE_COLOR = "#f6f3ec";
 
 const Home: NextPage = () => {
-  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
-
   return (
     <>
       <NextSeo
@@ -70,75 +69,22 @@ const Home: NextPage = () => {
                 />
               </a>
             </div>
-            <div className="flex lg:hidden">
-              <button
-                type="button"
-                className="-m-2.5 inline-flex items-center justify-center rounded-md p-2.5 text-gray-700"
-                onClick={() => setMobileMenuOpen(true)}
-              >
-                <span className="sr-only">Open main menu</span>
-                <Bars3Icon className="h-6 w-6" aria-hidden="true" />
-              </button>
-            </div>
-            <div className="hidden lg:flex lg:gap-x-12">
+            <div className="hidden gap-x-4 sm:flex sm:gap-x-12">
               {navigation.map((item) => (
-                <a
-                  key={item.name}
-                  href={item.href}
-                  className="text-sm font-semibold leading-6 text-gray-900"
-                >
-                  {item.name}
-                </a>
+                <ScrollTo selector={item.href} smooth key={item.name}>
+                  <button
+                    onClick={(e) => e.preventDefault()}
+                    className="text-sm font-semibold leading-6 text-gray-900"
+                  >
+                    {item.name}
+                  </button>
+                </ScrollTo>
               ))}
             </div>
-            <div className="hidden lg:flex lg:flex-1 lg:justify-end">
+            <div className="flex lg:flex-1 lg:justify-end">
               <AuthShowcase />
             </div>
           </nav>
-          <Dialog as="div" open={mobileMenuOpen} onClose={setMobileMenuOpen}>
-            <Dialog.Panel
-              // focus="true"
-              className="fixed inset-0 z-10 overflow-y-auto bg-white px-6 py-6 lg:hidden"
-            >
-              <div className="flex items-center justify-between">
-                <a href="#" className="-m-1.5 p-1.5">
-                  <span className="sr-only">Your Company</span>
-                  <Image
-                    src="/report-card-icon.png"
-                    width={32}
-                    height={32}
-                    alt="Picture of the author"
-                  />
-                </a>
-                <button
-                  type="button"
-                  className="-m-2.5 rounded-md p-2.5 text-gray-700"
-                  onClick={() => setMobileMenuOpen(false)}
-                >
-                  <span className="sr-only">Close menu</span>
-                  <XMarkIcon className="h-6 w-6" aria-hidden="true" />
-                </button>
-              </div>
-              <div className="mt-6 flow-root">
-                <div className="-my-6 divide-y divide-gray-500/10">
-                  <div className="space-y-2 py-6">
-                    {navigation.map((item) => (
-                      <a
-                        key={item.name}
-                        href={item.href}
-                        className="-mx-3 block rounded-lg py-2 px-3 text-base font-semibold leading-7 text-gray-900 hover:bg-gray-400/10"
-                      >
-                        {item.name}
-                      </a>
-                    ))}
-                  </div>
-                  <div className="py-6">
-                    <AuthShowcase />
-                  </div>
-                </div>
-              </div>
-            </Dialog.Panel>
-          </Dialog>
         </div>
         <main>
           <div className="relative px-6 lg:px-8">
@@ -155,8 +101,8 @@ const Home: NextPage = () => {
               <div className="text-center">
                 <h1
                   className="animate-text bg-gradient-to-r from-orange-500 via-purple-500 to-sky-500 bg-clip-text 
-            text-4xl font-semibold tracking-tight  text-gray-900 text-transparent
-            sm:text-6xl"
+             text-6xl font-semibold  tracking-tight text-gray-900
+            text-transparent"
                 >
                   Report cards, done simply
                 </h1>
@@ -172,14 +118,34 @@ const Home: NextPage = () => {
                   >
                     Get started
                   </Link>
-                  <a
-                    href="#"
-                    className="text-base font-semibold leading-7 text-gray-900"
-                  >
-                    Learn more <span aria-hidden="true">→</span>
-                  </a>
                 </div>
               </div>
+            </div>
+            <div className="absolute inset-x-0 top-[calc(100%-150rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-200rem)] lg:top-[calc(100%-160rem)]">
+              <svg
+                className="relative left-[calc(50%+3rem)] h-[21.1875rem] max-w-none -translate-x-1/2 sm:left-[calc(50%+28rem)] sm:h-[42.375rem]"
+                viewBox="0 0 1155 678"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  fill="url(#ecb5b0c9-546c-4772-8c71-4d3f06d544bc)"
+                  fillOpacity="1"
+                  d="M317.219 518.975L203.852 678 0 438.341l317.219 80.634 204.172-286.402c1.307 132.337 45.083 346.658 209.733 145.248C936.936 126.058 882.053-94.234 1031.02 41.331c119.18 108.451 130.68 295.337 121.53 375.223L855 299l21.173 362.054-558.954-142.079z"
+                />
+                <defs>
+                  <linearGradient
+                    id="ecb5b0c9-546c-4772-8c71-4d3f06d544bc"
+                    x1="1155.49"
+                    x2="-78.208"
+                    y1=".177"
+                    y2="474.645"
+                    gradientUnits="userSpaceOnUse"
+                  >
+                    <stop stopColor="#f08fa2" />
+                    <stop offset={1} stopColor="#f2aa4b" />
+                  </linearGradient>
+                </defs>
+              </svg>
             </div>
             <div className="absolute inset-x-0 top-[calc(100%-60rem)] -z-10 transform-gpu overflow-hidden blur-3xl sm:top-[calc(100%-80rem)]">
               <svg
@@ -233,142 +199,26 @@ const Home: NextPage = () => {
                 </defs>
               </svg>
             </div>
+            <HowItWorks />
+            <Pricing />
             <ContactUs />
           </div>
         </main>
+        <footer className="mt-24" aria-labelledby="footer-heading">
+          <h2 id="footer-heading" className="sr-only">
+            Footer
+          </h2>
+          <div className="mx-auto max-w-7xl px-6 pb-8 lg:px-8">
+            <div className="mt-16 border-t border-gray-900/10 pt-8 sm:mt-20 lg:mt-24">
+              <p className="text-xs leading-5 text-gray-500">
+                &copy; 2023 ReportCards.io, Inc. All rights reserved.
+              </p>
+            </div>
+          </div>
+        </footer>
       </div>
     </>
   );
 };
 
 export default Home;
-
-const AuthShowcase: React.FC = () => {
-  const { isSignedIn } = useAuth();
-
-  return (
-    <div className="flex flex-col items-center justify-center gap-4">
-      {isSignedIn && (
-        <>
-          <Link
-            href="/dashboard"
-            className="text-sm font-semibold leading-6 text-gray-900"
-          >
-            Dashboard <span aria-hidden="true">&rarr;</span>
-          </Link>
-        </>
-      )}
-      {!isSignedIn && (
-        <Link
-          href="/sign-in"
-          className="text-sm font-semibold leading-6 text-gray-900"
-        >
-          Log in <span aria-hidden="true">&rarr;</span>
-        </Link>
-      )}
-    </div>
-  );
-};
-
-const ContactUs: React.FC = () => {
-  const form = useRef<HTMLFormElement>(null);
-
-  const sendEmail = (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    emailjs
-      .sendForm(
-        "service_56t4kb8",
-        "template_xoqwght",
-        form.current ?? "",
-        "rHykzTHgaxaq2J74_",
-      )
-      .then(
-        (result) => {
-          console.log(result.text);
-        },
-        (error) => {
-          console.log(error.text);
-        },
-      );
-  };
-
-  return (
-    <div
-      id="contact"
-      className="relative isolate bg-transparent px-6 py-24 sm:py-32 lg:px-8"
-    >
-      <div className="mx-auto max-w-xl lg:max-w-4xl">
-        <h2 className="text-4xl font-bold tracking-tight text-sky-600">
-          Contact
-        </h2>
-        <div className="mt-16 flex flex-col gap-16 sm:gap-y-20 lg:flex-row">
-          <form ref={form} onSubmit={sendEmail} className="lg:flex-auto">
-            <div className="grid grid-cols-1 gap-x-8 gap-y-6 sm:grid-cols-2">
-              <div>
-                <label
-                  htmlFor="user_name"
-                  className="block text-sm font-semibold leading-6 text-gray-900"
-                >
-                  Name
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="text"
-                    name="user_name"
-                    id="user_name"
-                    autoComplete="name"
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div>
-                <label
-                  htmlFor="user_email"
-                  className="block text-sm font-semibold leading-6 text-gray-900"
-                >
-                  Email
-                </label>
-                <div className="mt-2.5">
-                  <input
-                    type="email"
-                    name="user_email"
-                    id="user_email"
-                    autoComplete="email"
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
-                  />
-                </div>
-              </div>
-              <div className="sm:col-span-2">
-                <label
-                  htmlFor="message"
-                  className="block text-sm font-semibold leading-6 text-gray-900"
-                >
-                  Message
-                </label>
-                <div className="mt-2.5">
-                  <textarea
-                    id="message"
-                    name="message"
-                    rows={4}
-                    className="block w-full rounded-md border-0 px-3.5 py-2 text-gray-900 shadow-sm ring-1 ring-inset ring-gray-300 placeholder:text-gray-400 focus:ring-2 focus:ring-inset focus:ring-sky-600 sm:text-sm sm:leading-6"
-                    defaultValue={""}
-                  />
-                </div>
-              </div>
-            </div>
-            <div className="mt-10">
-              <button
-                type="submit"
-                value="Send"
-                className="block w-full rounded-md bg-sky-600 px-3.5 py-2.5 text-center text-sm font-semibold text-white shadow-sm hover:bg-sky-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-sky-600"
-              >
-                Let’s talk
-              </button>
-            </div>
-          </form>
-        </div>
-      </div>
-    </div>
-  );
-};

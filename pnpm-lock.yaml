@@ -190,6 +190,9 @@ importers:
       react-icons:
         specifier: ^4.7.1
         version: 4.7.1(react@18.2.0)
+      react-scroll-into-view:
+        specifier: ^1.12.1
+        version: 1.12.1(react-dom@18.2.0)(react@18.2.0)
       stripe:
         specifier: ^12.6.0
         version: 12.6.0
@@ -8785,6 +8788,16 @@ packages:
   /react-refresh@0.4.3:
     resolution: {integrity: sha512-Hwln1VNuGl/6bVwnd0Xdn1e84gT/8T9aYNL+HAKDArLCS7LWjwr7StE30IEYbIkx0Vi3vs+coQxe+SQDbGbbpA==}
     engines: {node: '>=0.10.0'}
+    dev: false
+
+  /react-scroll-into-view@1.12.1(react-dom@18.2.0)(react@18.2.0):
+    resolution: {integrity: sha512-7CnR/hBBXzcA+lq2MwN3oYHY4zoERmTrhHS5xMdsKcxhyJ9KAZvxgd8HT2W2YhN7getxRz5w5uvJPKHXzi5AUQ==}
+    peerDependencies:
+      react: '>=16.5.2'
+      react-dom: '>=16.5.2'
+    dependencies:
+      react: 18.2.0
+      react-dom: 18.2.0(react@18.2.0)
     dev: false
 
   /react-shallow-renderer@16.15.0(react@18.2.0):
