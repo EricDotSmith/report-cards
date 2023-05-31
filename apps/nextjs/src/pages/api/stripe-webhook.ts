@@ -12,7 +12,7 @@ export const config = {
   },
 };
 
-const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET!;
+const webhookSecret = process.env.STRIPE_WEBHOOK_SECRET ?? "";
 
 export default async function handler(
   req: NextApiRequest,

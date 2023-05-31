@@ -11,7 +11,7 @@ export const config = {
   },
 };
 
-const webhookSecret = process.env.CLERK_WEBHOOK_SECRET!;
+const webhookSecret = process.env.CLERK_WEBHOOK_SECRET ?? "";
 
 export default async function handler(
   req: NextApiRequestWithSvixRequiredHeaders,
