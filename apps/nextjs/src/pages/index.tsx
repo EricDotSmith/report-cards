@@ -22,7 +22,14 @@ const Home: NextPage = () => {
     <>
       <NextSeo
         title="Report Cards"
-        description=""
+        description="Get started generating comments for your students report cards in minutes. Saving you hours of time."
+        openGraph={{
+          title: "Report Cards",
+          description:
+            "Get started generating comments for your students report cards in minutes. Saving you hours of time.",
+          url: "https://reportcards.io",
+          images: [{ url: "https://reportcards.io/og-image-main.png" }],
+        }}
         additionalMetaTags={[{ name: "theme-color", content: PAGE_COLOR }]}
         additionalLinkTags={[{ rel: "icon", href: "/favicon.ico" }]}
       />
