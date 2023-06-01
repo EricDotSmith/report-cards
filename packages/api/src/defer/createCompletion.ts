@@ -45,68 +45,103 @@ Student information will arrive to you in the following array of objects format:
 }
 `;
 
-async function createCompletion(
-  gptPrompt: CreateCompletionInput,
-  reportId: string,
-) {
-  const messages: ChatCompletionRequestMessage[] = [
-    {
-      role: "system",
-      content: systemContent,
+async function createCompletion(reportId: string) {
+  const reportWithStudentEvaluations = await prisma.report.findUnique({
+    where: {
+      id: reportId,
     },
-    {
-      role: "user",
-      content: JSON.stringify(gptPrompt),
+    select: {
+      studentEvaluation: {
+        select: {
+          studentId: true,
+          studentName: true,
+          studentPronouns: true,
+          criteriaValues: {
+            select: {
+              criteriaPrompt: true,
+              criteriaValue: true,
+            },
+          },
+        },
+      },
     },
-  ];
+  });
 
-  try {
-    const chatGPT = await openai.createChatCompletion({
-      model: "gpt-3.5-turbo",
-      messages,
-    });
+  if (!!reportWithStudentEvaluations) {
+    const gptPrompt: CreateCompletionInput =
+      reportWithStudentEvaluations.studentEvaluation.map((evaluation) => ({
+        studentId: evaluation.studentId,
+        studentName: evaluation.studentName,
+        studentPronouns: evaluation.studentPronouns,
+        studentCriteriaEvaluations: evaluation.criteriaValues.map(
+          (criteriaValue) => ({
+            criteriaQuestion: criteriaValue.criteriaPrompt,
+            teacherResponse: criteriaValue.criteriaValue,
+          }),
+        ),
+      }));
 
-    const chatGPTResponseContent = chatGPT.data.choices[0]?.message?.content;
+    const messages: ChatCompletionRequestMessage[] = [
+      {
+        role: "system",
+        content: systemContent,
+      },
+      {
+        role: "user",
+        content: JSON.stringify(gptPrompt),
+      },
+    ];
 
-    if (!!chatGPTResponseContent) {
-      const responseMessages = JSON.parse(
-        chatGPTResponseContent,
-      ) as GPTResponse;
+    try {
+      const chatGPT = await openai.createChatCompletion({
+        model: "gpt-3.5-turbo",
+        messages,
+      });
 
+      const chatGPTResponseContent = chatGPT.data.choices[0]?.message?.content;
+
+      if (!!chatGPTResponseContent) {
+        const responseMessages = JSON.parse(
+          chatGPTResponseContent,
+        ) as GPTResponse;
+
+        await prisma.report.update({
+          where: {
+            id: reportId,
+          },
+          data: {
+            comments: {
+              createMany: {
+                data: responseMessages.map((response) => ({
+                  studentId: response.studentId,
+                  comment: response.gptResponse,
+                  prompt: JSON.stringify(
+                    gptPrompt.find(
+                      (prompt) => prompt.studentId === response.studentId,
+                    ),
+                  ),
+                })),
+              },
+            },
+            reportStatus: "GENERATED",
+          },
+        });
+      }
+    } catch (e) {
       await prisma.report.update({
         where: {
           id: reportId,
         },
         data: {
-          comments: {
-            createMany: {
-              data: responseMessages.map((response) => ({
-                studentId: response.studentId,
-                comment: response.gptResponse,
-                prompt: JSON.stringify(
-                  gptPrompt.find(
-                    (prompt) => prompt.studentId === response.studentId,
-                  ),
-                ),
-              })),
-            },
-          },
-          reportStatus: "GENERATED",
+          reportStatus: "FAILED",
         },
       });
     }
-  } catch (e) {
-    await prisma.report.update({
-      where: {
-        id: reportId,
-      },
-      data: {
-        reportStatus: "FAILED",
-      },
-    });
+
+    return { success: true };
   }
 
-  return { success: true };
+  return { success: false };
 }
 
 export default defer(createCompletion);

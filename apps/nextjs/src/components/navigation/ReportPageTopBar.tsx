@@ -63,17 +63,6 @@ const ClassPageTopBar: React.FC<ClassPageTopBarProps> = ({
     }
 
     createCompletion({
-      gptPrompt: evaluations.map((evaluation) => ({
-        studentId: evaluation.studentId,
-        studentName: evaluation.studentName,
-        studentPronouns: evaluation.studentPronouns,
-        studentCriteriaEvaluations: evaluation.criteriaValues.map(
-          (criteriaValue) => ({
-            criteriaQuestion: criteriaValue.criteriaPrompt,
-            teacherResponse: criteriaValue.criteriaValue,
-          }),
-        ),
-      })),
       reportId,
     });
   };
