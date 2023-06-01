@@ -24,11 +24,11 @@ export const evaluationRouter = router({
       input.criteriaValues.forEach((criteriaValue) => {
         if (
           criteriaValue.type === CriteriaType.COMMENT &&
-          criteriaValue.value.length > 400
+          criteriaValue.value.length > 200
         ) {
           throw new TRPCError({
             code: "PAYLOAD_TOO_LARGE",
-            message: `${criteriaValue.id}-is too long, please limit to 400 characters`,
+            message: `${criteriaValue.id}-is too long, please limit to 200 characters`,
           });
         }
       });

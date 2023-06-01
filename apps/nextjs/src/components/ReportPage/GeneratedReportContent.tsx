@@ -45,17 +45,6 @@ const RetryButton: React.FC<RetryButtonProps> = ({
   const handleRetryClick = () => {
     if (!!evaluations && !!reportId) {
       createCompletion({
-        gptPrompt: evaluations.map((evaluation) => ({
-          studentId: evaluation.studentId,
-          studentName: evaluation.studentName,
-          studentPronouns: evaluation.studentPronouns,
-          studentCriteriaEvaluations: evaluation.criteriaValues.map(
-            (criteriaValue) => ({
-              criteriaQuestion: criteriaValue.criteriaPrompt,
-              teacherResponse: criteriaValue.criteriaValue,
-            }),
-          ),
-        })),
         reportId,
       });
     }

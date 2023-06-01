@@ -22,19 +22,6 @@ export const completionRouter = router({
   create: protectedProcedure
     .input(
       z.object({
-        gptPrompt: z.array(
-          z.object({
-            studentId: z.string(),
-            studentName: z.string(),
-            studentPronouns: z.string(),
-            studentCriteriaEvaluations: z.array(
-              z.object({
-                criteriaQuestion: z.string(),
-                teacherResponse: z.string(),
-              }),
-            ),
-          }),
-        ),
         reportId: z.string(),
       }),
     )
@@ -68,10 +55,7 @@ export const completionRouter = router({
       });
 
       //ensure not creating a job that's already in progress
-      const { id: executionId } = await createCompletion(
-        input.gptPrompt,
-        input.reportId,
-      );
+      const { id: executionId } = await createCompletion(input.reportId);
 
       //store executionId in report
       //then fetch on pull rate the executionId until success?
@@ -90,19 +74,6 @@ export const completionRouter = router({
   retry: protectedProcedure
     .input(
       z.object({
-        gptPrompt: z.array(
-          z.object({
-            studentId: z.string(),
-            studentName: z.string(),
-            studentPronouns: z.string(),
-            studentCriteriaEvaluations: z.array(
-              z.object({
-                criteriaQuestion: z.string(),
-                teacherResponse: z.string(),
-              }),
-            ),
-          }),
-        ),
         reportId: z.string(),
       }),
     )
@@ -141,10 +112,7 @@ export const completionRouter = router({
       }
 
       //ensure not creating a job that's already in progress
-      const { id: executionId } = await createCompletion(
-        input.gptPrompt,
-        input.reportId,
-      );
+      const { id: executionId } = await createCompletion(input.reportId);
 
       //store executionId in report
       //then fetch on pull rate the executionId until success?

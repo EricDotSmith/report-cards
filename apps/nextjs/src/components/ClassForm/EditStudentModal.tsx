@@ -126,6 +126,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                         name="name"
                         id="name"
                         value={name}
+                        maxLength={50}
                         onChange={(e) => setName(e.target.value)}
                         className="block w-full border-0 bg-transparent p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
                         placeholder="Please enter the students name here."
@@ -142,6 +143,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                         type="text"
                         name="pronouns"
                         id="pronouns"
+                        maxLength={20}
                         value={pronouns}
                         onChange={(e) => setPronouns(e.target.value)}
                         className="block w-full border-0 bg-transparent p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
