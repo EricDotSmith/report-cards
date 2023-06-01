@@ -33,7 +33,7 @@ const StudentForm: React.FC<StudentFormProps> = ({ students }) => {
   };
 
   const handleAddStudentClick = () => {
-    if (students?.length === 50) {
+    if (students?.length === 30) {
       setShowReachedMaxStudentsModal(true);
     } else {
       setAddStudentModalOpen(true);

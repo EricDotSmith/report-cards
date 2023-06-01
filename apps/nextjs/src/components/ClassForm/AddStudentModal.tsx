@@ -111,6 +111,7 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
                       <input
                         type="text"
                         name="name"
+                        maxLength={50}
                         id="name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
@@ -130,6 +131,7 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
                         name="pronouns"
                         id="pronouns"
                         value={pronouns}
+                        maxLength={20}
                         onChange={(e) => setPronouns(e.target.value)}
                         className="block w-full border-0 bg-transparent p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
                         placeholder="Please enter the students pronouns here."

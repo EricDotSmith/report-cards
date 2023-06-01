@@ -27,10 +27,10 @@ export const studentRouter = router({
           code: "PAYLOAD_TOO_LARGE",
           message: "Name is too long, please limit to 50 characters",
         });
-      } else if (input.pronouns.length > 50) {
+      } else if (input.pronouns.length > 20) {
         throw new TRPCError({
           code: "PAYLOAD_TOO_LARGE",
-          message: "Pronouns are too long, please limit to 50 characters",
+          message: "Pronouns are too long, please limit to 20 characters",
         });
       }
 
@@ -52,7 +52,7 @@ export const studentRouter = router({
         });
       }
 
-      if (currentClass._count.students >= 50) {
+      if (currentClass._count.students >= 30) {
         throw new TRPCError({
           code: "PRECONDITION_FAILED",
           message: "Max students per class exceeded",
@@ -85,10 +85,10 @@ export const studentRouter = router({
           code: "PAYLOAD_TOO_LARGE",
           message: "Name is too long, please limit to 50 characters",
         });
-      } else if (input.pronouns.length > 50) {
+      } else if (input.pronouns.length > 20) {
         throw new TRPCError({
           code: "PAYLOAD_TOO_LARGE",
-          message: "Pronouns are too long, please limit to 50 characters",
+          message: "Pronouns are too long, please limit to 20 characters",
         });
       }
 
