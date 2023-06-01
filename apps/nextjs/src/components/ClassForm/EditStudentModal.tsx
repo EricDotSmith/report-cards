@@ -18,6 +18,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
 }) => {
   const [name, setName] = useState("");
   const [pronouns, setPronouns] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
   const { classId } = router.query;
@@ -26,6 +27,7 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
     if (isOpen) {
       setName(student.name);
       setPronouns(student.pronouns);
+      setErrorMessage("");
     }
   }, [setName, setPronouns, isOpen, student.name, student.pronouns]);
 
@@ -53,6 +55,9 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
       });
 
       closeModal();
+    },
+    onError(error, variables, context) {
+      setErrorMessage(error.message);
     },
   });
 
@@ -145,6 +150,12 @@ const EditStudentModal: React.FC<EditStudentModalProps> = ({
                     </div>
                   </div>
                 </div>
+
+                {errorMessage.length > 0 && (
+                  <div className="mt-4 rounded-lg bg-red-200 p-2 text-red-800">
+                    {errorMessage}
+                  </div>
+                )}
 
                 <div className="mt-4">
                   <button

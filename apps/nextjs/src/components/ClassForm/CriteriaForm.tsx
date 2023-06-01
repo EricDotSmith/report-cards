@@ -114,7 +114,7 @@ const CriteriaForm: React.FC<CriteriaFormProps> = ({ criteria }) => {
                         </span>
                       ) : null}
                     </div>
-                    <p className="truncate text-sm text-gray-500">
+                    <p className="break-all text-sm text-gray-500">
                       {currentCriteria.value}
                     </p>
                   </div>

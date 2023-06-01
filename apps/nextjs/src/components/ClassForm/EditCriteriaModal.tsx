@@ -21,6 +21,7 @@ const EditCriteriaModal: React.FC<EditCriteriaModalProps> = ({
   const [type, setType] = useState<CriteriaType>(criteria.type);
   const [prompt, setPrompt] = useState(criteria.value);
   const [isRequired, setIsRequired] = useState(criteria.required);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
   const { classId } = router.query;
@@ -30,6 +31,7 @@ const EditCriteriaModal: React.FC<EditCriteriaModalProps> = ({
       setType(criteria.type);
       setPrompt(criteria.value);
       setIsRequired(criteria.required);
+      setErrorMessage("");
     }
   }, [
     setType,
@@ -65,6 +67,9 @@ const EditCriteriaModal: React.FC<EditCriteriaModalProps> = ({
       });
 
       closeModal();
+    },
+    onError(error, variables, context) {
+      setErrorMessage(error.message);
     },
   });
 
@@ -169,6 +174,12 @@ const EditCriteriaModal: React.FC<EditCriteriaModalProps> = ({
                     </div>
                   </div>
                 </div>
+
+                {errorMessage.length > 0 && (
+                  <div className="mt-4 rounded-lg bg-red-200 p-2 text-red-800">
+                    {errorMessage}
+                  </div>
+                )}
 
                 <div className="mt-4">
                   <button
