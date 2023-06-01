@@ -152,6 +152,7 @@ const EditCriteriaModal: React.FC<EditCriteriaModalProps> = ({
                         value={prompt}
                         onChange={(e) => setPrompt(e.target.value)}
                         rows={3}
+                        maxLength={400}
                         className="block w-full resize-none border-0 bg-transparent p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
                         placeholder="Please enter the criteria prompt here."
                       />

@@ -11,6 +11,7 @@ type FormStateType = {
     type: string;
     value: string;
     required: boolean;
+    prompt: string;
   };
 };
 
@@ -20,11 +21,13 @@ const initializeFormState = (evaluation: EvaluationType) => {
       type: "text",
       value: evaluation.studentName,
       required: true,
+      prompt: "",
     },
     pronouns: {
       type: "text",
       value: evaluation.studentPronouns,
       required: true,
+      prompt: "",
     },
   };
 
@@ -33,6 +36,7 @@ const initializeFormState = (evaluation: EvaluationType) => {
       type: criteria.criteriaType,
       value: criteria.criteriaValue,
       required: criteria.required,
+      prompt: criteria.criteriaPrompt,
     };
   });
 
@@ -45,6 +49,8 @@ interface ReportPageStore {
   setFormStateFromEvaluation: (evaluation: EvaluationType) => void;
   getValueForKey: (key: string) => string | undefined;
   getRequiredForKey: (key: string) => boolean | undefined;
+  getTypeForKey: (key: string) => string | undefined;
+  getPromptForKey: (key: string) => string | undefined;
   checkIfRequiredFieldsAreFilled: () => boolean;
   requiredFieldsFilledMap: Map<string, boolean> | undefined;
 }
@@ -58,6 +64,12 @@ const useReportPageStore = create<ReportPageStore>((set, get) => ({
   getRequiredForKey: (key: string) => {
     return get().formState?.[key]?.required;
   },
+  getTypeForKey: (key: string) => {
+    return get().formState?.[key]?.type;
+  },
+  getPromptForKey: (key: string) => {
+    return get().formState?.[key]?.prompt;
+  },
   updateFormState: (key: string, value: string) => {
     set((state) => ({
       formState: {
@@ -66,6 +78,7 @@ const useReportPageStore = create<ReportPageStore>((set, get) => ({
           type: state.formState?.[key]?.type ?? "",
           value,
           required: state.formState?.[key]?.required ?? false,
+          prompt: state.formState?.[key]?.prompt ?? "",
         },
       },
     }));

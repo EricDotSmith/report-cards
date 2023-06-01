@@ -1,4 +1,10 @@
-const MissingFieldsAlert: React.FC = () => {
+interface MissingFieldsAlertProps {
+  errorMessages?: string[];
+}
+
+const MissingFieldsAlert: React.FC<MissingFieldsAlertProps> = ({
+  errorMessages,
+}) => {
   return (
     <div
       className="mb-4 rounded-md border border-red-200 bg-red-50 p-4"
@@ -23,7 +29,15 @@ const MissingFieldsAlert: React.FC = () => {
           </h3>
           <div className="mt-2 text-sm text-red-700">
             <ul className="list-disc space-y-1 pl-5">
-              <li>Please fill out all the required fields before submitting</li>
+              {(errorMessages ?? []).length > 0 ? (
+                errorMessages?.map((message, index) => (
+                  <li key={index}>{message}</li>
+                ))
+              ) : (
+                <li>
+                  Please fill out all the required fields before submitting
+                </li>
+              )}
             </ul>
           </div>
         </div>

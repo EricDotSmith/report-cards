@@ -105,8 +105,8 @@ model CriteriaValuePair {
     studentEvaluation StudentEvaluation @relation(fields: [studentEvaluationId], references: [id])
     criteriaId String
     criteriaType CriteriaType
-    criteriaPrompt String @default("")
-    criteriaValue String
+    criteriaPrompt String @db.Text @default("")
+    criteriaValue String @db.Text
     required Boolean
 
     @@index([studentEvaluationId])

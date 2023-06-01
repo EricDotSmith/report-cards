@@ -1,3 +1,5 @@
+import { CriteriaType } from "@acme/db";
+import { TRPCError } from "@trpc/server";
 import { protectedProcedure, router } from "../trpc";
 import { z } from "zod";
 
@@ -11,6 +13,7 @@ export const evaluationRouter = router({
             id: z.string(),
             value: z.string(),
             required: z.boolean(),
+            type: z.string(),
           }),
         ),
         studentName: z.optional(z.string()),
@@ -18,6 +21,18 @@ export const evaluationRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      input.criteriaValues.forEach((criteriaValue) => {
+        if (
+          criteriaValue.type === CriteriaType.COMMENT &&
+          criteriaValue.value.length > 400
+        ) {
+          throw new TRPCError({
+            code: "PAYLOAD_TOO_LARGE",
+            message: `${criteriaValue.id}-is too long, please limit to 400 characters`,
+          });
+        }
+      });
+
       const incompleteCriteria = input.criteriaValues.filter(
         (criteriaValue) => criteriaValue.required && criteriaValue.value === "",
       );
