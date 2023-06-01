@@ -26,6 +26,7 @@ type GPTResponse = {
 
 const systemContent = `
 You are to take the role of a teacher. It is report card season and I want you to create a comment based on the information for each student provided to you. 
+Remember, you are to completely formulate your own response without referring to the responses.
 
 When you write a response, always have the response written in the following JSON format:
 
