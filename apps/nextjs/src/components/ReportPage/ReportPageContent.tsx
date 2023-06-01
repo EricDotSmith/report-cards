@@ -8,7 +8,6 @@ import DotLoader from "../DotLoader/DotLoader";
 import RenderEvaluation from "./RenderEvaluation";
 import StudentList from "./StudentList";
 import { shallow } from "zustand/shallow";
-// import EvaluationProgressTopBar from "./EvaluationProgressTopBar";
 import MissingFieldsAlert from "./MissingFieldsAlert";
 
 interface ReportPageContentProps {
@@ -23,19 +22,24 @@ const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
 
   const [showMissingFieldsAlert, setShowMissingFieldsAlert] = useState(false);
 
+  const [errorMessage, setErrorMessage] = useState("");
+
   const utils = trpc.useContext();
 
-  // const comments = report?.comments;
   const {
     checkIfRequiredFieldsAreFilled,
     getValueForKey,
     getRequiredForKey,
+    getTypeForKey,
+    getPromptForKey,
     formState,
   } = useReportPageStore(
     (state) => ({
       checkIfRequiredFieldsAreFilled: state.checkIfRequiredFieldsAreFilled,
       getValueForKey: state.getValueForKey,
       getRequiredForKey: state.getRequiredForKey,
+      getTypeForKey: state.getTypeForKey,
+      getPromptForKey: state.getPromptForKey,
       formState: state.formState,
     }),
     shallow,
@@ -62,6 +66,9 @@ const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
 
         setCurrentEvaluationIndex(currentEvaluationIndex + 1);
       },
+      onError(error) {
+        setErrorMessage(error.message);
+      },
     });
 
   const saveAndContinueButtonClickHandler = () => {
@@ -72,6 +79,7 @@ const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
     if (!!currentEvaluation) {
       const requiredFieldsAreFilled = checkIfRequiredFieldsAreFilled();
       setShowMissingFieldsAlert(!requiredFieldsAreFilled);
+      setErrorMessage("");
       if (requiredFieldsAreFilled) {
         updateEvaluation({
           evaluationId: currentEvaluation.id,
@@ -84,6 +92,7 @@ const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
                 id: key,
                 value: getValueForKey(key) ?? "",
                 required: getRequiredForKey(key) ?? false,
+                type: getTypeForKey(key) ?? "text",
               };
             }),
         });
@@ -95,15 +104,22 @@ const ReportPageContent: React.FC<ReportPageContentProps> = ({ report }) => {
     ? studentEvaluations[currentEvaluationIndex]
     : undefined;
 
+  const errorMessageToShow = `[${getPromptForKey(
+    (errorMessage ?? "")?.split("-")[0] ?? "",
+  )}] ${(errorMessage ?? "")?.split("-")[1] ?? ""}`;
+
   return (
     <>
-      {/* <EvaluationProgressTopBar evaluations={studentEvaluations} /> */}
       <div className="p-4 md:px-32">
         {currentEvaluation ? (
           <RenderEvaluation evaluation={currentEvaluation} />
         ) : null}
 
         {showMissingFieldsAlert ? <MissingFieldsAlert /> : null}
+
+        {errorMessage.length > 0 ? (
+          <MissingFieldsAlert errorMessages={[errorMessageToShow]} />
+        ) : null}
 
         <div className="flex w-full justify-center">
           {currentEvaluation ? (

@@ -19,6 +19,7 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
   const [type, setType] = useState<CriteriaType>("BOOLEAN");
   const [prompt, setPrompt] = useState("");
   const [isRequired, setIsRequired] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
   const { classId } = router.query;
@@ -28,6 +29,7 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
       setType("BOOLEAN");
       setPrompt("");
       setIsRequired(false);
+      setErrorMessage("");
     }
   }, [setType, setPrompt, isOpen, setIsRequired]);
 
@@ -47,8 +49,7 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
       closeModal();
     },
     onError(error, variables, context) {
-      //TODO: Add proper error handling here
-      console.log(error);
+      setErrorMessage(error.message);
     },
   });
 
@@ -128,6 +129,7 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
                         value={prompt}
                         onChange={(e) => setPrompt(e.target.value)}
                         rows={3}
+                        maxLength={400}
                         className="block w-full resize-none border-0 bg-transparent p-0 text-gray-900 placeholder-gray-500 focus:ring-0 sm:text-sm"
                         placeholder="Please enter the criteria prompt here."
                       />
@@ -150,6 +152,12 @@ const AddCriteriaModal: React.FC<AddCriteriaModalProps> = ({
                     </div>
                   </div>
                 </div>
+
+                {errorMessage.length > 0 && (
+                  <div className="mt-4 rounded-lg bg-red-200 p-2 text-red-800">
+                    {errorMessage}
+                  </div>
+                )}
 
                 <div className="mt-4">
                   <button

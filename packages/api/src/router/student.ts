@@ -22,6 +22,18 @@ export const studentRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      if (input.name.length > 50) {
+        throw new TRPCError({
+          code: "PAYLOAD_TOO_LARGE",
+          message: "Name is too long, please limit to 50 characters",
+        });
+      } else if (input.pronouns.length > 50) {
+        throw new TRPCError({
+          code: "PAYLOAD_TOO_LARGE",
+          message: "Pronouns are too long, please limit to 50 characters",
+        });
+      }
+
       const currentClass = await ctx.prisma.class.findFirst({
         where: { id: input.classId, AND: { teacherId: ctx.user.id } },
         include: {
@@ -68,6 +80,18 @@ export const studentRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      if (input.name.length > 50) {
+        throw new TRPCError({
+          code: "PAYLOAD_TOO_LARGE",
+          message: "Name is too long, please limit to 50 characters",
+        });
+      } else if (input.pronouns.length > 50) {
+        throw new TRPCError({
+          code: "PAYLOAD_TOO_LARGE",
+          message: "Pronouns are too long, please limit to 50 characters",
+        });
+      }
+
       const currentStudent = await ctx.prisma.student.findFirst({
         where: {
           id: input.studentId,

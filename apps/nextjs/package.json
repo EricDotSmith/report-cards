@@ -37,6 +37,7 @@
     "react": "18.2.0",
     "react-dom": "18.2.0",
     "react-icons": "^4.7.1",
+    "react-scroll-into-view": "^1.12.1",
     "stripe": "^12.6.0",
     "svix": "^0.85.1",
     "zod": "^3.18.0",

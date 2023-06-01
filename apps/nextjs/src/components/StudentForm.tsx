@@ -92,10 +92,10 @@ const StudentForm: React.FC<StudentFormProps> = ({ students }) => {
               <li key={student.id} className="py-4">
                 <div className="flex items-center space-x-4">
                   <div className="min-w-0 flex-1">
-                    <p className="truncate text-sm font-medium text-gray-900">
+                    <p className="break-all text-sm font-medium text-gray-900">
                       {student.name}
                     </p>
-                    <p className="truncate text-sm text-gray-500">
+                    <p className="break-all text-sm text-gray-500">
                       {student.pronouns}
                     </p>
                   </div>

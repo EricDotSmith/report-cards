@@ -15,6 +15,7 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
 }) => {
   const [name, setName] = useState("");
   const [pronouns, setPronouns] = useState("");
+  const [errorMessage, setErrorMessage] = useState("");
 
   const router = useRouter();
   const { classId } = router.query;
@@ -23,6 +24,7 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
     if (isOpen) {
       setName("");
       setPronouns("");
+      setErrorMessage("");
     }
   }, [setName, setPronouns, isOpen]);
 
@@ -40,6 +42,9 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
       });
 
       closeModal();
+    },
+    onError(error, variables, context) {
+      setErrorMessage(error.message);
     },
   });
 
@@ -132,6 +137,12 @@ const AddStudentModal: React.FC<AddStudentModalProps> = ({
                     </div>
                   </div>
                 </div>
+
+                {errorMessage.length > 0 && (
+                  <div className="mt-4 rounded-lg bg-red-200 p-2 text-red-800">
+                    {errorMessage}
+                  </div>
+                )}
 
                 <div className="mt-4">
                   <button

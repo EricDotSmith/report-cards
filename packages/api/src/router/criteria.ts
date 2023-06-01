@@ -24,6 +24,14 @@ export const criteriaRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      if (input.value.length > 400) {
+        throw new TRPCError({
+          code: "PAYLOAD_TOO_LARGE",
+          message:
+            "Criteria prompt is too long, please limit to 400 characters",
+        });
+      }
+
       const currentClass = await ctx.prisma.class.findFirst({
         where: { id: input.classId, AND: { teacherId: ctx.user.id } },
         include: {
@@ -72,6 +80,14 @@ export const criteriaRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
+      if (input.value.length > 400) {
+        throw new TRPCError({
+          code: "PAYLOAD_TOO_LARGE",
+          message:
+            "Criteria prompt is too long, please limit to 400 characters",
+        });
+      }
+
       const currentCriteria = await ctx.prisma.criteria.findFirst({
         where: {
           id: input.criteriaId,
