@@ -24,11 +24,11 @@ export const criteriaRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      if (input.value.length > 400) {
+      if (input.value.length > 100) {
         throw new TRPCError({
           code: "PAYLOAD_TOO_LARGE",
           message:
-            "Criteria prompt is too long, please limit to 400 characters",
+            "Criteria prompt is too long, please limit to 100 characters",
         });
       }
 
@@ -80,11 +80,11 @@ export const criteriaRouter = router({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      if (input.value.length > 400) {
+      if (input.value.length > 200) {
         throw new TRPCError({
           code: "PAYLOAD_TOO_LARGE",
           message:
-            "Criteria prompt is too long, please limit to 400 characters",
+            "Criteria prompt is too long, please limit to 200 characters",
         });
       }
 
