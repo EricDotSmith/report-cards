@@ -47,7 +47,7 @@ const Pricing: React.FC = () => {
                           clip-rule="evenodd"
                         />
                       </svg>
-                      Up to 50 students per report
+                      Up to 30 students per report
                     </li>
                     <li className="flex gap-x-3 py-2">
                       <svg
@@ -77,7 +77,7 @@ const Pricing: React.FC = () => {
                           clip-rule="evenodd"
                         />
                       </svg>
-                      Up to 50 generated comments per report
+                      Up to 30 generated comments per report
                     </li>
                   </ul>
                 </div>
