@@ -1,3 +1,52 @@
+# ReportCards.io
+
+A full-stack application from scratch to aid teachers in creating comments for their students report cards.
+
+## Stack used:
+
+- NextJS with TypeScript & React
+- TailwindCSS
+- tRPC
+- Zustand
+- Prisma
+- EmailJS
+- UpStash
+- Defer
+- GitHub
+- OpenAI API
+- PlanetScale
+- Clerk
+- Vercel
+- Stripe
+
+## Environment variables needed to run this project are as follows:
+
+```
+//Database
+DATABASE_URL
+
+//For Clerk Authentication
+NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY
+CLERK_SECRET_KEY
+CLERK_WEBHOOK_SECRET
+
+//For rate limiting requests
+UPSTASH_REDIS_REST_URL
+UPSTASH_REDIS_REST_TOKEN
+
+//For creating ChatGPT Completions
+OPENAI_API_KEY
+
+//For Payments / Product Purchases / Webhooks
+STRIPE_PK
+STRIPE_SK
+STRIPE_WEBHOOK_SECRET
+STRIPE_PRICE_ID
+
+```
+
+Below is the original readme from the forked starter project with Clerk Authentication.
+
 [![CI](https://github.com/perkinsjr/t3-turbo-and-clerk/actions/workflows/ci.yml/badge.svg)](https://github.com/perkinsjr/t3-turbo-and-clerk/actions/workflows/ci.yml)
 
 # Create T3 Turbo with Clerk Authentication
